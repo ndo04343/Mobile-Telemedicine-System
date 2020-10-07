@@ -1,5 +1,6 @@
 package com.knu.medifree;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -7,6 +8,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /*
 
@@ -16,18 +25,15 @@ import android.widget.EditText;
 
 
 public class LoginActivity extends AppCompatActivity {
-    EditText et_email, et_password;
     Button btn_signin, btn_signup;
 
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        // 객체 할당
-        et_email = (EditText) findViewById(R.id.login_et_email);
-        et_password = (EditText) findViewById(R.id.login_et_password);
-
+        mAuth = FirebaseAuth.getInstance();
+        // 버튼 객체 할당
         btn_signin = (Button) findViewById(R.id.login_btn_signin);
         btn_signup = (Button) findViewById(R.id.login_btn_signup);
 
@@ -37,10 +43,8 @@ public class LoginActivity extends AppCompatActivity {
                 // 로그인 버튼을 눌렀을 때의 이벤트임
                 // 현재 상황 : PHomeActivity로 이동
 
+                SignUp_P();
 
-                Intent intent = new Intent(getApplicationContext(), PHomeActivity.class);
-                startActivity(intent);
-                finish();
             }
         });
 
@@ -62,9 +66,42 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
     }
 
+    private void SignUp_P() {
+        String email = ((EditText) findViewById(R.id.login_et_email)).getText().toString();
+        String password = ((EditText) findViewById(R.id.login_et_password)).getText().toString();
 
+        if (email.length() > 0 && password.length() > 0 ){
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // 로그인 성공
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                startToast("로그인 되었습니다.");
+                                //홈화면으로 이동.
+                                Intent intent = new Intent(getApplicationContext(), PHomeActivity.class);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                // 로그인 실패=> 비밀번호 길이 및 아이디 중복 여부 등
+                                if (task.getException() != null) {
+                                    startToast(task.getException().toString());
+                                }else{
+                                    startToast("Null이들어");
+                                }
+                            }
+                        }
+                    });
+        } else{
+            startToast("이메일 또는 비밀번호를 입력해주세요.");
+        }
+
+
+    }
+    //알림을 출력하는 method
+    private void startToast(String msg) { Toast.makeText(this, msg, Toast.LENGTH_SHORT).show(); }
 
 }

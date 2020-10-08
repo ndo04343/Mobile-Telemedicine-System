@@ -5,10 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -16,6 +16,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 /*
 
@@ -42,7 +45,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // 로그인 버튼을 눌렀을 때의 이벤트임
                 // 현재 상황 : PHomeActivity로 이동
-
                 SignUp_P();
 
             }
@@ -52,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // 회원 가입을 눌렀을 때의 이벤트임
-                // 현재 상황 : TypeActivity로 이
+                // 현재 상황 : TypeActivity로 이동.
 
 
                 Intent intent = new Intent(getApplicationContext(), TypeActivity.class);
@@ -81,10 +83,43 @@ public class LoginActivity extends AppCompatActivity {
                                 // 로그인 성공
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 startToast("로그인 되었습니다.");
-                                //홈화면으로 이동.
-                                Intent intent = new Intent(getApplicationContext(), PHomeActivity.class);
-                                startActivity(intent);
-                                finish();
+
+                                String uid = user.getUid();
+
+
+                                //Firestore db로 부터 uid를 사용하여 현재 user의 userType을 가져오는 함수.
+                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                                DocumentReference docRef = db.collection("Profile").document(uid);
+                                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            DocumentSnapshot document = task.getResult();
+                                            if (document.exists()) {
+                                                String userType= document.getData().get("userType").toString();
+                                                if ( userType.equals("Patient")){
+                                                    //patient일때 patient 홈 화면으로 간다.
+                                                    Intent intent = new Intent(getApplicationContext(), PHomeActivity.class);
+                                                    //intent.putExtra("uid", uid);
+                                                    startActivity(intent);
+                                                    finish();
+                                                }else {
+                                                    //Doctor라면 Doctor홈화면으로 간다.
+                                                    Intent intent = new Intent(getApplicationContext(), DHomeActivity.class);
+                                                    startActivity(intent);
+                                                    finish();
+                                                }
+
+                                            } else {
+                                                startToast("document가 없습니다.");
+                                            }
+                                        } else {
+                                            startToast("get failed with "+ task.getException());
+                                        }
+                                    }
+                                });
+
                             } else {
                                 // 로그인 실패=> 비밀번호 길이 및 아이디 중복 여부 등
                                 if (task.getException() != null) {
@@ -103,5 +138,6 @@ public class LoginActivity extends AppCompatActivity {
     }
     //알림을 출력하는 method
     private void startToast(String msg) { Toast.makeText(this, msg, Toast.LENGTH_SHORT).show(); }
+
 
 }

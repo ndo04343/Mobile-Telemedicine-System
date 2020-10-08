@@ -8,18 +8,24 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 //Firebase Auth를 위한 API
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class PRegActivity extends AppCompatActivity {
-    //TAG
-    private static final String TAG = "SignUp_Patient";
     // 인스턴스 생성
     private FirebaseAuth mAuth;
     //Button
@@ -70,10 +76,10 @@ public class PRegActivity extends AppCompatActivity {
                                     // 회원가입 성공
                                     FirebaseUser user = mAuth.getCurrentUser();
                                     startToast("회원가입이 완료되었습니다.");
-                                    //홈화면으로 이동.
-                                    Intent intent = new Intent(getApplicationContext(), PHomeActivity.class);
-                                    startActivity(intent);
-                                    finish();
+
+                                    //현재 유저의 uid가져오기.
+                                    String uid = user.getUid();
+                                    insert_user_Information(uid);
                                 } else {
                                     // 회원가입 실패=> 비밀번호 길이 및 아이디 중복 여부 등
                                     if (task.getException() != null){
@@ -94,4 +100,41 @@ public class PRegActivity extends AppCompatActivity {
     }
     //알림을 출력하는 method
     private void startToast(String msg) { Toast.makeText(this, msg, Toast.LENGTH_SHORT).show(); }
+
+    //생성된 uid 및 나머지 정보들 firestore에 넣는 작업.
+    private void insert_user_Information(String uid) {
+
+        String name = ((EditText)findViewById(R.id.name_P)).getText().toString();
+        String phone = ((EditText)findViewById((R.id.phone_P))).getText().toString();
+        String address = ((EditText)findViewById(R.id.address_P)).getText().toString();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        Map<String, Object> user = new HashMap<>();
+        user.put("userType","Patient");
+        user.put("name",name);
+        user.put("phoneNum",phone);
+        user.put("Address",address);
+
+        //실제 firestore에 추가하는 작업, add=> 자동으로 문서id(문서이름)를 만들어줌
+
+        // Add a new document with a generated ID
+        db.collection("Profile").document(uid)
+                .set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void avoid) {
+                        //홈화면으로 이동.
+                        Intent intent = new Intent(getApplicationContext(), PHomeActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        startToast("정보저장에 실패하였습니다.");
+                    }
+                });
+
+    }
 }

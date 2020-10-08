@@ -1,11 +1,21 @@
 package com.knu.medifree;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class DHomeActivity extends AppCompatActivity {
     Button btn_check, btn_diag, btn_refresh;
@@ -15,6 +25,7 @@ public class DHomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_d_home);
 
+        list_reservation();
 
 
         // 객체 할당
@@ -51,7 +62,34 @@ public class DHomeActivity extends AppCompatActivity {
                 // 새로고침 버튼을 눌렀을 때
                 // 현재 상황 :
                 // TODO :
+                list_reservation();
             }
         });
+    }
+
+    private void list_reservation() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final String TAG = "제발좀되라 씨발2";
+        if (user != null){
+            String uid = user.getUid();
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            db.collection("Reservation")
+                    .whereEqualTo("Doctor_id", uid)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d(TAG, document.getId() + " => " + document.getData());
+                                }
+                            } else {
+                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
+        }
     }
 }

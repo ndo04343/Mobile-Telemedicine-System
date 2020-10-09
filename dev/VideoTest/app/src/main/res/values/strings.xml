@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">AppRTC</string>
-    <string name="settings_name" translatable="false">AppRTC Settings</string>
+    <string name="app_name" translatable="false">MTS_VideoPT</string>
+    <string name="settings_name" translatable="false">MTS VIDEO Settings</string>
     <string name="disconnect_call">Disconnect Call</string>
     <string name="room_description">
-        Please enter a room name. Room names are shared with everyone, so think
-        of something unique and send it to a friend.
+        여기서 넘어갈 값 RESERVATION_ID와
+        동일
     </string>
     <string name="favorites">Favorites</string>
     <string name="no_favorites">No favorites</string>
@@ -36,7 +36,7 @@
     <string name="pref_room_list_key">room_list_preference</string>
 
     <string name="pref_videosettings_key">video_settings_key</string>
-    <string name="pref_videosettings_title">WebRTC video settings.</string>
+    <string name="pref_videosettings_title">MTS video settings.</string>
 
     <string name="pref_videocall_key">videocall_preference</string>
     <string name="pref_videocall_title">Video call.</string>

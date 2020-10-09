@@ -1,12 +1,12 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="CallActivityTheme" parent="android:Theme.Black">
+    <style name="CallActivityTheme" parent="android:Theme.Light">
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme" parent="android:Theme.Black">
+    <style name="AppTheme" parent="android:Theme.Light">
 
     </style>
 

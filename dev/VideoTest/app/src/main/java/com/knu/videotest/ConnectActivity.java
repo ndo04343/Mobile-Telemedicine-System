@@ -75,6 +75,8 @@ public class ConnectActivity extends Activity {
 
     // Get setting keys.
     PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+    // __PREFERENCES__
     sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
     keyprefResolution = getString(R.string.pref_resolution_key);
     keyprefFps = getString(R.string.pref_fps_key);
@@ -438,10 +440,15 @@ public class ConnectActivity extends Activity {
     int videoWidth = 0;
     int videoHeight = 0;
     if (useValuesFromIntent) {
+      //
+      // TODO : VIDEO RESOLUTION SETTING
       videoWidth = getIntent().getIntExtra(CallActivity.EXTRA_VIDEO_WIDTH, 0);
       videoHeight = getIntent().getIntExtra(CallActivity.EXTRA_VIDEO_HEIGHT, 0);
     }
     if (videoWidth == 0 && videoHeight == 0) {
+      //
+      // __SETTING RESOLUTION__
+      //
       String resolution =
           sharedPref.getString(keyprefResolution, getString(R.string.pref_resolution_default));
       String[] dimensions = resolution.split("[ x]+");

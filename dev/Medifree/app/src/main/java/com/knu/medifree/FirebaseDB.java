@@ -32,6 +32,8 @@ public class FirebaseDB {
     // document는 유일하다고 판단.
     public static Reservation getReservation(String reservationId){
         final Reservation[] tmp = {null};
+        // for문으로 Reservation[]에 담아야됨.
+        // 스냅샷 WhereEqualto함수로 가져온거 포문으로 돌림.
         db.collection("Reservation").document(reservationId)
                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override

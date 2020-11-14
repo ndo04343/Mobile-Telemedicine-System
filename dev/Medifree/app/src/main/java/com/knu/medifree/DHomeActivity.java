@@ -24,25 +24,17 @@ public class DHomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_d_home);
-
         list_reservation();
-
-
         // 객체 할당
         btn_check = (Button) findViewById(R.id.d_home_btn_check);
         btn_diag = (Button) findViewById(R.id.d_home_btn_diag);
         btn_refresh = (Button) findViewById(R.id.d_home_btn_refresh);
-
-
         // 클릭 리스너 할당
         btn_check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // 예약하기 버튼을 눌렀을 때
                 // 현재 상황 : ResCheckActivity로 이동
-
-
-
                 Intent intent = new Intent(getApplicationContext(), ResCheckActivity.class);
                 startActivity(intent);
                 //finish(); 일단 뒤로 버튼을 눌러서 의사 홈으로 돌아올 수 있게 해둠.

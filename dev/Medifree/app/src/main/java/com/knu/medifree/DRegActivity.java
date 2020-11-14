@@ -30,6 +30,7 @@ import java.util.Map;
 public class DRegActivity extends AppCompatActivity {
     Button btn_reg;
     private FirebaseAuth mAuth;
+    private EditText emailEditView, passwordEditView, pwChkEditView, hospitalNameEditView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,20 +51,23 @@ public class DRegActivity extends AppCompatActivity {
             }
         });
     }
-
-
     @Override
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
     }
-
+    private void getViewInLayout(){
+        this.emailEditView = findViewById(R.id.email_D);
+        this.passwordEditView = findViewById(R.id.password_D);
+        this.pwChkEditView = findViewById(R.id.passwordCheck_D);
+        this.hospitalNameEditView = findViewById(R.id.hospital_Name);
+    }
     private void createAccount_Doctor() {
-        String email = ((EditText) findViewById(R.id.email_D)).getText().toString();
-        String password = ((EditText) findViewById(R.id.password_D)).getText().toString();
-        String passwordCheck = ((EditText) findViewById(R.id.passwordCheck_D)).getText().toString();
-        String hospital_Name = ((EditText)findViewById((R.id.hospital_Name))).getText().toString();
+        final String email = emailEditView.getText().toString();
+        final String password = passwordEditView.getText().toString();
+        String passwordCheck = pwChkEditView.getText().toString();
+        String hospital_Name = hospitalNameEditView.getText().toString();
 
         if (email.length() > 0 && password.length() > 0 && passwordCheck.length() > 0){
             if (password.equals(passwordCheck)) {
@@ -77,7 +81,29 @@ public class DRegActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                registerDoctor();
+//                                registerDoctor();
+                                mAuth.createUserWithEmailAndPassword(email, password)
+                                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                                if (task.isSuccessful()) {
+                                                    // 회원가입 성공
+                                                    FirebaseUser user = mAuth.getCurrentUser();
+                                                    startToast("회원가입이 완료되었습니다.");
+                                                    //현재 유저의 uid가져오기.
+                                                    String uid = user.getUid();
+                                                    //user정보를 db에 집어넣가.
+                                                    insert_user_Information(uid);
+
+                                                } else {
+                                                    // 회원가입 실패=> 비밀번호 길이 및 아이디 중복 여부 등
+                                                    if (task.getException() != null){
+                                                        startToast(task.getException().toString());
+                                                    }
+                                                }
+                                            }
+                                        });
+
                                 startToast("입력하신정보로 회원가입중입니다.");
                             } else {
                                 startToast("입력하신 병원이 DB에 없습니다.");
@@ -95,12 +121,10 @@ public class DRegActivity extends AppCompatActivity {
         } else{
             startToast("이메일 또는 비밀번호를 입력해주세요.");
         }
-
-
     }
 
     private void registerDoctor(){
-        String email = ((EditText) findViewById(R.id.email_D)).getText().toString();
+        String email = this.emailEditView.getText().toString();
         String password = ((EditText) findViewById(R.id.password_D)).getText().toString();
 
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -139,8 +163,8 @@ public class DRegActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         Map<String, Object> user = new HashMap<>();
-        user.put("userType","Doctor");
         user.put("name",name);
+        user.put("userType","Doctor");
         user.put("phoneNum",phone);
         user.put("Hospital_Name",hospital_Name);
         user.put("Major",major);
@@ -153,9 +177,7 @@ public class DRegActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void avoid) {
                         //uid정보를 hospital에 넣기.
-
                         insert_doctor_to_hospital(uid);
-
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

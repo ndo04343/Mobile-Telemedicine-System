@@ -95,8 +95,6 @@ public class PRegActivity extends AppCompatActivity {
         } else{
             startToast("이메일 또는 비밀번호를 입력해주세요.");
         }
-
-
     }
     //알림을 출력하는 method
     private void startToast(String msg) { Toast.makeText(this, msg, Toast.LENGTH_SHORT).show(); }

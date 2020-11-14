@@ -1,9 +1,11 @@
 package com.knu.medifree;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +22,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.time.LocalDateTime;
+
 /*
 
     1 페이지의 1 번째 그림의 내용입니다. 로그인 관련 UI과 기능을 구현하는 액티비티입니다.
@@ -31,11 +35,13 @@ public class LoginActivity extends AppCompatActivity {
     Button btn_signin, btn_signup;
 
     private FirebaseAuth mAuth;
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseDB.getInstance();
+        mAuth = FirebaseDB.getmAuth();
         // 버튼 객체 할당
         btn_signin = (Button) findViewById(R.id.login_btn_signin);
         btn_signup = (Button) findViewById(R.id.login_btn_signup);
@@ -46,7 +52,6 @@ public class LoginActivity extends AppCompatActivity {
                 // 로그인 버튼을 눌렀을 때의 이벤트임
                 // 현재 상황 : PHomeActivity로 이동
                 SignUp_P();
-
             }
         });
 
@@ -55,14 +60,13 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // 회원 가입을 눌렀을 때의 이벤트임
                 // 현재 상황 : TypeActivity로 이동.
-
-
                 Intent intent = new Intent(getApplicationContext(), TypeActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
-        
+
+
     }
 
     @Override

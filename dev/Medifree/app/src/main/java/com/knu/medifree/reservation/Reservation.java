@@ -1,14 +1,41 @@
 package com.knu.medifree.reservation;
 
-public class Reservation {
-    private String hos_name;
+import android.os.Build;
 
+import androidx.annotation.RequiresApi;
+
+import com.google.firebase.database.PropertyName;
+import com.google.gson.annotations.SerializedName;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+public class Reservation {
+    /* firestore에 사용된 필드
+       변수명 일치화 시키는 게 좋음
+       Doctor_id, data, id, patient_id
+     */
+    @PropertyName("Doctor_id")
     private String doc_name;
+
+    @PropertyName("date")
+    private LocalDateTime date;
+    @PropertyName("id")
+    private int id;
+    @PropertyName("patient_id")
     private String pat_name;
 
-    private int year, month, date, hour;
+    private String hos_name;
+    private int year, month, day, hour;
     private int order;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public Reservation(String doctor_id, LocalDateTime day, int id, String patient_id) {
+        this.doc_name =doctor_id;
+        this.month = day.getDayOfMonth();
+        this.year = day.getDayOfYear();
+        this.pat_name = patient_id;
+    }
 
 
     // Getter Method
@@ -32,8 +59,8 @@ public class Reservation {
         return month;
     }
 
-    public int getDate() {
-        return date;
+    public int getDay() {
+        return day;
     }
 
     public int getHour() {
@@ -66,8 +93,8 @@ public class Reservation {
         this.month = month;
     }
 
-    public void setDate(int date) {
-        this.date = date;
+    public void setDay(int day) {
+        this.day = day;
     }
 
     public void setHour(int hour) {

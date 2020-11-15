@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ResCheckActivity"></activity>
+        <activity android:name=".PSelhospActivity"></activity>
+        <activity android:name=".PSeldocActivity"></activity>
+        <activity android:name=".PSeltimeActivity"></activity>
         <activity android:name=".DRegActivity" />
         <activity android:name=".PRegActivity" />
         <activity android:name=".TypeActivity" />

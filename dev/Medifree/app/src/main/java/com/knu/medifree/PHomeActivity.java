@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -95,7 +96,7 @@ public class PHomeActivity extends AppCompatActivity {
                         params.y = 1700;   //y position
                        //조정 완료 후 화면출력
                         dialog.show();
-                        //다이얼로그 크기를 조절 나중에 custom dialog 로 ppt똑같이 만들기
+                        //다이얼로그 크기를 조절 나중에 custom custom_dialog 로 ppt똑같이 만들기
                         params.width =  WindowManager.LayoutParams.MATCH_PARENT;
                         //params.height =  300;
                         dialog.getWindow().setAttributes(params);
@@ -113,7 +114,7 @@ public class PHomeActivity extends AppCompatActivity {
                 params.y = 1700;   //y position
                 //조정 완료 후 화면출력
                 dialog.show();
-                //다이얼로그 크기를 조절 나중에 custom dialog 로 ppt똑같이 만들기
+                //다이얼로그 크기를 조절 나중에 custom custom_dialog 로 ppt똑같이 만들기
                 params.width =  WindowManager.LayoutParams.MATCH_PARENT;
                 //params.height =  440;
                 dialog.getWindow().setAttributes(params);
@@ -125,6 +126,9 @@ public class PHomeActivity extends AppCompatActivity {
                 // 진료실 버튼을 눌렀을 때
                 // 현재 상황 :
                 // TODO :
+                Intent intent=new Intent(PHomeActivity.this,PSelhospActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
         btn_refresh.setOnClickListener(new View.OnClickListener() {

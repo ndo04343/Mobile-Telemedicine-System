@@ -33,7 +33,8 @@ import java.time.LocalDateTime;
 
 
 public class LoginActivity extends AppCompatActivity {
-    Button btn_signin, btn_signup;
+    ImageButton btn_signin;
+    Button btn_signup;
 
     private FirebaseAuth mAuth;
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -51,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseDB.getInstance();
         mAuth = FirebaseDB.getmAuth();
         // 버튼 객체 할당
-        btn_signin= (Button) findViewById(R.id.login_btn_signin);
+        btn_signin= (ImageButton) findViewById(R.id.login_btn_signin);
         btn_signup = (Button) findViewById(R.id.login_btn_signup);
 
         btn_signin.setOnClickListener(new View.OnClickListener() {

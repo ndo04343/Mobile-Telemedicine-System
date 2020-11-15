@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -40,10 +41,17 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
+        // 로딩화면 MEDIFREE 5초 출력
+        Intent intent = new Intent(this, LoadingActivity.class);
+        startActivity(intent);
+        //로딩화면 종료
+
         FirebaseDB.getInstance();
         mAuth = FirebaseDB.getmAuth();
         // 버튼 객체 할당
-        btn_signin = (Button) findViewById(R.id.login_btn_signin);
+        btn_signin= (Button) findViewById(R.id.login_btn_signin);
         btn_signup = (Button) findViewById(R.id.login_btn_signup);
 
         btn_signin.setOnClickListener(new View.OnClickListener() {

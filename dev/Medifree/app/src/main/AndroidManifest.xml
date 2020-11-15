@@ -17,6 +17,7 @@
         <activity android:name=".TypeActivity" />
         <activity android:name=".DHomeActivity" />
         <activity android:name=".PHomeActivity" />
+        <activity android:name=".LoadingActivity"/>
         <activity android:name=".InitActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

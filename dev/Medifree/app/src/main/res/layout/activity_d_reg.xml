@@ -4,102 +4,118 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:backgroundTint="#FFFFFF"
     tools:context=".DRegActivity">
 
-    <EditText
-        android:id="@+id/major"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="major"
-        app:layout_constraintBottom_toTopOf="@+id/passwordCheck_D"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/email_D"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="email입력"
-        android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@id/password_D"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/password_D"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:ems="10"
-        android:hint="password 입력"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@id/passwordCheck_D"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email_D" />
-
-    <EditText
-        android:id="@+id/passwordCheck_D"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="password check"
-        android:inputType="textPassword"
+        android:layout_marginBottom="106dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_D" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
-    <EditText
-        android:id="@+id/name_D"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Name입력"
-        app:layout_constraintBottom_toTopOf="@+id/email_D"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/hospital_Name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
-        android:ems="10"
-        android:hint="hospital_Name"
-        app:layout_constraintBottom_toTopOf="@+id/major"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_D" />
-
-    <EditText
-        android:id="@+id/phone_D"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="phone번호입력"
-        android:inputType="phone"
-        app:layout_constraintBottom_toTopOf="@+id/password_D"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email_D" />
+        <ImageView
+            android:layout_width="275dp"
+            android:layout_height="47dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="120dp"
+            app:srcCompat="@drawable/doctor_logo" />
 
 
-    <Button
-        android:id="@+id/d_reg_btn_reg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="회원 가입"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <EditText
+            android:id="@+id/email_D"
+            android:layout_width="270dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="40dp"
+            android:background="#F2F2F2"
+            android:ems="10"
+            android:hint="  E-mail"
+            android:inputType="textEmailAddress"
+            app:layout_constraintBottom_toTopOf="@id/password_D"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/password_D"
+            android:layout_width="270dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="10dp"
+            android:background="#F2F2F2"
+            android:ems="10"
+            android:hint="  Password"
+            android:inputType="textPassword"
+            app:layout_constraintBottom_toTopOf="@id/passwordCheck_D"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/email_D" />
+
+        <EditText
+            android:id="@+id/passwordCheck_D"
+            android:layout_width="270dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="10dp"
+            android:background="#F2F2F2"
+            android:ems="10"
+            android:hint="  Password Check"
+            android:inputType="textPassword"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/password_D" />
+
+        <EditText
+            android:id="@+id/name_D"
+            android:layout_width="270dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="10dp"
+            android:background="#F2F2F2"
+            android:ems="10"
+            android:hint="  Name"
+            app:layout_constraintBottom_toTopOf="@+id/email_D"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <EditText
+            android:id="@+id/phone_D"
+            android:layout_width="270dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="10dp"
+            android:background="#F2F2F2"
+            android:ems="10"
+            android:hint="  Tel."
+            android:inputType="phone"
+            app:layout_constraintBottom_toTopOf="@+id/password_D"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/email_D" />
+
+
+        <ImageButton
+            android:id="@+id/next_step"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="#00FFFFFF"
+            android:src="@drawable/next_step_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

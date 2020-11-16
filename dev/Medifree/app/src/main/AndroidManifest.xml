@@ -68,6 +68,7 @@
         <activity android:name=".PSeldocActivity"></activity>
         <activity android:name=".PSeltimeActivity"></activity>
         <activity android:name=".DRegActivity" />
+        <activity android:name=".DRegNextActivity" />
         <activity android:name=".PRegActivity" />
         <activity android:name=".TypeActivity" />
         <activity android:name=".DHomeActivity" />

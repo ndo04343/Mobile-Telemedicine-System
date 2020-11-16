@@ -7,9 +7,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 public class TypeActivity extends AppCompatActivity {
-    Button btn_pat, btn_doc, btn_ph;
+    ImageButton btn_pat;
+    ImageButton btn_doc;
+    ImageButton btn_ph;
 
 
     @Override
@@ -18,9 +21,9 @@ public class TypeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_type);
 
         // 객체 할당
-        btn_pat = (Button) findViewById(R.id.type_btn_patient);
-        btn_doc = (Button) findViewById(R.id.type_btn_doctor);
-        btn_ph = (Button) findViewById(R.id.type_btn_ph);
+        btn_pat = (ImageButton) findViewById(R.id.type_btn_patient);
+        btn_doc = (ImageButton) findViewById(R.id.type_btn_doctor);
+        btn_ph = (ImageButton) findViewById(R.id.type_btn_ph);
 
         // 클릭 리스너 할당
         btn_pat.setOnClickListener(new View.OnClickListener() {

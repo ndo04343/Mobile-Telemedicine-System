@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 //Firebase Auth를 위한 API
@@ -29,7 +30,7 @@ public class PRegActivity extends AppCompatActivity {
     // 인스턴스 생성
     private FirebaseAuth mAuth;
     //Button
-    Button btn_reg;
+    ImageButton btn_reg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,7 @@ public class PRegActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         // 객체 할당
-        btn_reg = (Button) findViewById(R.id.p_reg_btn_reg);
+        btn_reg = (ImageButton) findViewById(R.id.p_reg_btn_reg);
 
         // 클릭 리스너 할당
         btn_reg.setOnClickListener(new View.OnClickListener() {

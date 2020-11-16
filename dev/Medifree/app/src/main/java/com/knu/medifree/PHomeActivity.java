@@ -85,6 +85,9 @@ public class PHomeActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 // YES 버튼이 눌린거임.
                                 //재진의 경우 (병원측에서 예약 자동 설정? 혹 환자가 설정? 물어보기)
+                                Intent intent=new Intent(PHomeActivity.this,PSelhospAgainActivity.class);
+                                startActivity(intent);
+                                finish();
                             }
                         });
 

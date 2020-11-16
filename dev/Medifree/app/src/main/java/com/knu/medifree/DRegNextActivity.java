@@ -134,6 +134,7 @@ public class DRegNextActivity<database> extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         startToast("정보저장에 실패하였습니다.");
+
                     }
                 });
 
@@ -159,6 +160,7 @@ public class DRegNextActivity<database> extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         startToast("정보저장에 실패하였습니다.");
+
                     }
                 });
     }

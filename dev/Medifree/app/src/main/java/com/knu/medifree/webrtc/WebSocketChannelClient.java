@@ -8,27 +8,22 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-package com.knu.videotest;
+package com.knu.medifree.webrtc;
 
 import android.os.Handler;
-import android.util.Log;
-
 import androidx.annotation.Nullable;
-
-import com.knu.videotest.util.AsyncHttpURLConnection;
-import com.knu.videotest.util.AsyncHttpURLConnection.AsyncHttpEvents;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import android.util.Log;
+import de.tavendo.autobahn.WebSocket.WebSocketConnectionObserver;
+import de.tavendo.autobahn.WebSocketConnection;
+import de.tavendo.autobahn.WebSocketException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-
-import de.tavendo.autobahn.WebSocket.WebSocketConnectionObserver;
-import de.tavendo.autobahn.WebSocketConnection;
-import de.tavendo.autobahn.WebSocketException;
+import com.knu.medifree.webrtc.util.AsyncHttpURLConnection;
+import com.knu.medifree.webrtc.util.AsyncHttpURLConnection.AsyncHttpEvents;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * WebSocket client implementation.

@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "669143871310-1d9mgjl3hcoevfpgc9eoec90me18rsve.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.knu.medifree",
+            "certificate_hash": "c8c0e55f9a503165a0c7f7494075a074525f20e9"
+          }
+        },
+        {
+          "client_id": "669143871310-7ftkm03abfll3pil8t17ll7gsj3fptmj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.knu.medifree",
+            "certificate_hash": "64aeb8656b30718c034cf4fab7a0c525ffe4217e"
+          }
+        },
+        {
           "client_id": "669143871310-lfovt3sjrlmg85ivgk0rtqmpn4n0ifcb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

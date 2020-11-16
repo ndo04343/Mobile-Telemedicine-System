@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -57,18 +58,13 @@ public class DRegActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
     }
-    private void getViewInLayout(){
-        this.emailEditView = findViewById(R.id.email_D);
-        this.passwordEditView = findViewById(R.id.password_D);
-        this.pwChkEditView = findViewById(R.id.passwordCheck_D);
-        this.hospitalNameEditView = findViewById(R.id.hospital_Name);
-    }
     private void createAccount_Doctor() {
-        final String email = emailEditView.getText().toString();
-        final String password = passwordEditView.getText().toString();
-        String passwordCheck = pwChkEditView.getText().toString();
-        String hospital_Name = hospitalNameEditView.getText().toString();
+        String email = ((EditText)findViewById((R.id.email_D))).getText().toString();
+        String password = ((EditText) findViewById(R.id.password_D)).getText().toString();
+        String passwordCheck = ((EditText)findViewById((R.id.passwordCheck_D))).getText().toString();
+        String hospital_Name = ((EditText)findViewById((R.id.hospital_Name))).getText().toString();
 
+        Log.d("여긴되나?","여긴되나?");
         if (email.length() > 0 && password.length() > 0 && passwordCheck.length() > 0){
             if (password.equals(passwordCheck)) {
                 // 의사가 입력한 병원과 전공이 맞는지 확인하는 작업.
@@ -82,6 +78,7 @@ public class DRegActivity extends AppCompatActivity {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
 //                                registerDoctor();
+                                Log.d("왜안되노","왜안되노");
                                 mAuth.createUserWithEmailAndPassword(email, password)
                                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                             @Override
@@ -121,34 +118,6 @@ public class DRegActivity extends AppCompatActivity {
         } else{
             startToast("이메일 또는 비밀번호를 입력해주세요.");
         }
-    }
-
-    private void registerDoctor(){
-        String email = this.emailEditView.getText().toString();
-        String password = ((EditText) findViewById(R.id.password_D)).getText().toString();
-
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // 회원가입 성공
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            startToast("회원가입이 완료되었습니다.");
-
-                            //현재 유저의 uid가져오기.
-                            String uid = user.getUid();
-                            //user정보를 db에 집어넣가.
-                            insert_user_Information(uid);
-
-                        } else {
-                            // 회원가입 실패=> 비밀번호 길이 및 아이디 중복 여부 등
-                            if (task.getException() != null){
-                                startToast(task.getException().toString());
-                            }
-                        }
-                    }
-                });
     }
     //알림을 출력하는 method
     private void startToast(String msg) { Toast.makeText(this, msg, Toast.LENGTH_SHORT).show(); }

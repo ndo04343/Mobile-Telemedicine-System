@@ -75,7 +75,9 @@ public class PHomeActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 // NO 버튼이 눌린거임.
                                 // 초진의 경우 병원과 의사 connect
-
+                                Intent intent=new Intent(PHomeActivity.this,PSelhospActivity.class);
+                                startActivity(intent);
+                                finish();
                             }
                         });
                         builder.setNegativeButton(Html.fromHtml("<font color='#2F528F'>YES</font>"), new DialogInterface.OnClickListener() {
@@ -126,9 +128,7 @@ public class PHomeActivity extends AppCompatActivity {
                 // 진료실 버튼을 눌렀을 때
                 // 현재 상황 :
                 // TODO :
-                Intent intent=new Intent(PHomeActivity.this,PSelhospActivity.class);
-                startActivity(intent);
-                finish();
+
             }
         });
         btn_refresh.setOnClickListener(new View.OnClickListener() {

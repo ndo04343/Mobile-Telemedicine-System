@@ -18,6 +18,11 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.Scanner;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
 /**
  * Asynchronous http requests implementation.
  */
@@ -55,6 +60,7 @@ public class AsyncHttpURLConnection {
 
   private void sendHttpMessage() {
     try {
+      initializeHttpConnection();
       HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
       byte[] postData = new byte[0];
       if (message != null) {
@@ -110,5 +116,28 @@ public class AsyncHttpURLConnection {
   private static String drainStream(InputStream in) {
     Scanner s = new Scanner(in, "UTF-8").useDelimiter("\\A");
     return s.hasNext() ? s.next() : "";
+  }
+
+  public static TrustManager[] createTrustManagers() {
+    TrustManager[] trustAllCerts = new TrustManager[]{
+            new X509TrustManager() {
+              public void checkClientTrusted(java.security.cert.X509Certificate[] x509Certificates, String s) { }
+              public void checkServerTrusted(java.security.cert.X509Certificate[] x509Certificates, String s) { }
+              public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                return new java.security.cert.X509Certificate[]{};
+              }
+            }
+    };
+    return trustAllCerts;
+  }
+
+  public static void initializeHttpConnection(){
+    try {
+      SSLContext sc = SSLContext.getInstance("SSL");
+      sc.init(null, createTrustManagers(), new java.security.SecureRandom());
+      HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+//      HostnameVerifier allHostsValid = (hostname, session) -> true;
+//      HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+    } catch (Exception e) { }
   }
 }

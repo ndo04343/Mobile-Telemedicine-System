@@ -74,6 +74,9 @@
         <activity android:name=".PRegActivity" />
         <activity android:name=".TypeActivity" />
         <activity android:name=".DHomeActivity" />
+        <activity android:name=".DAppActivity" />
+        <activity android:name=".DetailAppActivity" />
+        <activity android:name=".DOfficeActivity" />
         <activity android:name=".PHomeActivity" />
         <activity android:name=".LoadingActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>

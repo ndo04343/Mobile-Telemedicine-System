@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -18,70 +19,52 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 public class DHomeActivity extends AppCompatActivity {
-    Button btn_check, btn_diag, btn_refresh;
+    ImageButton btn_app;
+    ImageButton btn_office;
+    ImageButton btn_request;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_d_home);
-        list_reservation();
+
         // 객체 할당
-        btn_check = (Button) findViewById(R.id.d_home_btn_check);
-        btn_diag = (Button) findViewById(R.id.d_home_btn_diag);
-        btn_refresh = (Button) findViewById(R.id.d_home_btn_refresh);
+        btn_app = (ImageButton) findViewById(R.id.d_app);
+        btn_office = (ImageButton) findViewById(R.id.d_office);
+        btn_request = (ImageButton) findViewById(R.id.d_request);
         // 클릭 리스너 할당
-        btn_check.setOnClickListener(new View.OnClickListener() {
+        btn_app.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // 예약하기 버튼을 눌렀을 때
-                // 현재 상황 : ResCheckActivity로 이동
-                Intent intent = new Intent(getApplicationContext(), ResCheckActivity.class);
+                // 현재 상황 : DAppActivity로 이동
+                Intent intent = new Intent(getApplicationContext(), DAppActivity.class);
                 startActivity(intent);
                 //finish(); 일단 뒤로 버튼을 눌러서 의사 홈으로 돌아올 수 있게 해둠.
             }
         });
-        btn_diag.setOnClickListener(new View.OnClickListener() {
+        btn_office.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // 진료실 버튼을 눌렀을 때
                 // 현재 상황 :
+                Intent intent = new Intent(getApplicationContext(), DOfficeActivity.class);
+                startActivity(intent);
                 // TODO :
             }
         });
-        btn_refresh.setOnClickListener(new View.OnClickListener() {
+        btn_request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // 새로고침 버튼을 눌렀을 때
                 // 현재 상황 :
+                Intent intent = new Intent(getApplicationContext(), ResCheckActivity.class);
+                startActivity(intent);
                 // TODO :
-                list_reservation();
+
             }
         });
     }
 
-    private void list_reservation() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        final String TAG = "제발좀되라 씨발2";
-        if (user != null){
-            String uid = user.getUid();
 
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-            db.collection("Reservation")
-                    .whereEqualTo("Doctor_id", uid)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Log.d(TAG, document.getId() + " => " + document.getData());
-                                }
-                            } else {
-                                Log.d(TAG, "Error getting documents: ", task.getException());
-                            }
-                        }
-                    });
-        }
-    }
 }

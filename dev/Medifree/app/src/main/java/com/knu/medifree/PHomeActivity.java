@@ -33,12 +33,15 @@ public class PHomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_p_home);
-        list_reservation();
+        //list_reservation();
+
+        //병원 목록 및 과 띄우기 연습.
+        list_hospital();
+
         // 객체 할당
         btn_reg = (Button) findViewById(R.id.p_home_btn_reg);
         btn_diag = (Button) findViewById(R.id.p_home_btn_diag);
         btn_refresh = (ImageButton) findViewById(R.id.p_home_btn_refresh);
-
 
         // 클릭 리스너 할당
         btn_reg.setOnClickListener(new View.OnClickListener() {
@@ -140,36 +143,14 @@ public class PHomeActivity extends AppCompatActivity {
                 // 새로고침 버튼을 눌렀을 때
                 // 현재 상황 :
                 // TODO :
-                list_reservation();
+                list_hospital();
             }
         });
 
     }
 
-    private void list_reservation() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        final String TAG = "제발좀되라 씨발";
-        if (user != null){
-            String uid = user.getUid();
+    private void list_hospital() {
 
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-            db.collection("Reservation")
-                    .whereEqualTo("patient_id", uid)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Log.d(TAG, document.getId() + " => " + document.getData());
-                                }
-                            } else {
-                                Log.d(TAG, "Error getting documents: ", task.getException());
-                            }
-                        }
-                    });
-        }
     }
 
 }

@@ -32,6 +32,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,42 +43,29 @@ public class DRegNextActivity<database> extends AppCompatActivity {
     ImageButton btn_reg;
     private FirebaseAuth mAuth;
     private Spinner hospitalNameSpinner,majorSpinner;
+    private ArrayAdapter<String> arrayAdapter;
+    public static final String EXTRA_ADDRESS = "address";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_d_reg_next);
 
+
         mAuth = FirebaseAuth.getInstance();
 
-        // 객체 할당
+
+        Spinner hospitalNameSpinner=(Spinner)findViewById(R.id.hospital_Name);
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, (String[]) getResources().getStringArray(R.array.spinner_hospital));
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        hospitalNameSpinner.setAdapter(arrayAdapter);
+        Spinner majorSpinner = (Spinner) findViewById(R.id.major);
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, (String[]) getResources().getStringArray(R.array.spinner_major));
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        majorSpinner.setAdapter(arrayAdapter);
+
+        // 병원_메이저 보내주는 버튼 객체 할당
         btn_reg = (ImageButton) findViewById(R.id.d_reg_btn_reg);
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("YOUR_REFERENCE");
-
-
-        Spinner major_spinner = (Spinner) findViewById(R.id.major);
-
-        myRef.child("Hospital").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                final List<String> hospitals = new ArrayList<String>();
-                for (DataSnapshot hospitalSnapshot : dataSnapshot.getChildren()) {
-                    String hospital = hospitalSnapshot.getValue(String.class);
-                    hospitals.add(hospital);
-                }
-                Spinner hospital_spinner = (Spinner) findViewById(R.id.hospital_Name);
-                ArrayAdapter<String> hospitalsAdapter = new ArrayAdapter<String>(DRegNextActivity.this, android.R.layout.simple_spinner_item, hospitals);
-                hospitalsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                hospital_spinner.setAdapter(hospitalsAdapter);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                startToast("생성안됨");
-            }
-        });
 
         // 클릭 리스너 할당
         btn_reg.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +82,6 @@ public class DRegNextActivity<database> extends AppCompatActivity {
 
 
     }
-
 
     @Override
     public void onStart() {
@@ -113,9 +100,14 @@ public class DRegNextActivity<database> extends AppCompatActivity {
         String hospital_Name = ((Spinner)findViewById((R.id.hospital_Name))).getSelectedItem().toString();
         String major = ((Spinner)findViewById(R.id.major)).getSelectedItem().toString();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Intent intent=getIntent();
+        String name=intent.getStringExtra("name");
+        String phone=intent.getStringExtra("phone");
 
         Map<String, Object> user = new HashMap<>();
         user.put("userType","Doctor");
+        user.put("name",name);
+        user.put("phoneNum",phone);
         user.put("Hospital_Name",hospital_Name);
         user.put("Major",major);
         //실제 firestore에 추가하는 작업, add=> 자동으로 문서id(문서이름)를 만들어줌
@@ -133,7 +125,7 @@ public class DRegNextActivity<database> extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        startToast("정보저장에 실패하였습니다.");
+                        startToast("정보저장에 실패하였습니다1.");
 
                     }
                 });
@@ -144,6 +136,19 @@ public class DRegNextActivity<database> extends AppCompatActivity {
         String hospital_Name = ((Spinner)findViewById((R.id.hospital_Name))).getSelectedItem().toString();
         String major = ((Spinner)findViewById(R.id.major)).getSelectedItem().toString();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
+        Map<String, Object> dataa = new HashMap<>();
+        dataa.put(major, true);
+
+        db.collection("Hospital").document(hospital_Name)
+                .set(dataa, SetOptions.merge());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put(major, true);
+
+        db.collection(hospital_Name).document(major)
+                .set(data, SetOptions.merge());
 
         db.collection("Hospital").document(hospital_Name)
                 .update(major, FieldValue.arrayUnion(uid))
@@ -159,7 +164,7 @@ public class DRegNextActivity<database> extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        startToast("정보저장에 실패하였습니다.");
+                        startToast("정보저장에 실패하였습니다2.");
 
                     }
                 });

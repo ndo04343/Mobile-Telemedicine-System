@@ -117,6 +117,8 @@ public class DRegActivity extends AppCompatActivity implements View.OnClickListe
                     public void onSuccess(Void avoid) {
                         //uid정보에 다음 페이지로 넘어가 hospital & major에 넣기.
                         Intent intent = new Intent(getApplicationContext(), DRegNextActivity.class);
+                        intent.putExtra("name",name);
+                        intent.putExtra("phone",phone);
                         startActivity(intent);
                         finish();
                     }

@@ -1,11 +1,13 @@
 package com.knu.medifree;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -24,11 +26,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 public class PHomeActivity extends AppCompatActivity {
     Button btn_reg;
     Button btn_diag;
     ImageButton btn_refresh;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,8 +156,46 @@ public class PHomeActivity extends AppCompatActivity {
 
     }
 
+
+    //정진이 보셈
+    private Map<String,Object>  major = new HashMap<>();
     private void list_hospital() {
 
+
+        db = FirebaseFirestore.getInstance();
+
+        db.collection("Hospital")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("돼라.", document.getId() + " => " + document.getData().getClass().getName());
+                                // document.getData() => HashMap으로 받음.
+                                // 따라서 Class에도 Hash Map으로 선언해야 될 것 같음.
+                                major = document.getData();
+                                // Hashmap ForEach.
+                                // key  => 병원이름(서울병원,경대병원 등등)
+                                // value = Doctor_uid -> ArrayList<String>으로 이루어져있음.
+                                // (ArrayList<string>) => value자체는 그냥 Object를 가리키고 있어서 Typecasting함.
+                                // 따라서 class를 만들 때,
+                                // Hospital name = String
+                                // major => Hashmap(String, ArrayList<String>)이런식으로 만들어야할듯. 이부분은 java적 언어 부족.
+                                major.forEach((key, value)->{
+                                    ArrayList<String> d = (ArrayList<String>)value;
+
+                                    // Arraylist를 참조.
+                                    for (String s : d){
+                                        Log.d("제발돼라", String.format("키 -> %s, 값 -> %s", key, s));
+                                    }
+                                });
+                            }
+                        } else Log.w("안됐네", "Error getting documents.", task.getException());
+                    }
+                });
     }
+
 
 }

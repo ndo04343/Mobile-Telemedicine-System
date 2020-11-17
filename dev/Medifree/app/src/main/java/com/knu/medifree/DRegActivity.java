@@ -78,7 +78,7 @@ public class DRegActivity extends AppCompatActivity implements View.OnClickListe
                             if (task.isSuccessful()) {
                                 // 회원가입 성공
                                 FirebaseUser user = mAuth.getCurrentUser();
-                                startToast("회원가입이 완료되었습니다.");
+
                                 //현재 유저의 uid가져오기.
                                 String uid = user.getUid();
                                 //user정보를 db에 집어넣가.

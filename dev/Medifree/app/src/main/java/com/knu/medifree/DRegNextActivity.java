@@ -138,17 +138,17 @@ public class DRegNextActivity<database> extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
-        Map<String, Object> dataa = new HashMap<>();
-        dataa.put(major, true);
+        //Map<String, Object> dataa = new HashMap<>();
+        //dataa.put(major, true);
 
-        db.collection("Hospital").document(hospital_Name)
-                .set(dataa, SetOptions.merge());
+//        db.collection("Hospital").document(hospital_Name)
+//                .set(dataa, SetOptions.merge());
 
-        Map<String, Object> data = new HashMap<>();
-        data.put(major, true);
+        //Map<String, Object> data = new HashMap<>();
+        //data.put(major, true);
 
-        db.collection(hospital_Name).document(major)
-                .set(data, SetOptions.merge());
+        //db.collection(hospital_Name).document(major)
+        //        .set(data, SetOptions.merge());
 
         db.collection("Hospital").document(hospital_Name)
                 .update(major, FieldValue.arrayUnion(uid))
@@ -156,6 +156,7 @@ public class DRegNextActivity<database> extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void avoid) {
                         //Doctor 홈화면으로 이동.
+                        startToast("회원가입이 완료되었습니다.");
                         Intent intent = new Intent(getApplicationContext(), DHomeActivity.class);
                         startActivity(intent);
                         finish();

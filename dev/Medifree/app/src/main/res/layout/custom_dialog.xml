@@ -29,7 +29,6 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/border"
-            android:clickable="true"
             android:gravity="center"
             android:text="확인"
             android:textColor="#004D85"

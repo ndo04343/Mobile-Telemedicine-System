@@ -71,6 +71,7 @@
         <activity android:name=".PSeltimeActivity"></activity>
         <activity android:name=".DRegActivity" />
         <activity android:name=".DRegNextActivity" />
+        <activity android:name=".DResNextActivity" />
         <activity android:name=".PRegActivity" />
         <activity android:name=".TypeActivity" />
         <activity android:name=".DHomeActivity" />

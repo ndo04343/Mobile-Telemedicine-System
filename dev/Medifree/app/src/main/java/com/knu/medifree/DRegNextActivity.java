@@ -59,10 +59,12 @@ public class DRegNextActivity<database> extends AppCompatActivity {
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, (String[]) getResources().getStringArray(R.array.spinner_hospital));
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         hospitalNameSpinner.setAdapter(arrayAdapter);
+        hospitalNameSpinner.setSelection(0);
         Spinner majorSpinner = (Spinner) findViewById(R.id.major);
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, (String[]) getResources().getStringArray(R.array.spinner_major));
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         majorSpinner.setAdapter(arrayAdapter);
+        majorSpinner.setSelection(0);
 
         // 병원_메이저 보내주는 버튼 객체 할당
         btn_reg = (ImageButton) findViewById(R.id.d_reg_btn_reg);

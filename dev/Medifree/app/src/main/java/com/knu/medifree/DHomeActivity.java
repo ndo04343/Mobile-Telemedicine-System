@@ -1,22 +1,11 @@
 package com.knu.medifree;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 public class DHomeActivity extends AppCompatActivity {
     ImageButton btn_app;
@@ -48,7 +37,7 @@ public class DHomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // 진료실 버튼을 눌렀을 때
                 // 현재 상황 :
-                Intent intent = new Intent(getApplicationContext(), DOfficeActivity.class);
+                Intent intent = new Intent(getApplicationContext(), DResNextActivity.class);
                 startActivity(intent);
                 // TODO :
             }

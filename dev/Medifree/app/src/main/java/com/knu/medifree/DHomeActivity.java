@@ -37,7 +37,7 @@ public class DHomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // 진료실 버튼을 눌렀을 때
                 // 현재 상황 :
-                Intent intent = new Intent(getApplicationContext(), DResNextActivity.class);
+                Intent intent = new Intent(getApplicationContext(), DOfficeActivity.class);
                 startActivity(intent);
                 // TODO :
             }

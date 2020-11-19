@@ -10,13 +10,14 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
-public class ResCheckActivity extends AppCompatActivity {
+public class ResCheckActivity2 extends AppCompatActivity {
     public Button first_btn, origin_btn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_d_res_check);
+        setContentView(R.layout.activity_d_res_check2);
 
         first_btn = (Button) findViewById(R.id.d_req_first);
         origin_btn = (Button) findViewById(R.id.d_req_origin);

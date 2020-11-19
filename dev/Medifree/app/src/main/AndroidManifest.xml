@@ -69,6 +69,7 @@
         <activity android:name=".PSelhospAgainActivity"></activity>
         <activity android:name=".PSeldocAgainActivity"></activity>
         <activity android:name=".PSeltimeActivity"></activity>
+        <activity android:name=".ResCheckActivity2"></activity>
         <activity android:name=".DRegActivity" />
         <activity android:name=".DRegNextActivity" />
         <activity android:name=".DResNextActivity" />

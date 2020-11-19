@@ -93,7 +93,13 @@ public class DResNextActivity extends AppCompatActivity {
 
     public void onClick(View view) {
 
-        if(view.getId()==R.id.p_res_yes) {
+
+        if (view.getId() == R.id.p_res_no) {
+            Intent intent=new Intent(DResNextActivity.this,DAppActivity.class);
+            startActivity(intent);
+            finish();
+
+        }else if(view.getId()==R.id.p_res_yes) {
             Dialog = new CustomDialogThree(this);
             WindowManager.LayoutParams params = this.Dialog.getWindow().getAttributes();
 
@@ -101,12 +107,6 @@ public class DResNextActivity extends AppCompatActivity {
             Dialog.setCancelable(false);
             Dialog.getWindow().setGravity(Gravity.BOTTOM);
             Dialog.show();
-        }
-        else if (view.getId() == R.id.p_res_no) {
-            Intent intent=new Intent(DResNextActivity.this,DAppActivity.class);
-            startActivity(intent);
-            finish();
-
         }
     }
 

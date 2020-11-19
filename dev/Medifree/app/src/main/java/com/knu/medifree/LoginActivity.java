@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.knu.medifree.reservation.Reservation;
 
 import java.time.LocalDateTime;
 
@@ -74,8 +75,8 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
+        //Reservation tmp = FirebaseDB.getReservation("test");
+       // FirebaseDB.setReservation("test","uOxFzvXnXcP5U5joPAzInl06G922","11",1,"test");
     }
 
     @Override
@@ -121,6 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                                                     //Doctor라면 Doctor홈화면으로 간다.
                                                     Intent intent = new Intent(getApplicationContext(), DHomeActivity.class);
                                                     startActivity(intent);
+                                                    FirebaseDB.getReservation();
                                                     finish();
                                                 }
 

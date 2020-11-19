@@ -7,6 +7,6 @@ import java.util.ArrayList;
 public class ReservationList {
     Reservation[] Reservlist;
     String rid = "Asfafdasdfa";
-    Reservation tmp = FirebaseDB.getReservation(rid);
+  //  Reservation tmp = FirebaseDB.getReservation(rid);
 
 }

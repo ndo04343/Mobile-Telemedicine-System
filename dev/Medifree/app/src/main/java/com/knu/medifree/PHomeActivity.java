@@ -155,13 +155,9 @@ public class PHomeActivity extends AppCompatActivity {
         });
 
     }
-
-
     //정진이 보셈
     private Map<String,Object>  major = new HashMap<>();
     private void list_hospital() {
-
-
         db = FirebaseFirestore.getInstance();
 
         db.collection("Hospital")
@@ -185,7 +181,6 @@ public class PHomeActivity extends AppCompatActivity {
                                 // major => Hashmap(String, ArrayList<String>)이런식으로 만들어야할듯. 이부분은 java적 언어 부족.
                                 major.forEach((key, value)->{
                                     ArrayList<String> d = (ArrayList<String>)value;
-
                                     // Arraylist를 참조.
                                     for (String s : d){
                                         Log.d("제발돼라", String.format("키 -> %s, 값 -> %s", key, s));
@@ -196,6 +191,4 @@ public class PHomeActivity extends AppCompatActivity {
                     }
                 });
     }
-
-
 }

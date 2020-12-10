@@ -1,31 +1,25 @@
-package com.knu.medifree.reservation;
-
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
-import com.google.firebase.database.PropertyName;
-import com.google.gson.annotations.SerializedName;
+package com.knu.medifree.classes;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class Reservation implements Serializable {
     /* firestore에 사용된 필드
        변수명 일치화 시키는 게 좋음
        Doctor_id, data, id, patient_id
      */
-    private String Doctor_id;
-    private String date;
-    private int id;
+    private String doctor_id;
     private String patient_id;
+    private String date;
+    private String id;
 
-    public Reservation(){}
-    public Reservation(String Doctor_id, String date, int id, String patient_id) {
-        this.Doctor_id =Doctor_id;
+    public Reservation(String patient_id, String Doctor_id, String date) {
+        this.doctor_id =Doctor_id;
         this.date = date;
-        this.id = id;
+        this.patient_id = patient_id;
+    }
+    public Reservation(String patient_id, String Doctor_id, String date, String res_id) {
+        this.doctor_id =Doctor_id;
+        this.date = date;
         this.patient_id = patient_id;
     }
 
@@ -33,11 +27,11 @@ public class Reservation implements Serializable {
     // Getter Method
 
     public String getDoctor_id() {
-        return Doctor_id;
+        return doctor_id;
     }
 
     public void setDoctor_id(String doctor_id) {
-        Doctor_id = doctor_id;
+        this.doctor_id = doctor_id;
     }
 
     public String getDate() {
@@ -48,11 +42,11 @@ public class Reservation implements Serializable {
         this.date = date;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -65,4 +59,7 @@ public class Reservation implements Serializable {
     }
 
 
+    public String toString() {
+        return this.getPatient_id() + this.getDoctor_id() + this.getDate();
+    }
 }

@@ -29,6 +29,7 @@ import java.util.Map;
 public class PRegActivity extends AppCompatActivity {
     // 인스턴스 생성
     private FirebaseAuth mAuth;
+    private String user_id;
     //Button
     ImageButton btn_reg;
 
@@ -79,8 +80,8 @@ public class PRegActivity extends AppCompatActivity {
                                     startToast("회원가입이 완료되었습니다.");
 
                                     //현재 유저의 uid가져오기.
-                                    String uid = user.getUid();
-                                    insert_user_Information(uid);
+                                    user_id = user.getUid();
+                                    insert_user_Information(user_id);
                                 } else {
                                     // 회원가입 실패=> 비밀번호 길이 및 아이디 중복 여부 등
                                     if (task.getException() != null){
@@ -124,7 +125,13 @@ public class PRegActivity extends AppCompatActivity {
                     public void onSuccess(Void avoid) {
                         //홈화면으로 이동.
                         Intent intent = new Intent(getApplicationContext(), PHomeActivity.class);
+                        intent.putExtra("user_id", user_id);
                         startActivity(intent);
+
+                        // Addition
+                        LoginActivity act_login = (LoginActivity) LoginActivity.activity;
+                        act_login.finish(); // Login activity termination
+                        // End of Addition
                         finish();
                     }
                 })

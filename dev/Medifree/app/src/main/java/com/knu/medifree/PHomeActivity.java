@@ -21,34 +21,45 @@ import android.widget.ImageButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.knu.medifree.classes.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PHomeActivity extends AppCompatActivity {
+    private User uid;
     Button btn_reg;
     Button btn_diag;
     ImageButton btn_refresh;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+
+    // Additional member
+    private DatabaseReference mDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_p_home);
-        //list_reservation();
 
-        //병원 목록 및 과 띄우기 연습.
-        list_hospital();
+        // User setting
+//        uid = getIntent().getStringExtra("user_id");
+
+        // Additional part
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         // 객체 할당
         btn_reg = (Button) findViewById(R.id.p_home_btn_reg);
         btn_diag = (Button) findViewById(R.id.p_home_btn_diag);
         btn_refresh = (ImageButton) findViewById(R.id.p_home_btn_refresh);
+
+
 
         // 클릭 리스너 할당
         btn_reg.setOnClickListener(new View.OnClickListener() {
@@ -154,7 +165,10 @@ public class PHomeActivity extends AppCompatActivity {
             }
         });
 
+
     }
+
+
     //정진이 보셈
     private Map<String,Object>  major = new HashMap<>();
     private void list_hospital() {

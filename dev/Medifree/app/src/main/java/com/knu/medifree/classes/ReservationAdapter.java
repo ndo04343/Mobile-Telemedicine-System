@@ -7,27 +7,24 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.knu.medifree.R;
+
 import java.util.ArrayList;
 
 public class ReservationAdapter extends BaseAdapter {
-    private Context mContext;
-    private ArrayList<String> reservations;
+    Context mContext = null;
+    LayoutInflater mLayoutInflater = null;
+    ArrayList<Reservation> sample;
 
-    private ViewHolder mViewHolder;
-
-    public ReservationAdapter(Context mContext, ArrayList<String> array_reservations) {
-        this.mContext = mContext;
-        this.reservations = array_reservations;
+    public ReservationAdapter(Context context, ArrayList<Reservation> data) {
+        mContext = context;
+        sample = data;
+        mLayoutInflater = LayoutInflater.from(mContext);
     }
 
     @Override
     public int getCount() {
-        return reservations.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return reservations.get(position);
+        return sample.size();
     }
 
     @Override
@@ -36,26 +33,22 @@ public class ReservationAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-//            convertView = LayoutInflater.from(mContext).inflate(R.layout.layout_reservation_item, parent, false);
-            mViewHolder = new ViewHolder(convertView);
-            convertView.setTag(mViewHolder);
-        } else {
-            mViewHolder = (ViewHolder) convertView.getTag();
-        }
-
-        // View에 Data 세팅
-        mViewHolder.txt_name.setText(reservations.get(position));
-
-        return convertView;
+    public Reservation getItem(int position) {
+        return sample.get(position);
     }
 
-    public class ViewHolder {
-        private TextView txt_name;
+    @Override
+    public View getView(int position, View converView, ViewGroup parent) {
+        View view = mLayoutInflater.inflate(R.layout.listview_reservations, null);
 
-        public ViewHolder(View convertView) {
-            txt_name = (TextView) convertView.findViewById(R.id.txt_name);
-        }
+        TextView patient_id = (TextView)view.findViewById(R.id.lay_res_patient_id);
+        TextView doctor_id = (TextView)view.findViewById(R.id.lay_res_doctor_id);
+        TextView date = (TextView)view.findViewById(R.id.lay_res_date);
+
+        patient_id.setText(sample.get(position).getPatient_id());
+        doctor_id.setText(sample.get(position).getDoctor_id());
+        doctor_id.setText(sample.get(position).getDate());
+
+        return view;
     }
 }

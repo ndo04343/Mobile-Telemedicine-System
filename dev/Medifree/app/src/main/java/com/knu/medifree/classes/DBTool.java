@@ -8,14 +8,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,7 +88,7 @@ public class DBTool {
             return reservations_result;
         return new ArrayList<Reservation>();
     }
-    private static synchronized void queryReservations(String uid, int type) throws ParseException {
+    private static void queryReservations(String uid, int type) throws ParseException {
         // Warning! You need not use this method!
         // Date control ("yyyy/MM/dd/kk/mm format")
         // Index : Date format
@@ -160,7 +158,5 @@ public class DBTool {
             });
         } // End of if (type == User.TYPE_DOCTOR)
     } // End of method
-
-
 
 }

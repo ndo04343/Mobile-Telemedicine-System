@@ -16,9 +16,14 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -30,19 +35,23 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.knu.medifree.classes.DBTool;
 import com.knu.medifree.classes.Reservation;
+import com.knu.medifree.classes.ReservationAdapter;
 import com.knu.medifree.classes.User;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class PHomeActivity extends AppCompatActivity {
     private String uid;
-    private ArrayList<Reservation> res_list;
     private Button btn_reg, btn_diag;
     private ImageButton btn_refresh;
     private ListView listview_res;
+    private TextView tv_reservation;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -50,7 +59,10 @@ public class PHomeActivity extends AppCompatActivity {
     private PHomeActivity control;
 
     // Additional member
-    private DBTool dbtool;
+    private TimerTask second;
+    private final Handler handler = new Handler();
+    private ArrayList<Reservation> list_reservations = new ArrayList<>();
+    ReservationAdapter res_adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +74,10 @@ public class PHomeActivity extends AppCompatActivity {
         Intent intent = getIntent();
         uid = intent.getStringExtra("user_id");
 
-        // Reservation Setting
+        // Reservation Init
         try {
             DBTool.InitDBTool(uid, User.TYPE_PATIENT);
-            res_list = DBTool.getReservations();
-        } catch (ParseException | InterruptedException e) {
+        } catch (ParseException e) {
             e.printStackTrace();
         }
 
@@ -184,9 +195,67 @@ public class PHomeActivity extends AppCompatActivity {
         });
 
 
-
+        // 3초에 한번씩 자동 업데이트
+        res_adapter = new ReservationAdapter(this, list_reservations);
+        listview_res.setAdapter(res_adapter);
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        reservationThreadStart();
+
+    }
+
+    // 리스너를 구현하고 완전 비동기식으로 하고 싶지만,
+    // 데이터 로딩시간하고 바쁘니까 그냥 이렇게 해둡니다.
+    public void reservationThreadStart() {
+        int timer_sec = 0;
+        second = new TimerTask() {
+            @Override
+            public void run() {
+                Log.i("HEESUNG", "Timer start");
+                Update();
+            }
+        };
+        Timer timer = new Timer();
+        timer.schedule(second, 0, 5000);
+    }
+    protected void Update() {
+        Runnable updater = new Runnable() {
+            Calendar cal = Calendar.getInstance();
+            int year, mon, dayOfMonth, hour, min, sec, dayOfWeek;
+
+            public void run() {
+                // 나중에 시간체크용
+                year = cal.get(Calendar.YEAR);
+                mon = cal.get(Calendar.MONTH);
+                dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+                hour = cal.get(Calendar.HOUR);
+                min = cal.get(Calendar.MINUTE);
+                sec = cal.get(Calendar.SECOND);
+                dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+
+                try {
+                    // TODO : 여기서 리스트뷰 리셋하고 업데이트
+
+
+                    list_reservations = DBTool.getReservations();
+                    listview_res.setAdapter(res_adapter);
+                } catch (InterruptedException | ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        handler.post(updater);
+    }
+
+
+
+
+
+
 
 
     //정진이 보셈

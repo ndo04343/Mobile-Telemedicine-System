@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
@@ -17,6 +18,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -26,39 +28,55 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.knu.medifree.classes.DBTool;
+import com.knu.medifree.classes.Reservation;
 import com.knu.medifree.classes.User;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PHomeActivity extends AppCompatActivity {
-    private User uid;
-    Button btn_reg;
-    Button btn_diag;
-    ImageButton btn_refresh;
+    private String uid;
+    private ArrayList<Reservation> res_list;
+    private Button btn_reg, btn_diag;
+    private ImageButton btn_refresh;
+    private ListView listview_res;
+
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+    private DatabaseReference mDatabase;
+    private PHomeActivity control;
 
     // Additional member
-    private DatabaseReference mDatabase;
+    private DBTool dbtool;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_p_home);
 
-        // User setting
-//        uid = getIntent().getStringExtra("user_id");
-
+        //
         // Additional part
+        Intent intent = getIntent();
+        uid = intent.getStringExtra("user_id");
+
+        // Reservation Setting
+        try {
+            DBTool.InitDBTool(uid, User.TYPE_PATIENT);
+            res_list = DBTool.getReservations();
+        } catch (ParseException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         // 객체 할당
         btn_reg = (Button) findViewById(R.id.p_home_btn_reg);
         btn_diag = (Button) findViewById(R.id.p_home_btn_diag);
         btn_refresh = (ImageButton) findViewById(R.id.p_home_btn_refresh);
-
+        listview_res = (ListView) findViewById(R.id.p_home_listview);
 
 
         // 클릭 리스너 할당
@@ -164,6 +182,8 @@ public class PHomeActivity extends AppCompatActivity {
                 list_hospital();
             }
         });
+
+
 
 
     }

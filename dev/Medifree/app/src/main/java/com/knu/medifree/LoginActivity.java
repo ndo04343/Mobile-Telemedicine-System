@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.knu.medifree.classes.AuthTool;
 
 public class LoginActivity extends AppCompatActivity {
     // View
@@ -50,8 +50,8 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
 
         // DB Instance
-        FirebaseDB.getInstance();
-        mAuth = FirebaseDB.getmAuth();
+        AuthTool.getInstance();
+        mAuth = AuthTool.getmAuth();
 
         // Assigning
         btn_signin= (ImageButton) findViewById(R.id.login_btn_signin);
@@ -118,15 +118,17 @@ public class LoginActivity extends AppCompatActivity {
                                                     //patient일때 patient 홈 화면으로 간다.
                                                     Intent intent = new Intent(getApplicationContext(), PHomeActivity.class);
 
+                                                    // Addition
                                                     intent.putExtra("user_id", uid);
                                                     startActivity(intent);
                                                     finish();
                                                 }else {
                                                     //Doctor라면 Doctor홈화면으로 간다.
                                                     Intent intent = new Intent(getApplicationContext(), DHomeActivity.class);
+
+                                                    // Addition
                                                     intent.putExtra("user_id", uid);
                                                     startActivity(intent);
-                                                    FirebaseDB.getReservation();
                                                     finish();
                                                 }
 

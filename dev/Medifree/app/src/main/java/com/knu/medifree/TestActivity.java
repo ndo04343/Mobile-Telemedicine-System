@@ -2,6 +2,7 @@ package com.knu.medifree;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
@@ -14,6 +15,7 @@ import com.knu.medifree.classes.DBTool;
 import com.knu.medifree.classes.Reservation;
 import com.knu.medifree.classes.User;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class TestActivity extends AppCompatActivity {
@@ -25,7 +27,7 @@ public class TestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-        tool = new DBTool();
+
 
         btn = (Button) findViewById(R.id.btn);
         tv = (TextView) findViewById(R.id.tv);
@@ -33,11 +35,16 @@ public class TestActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<Reservation> res = tool.getReservations("test_patient_id", User.TYPE_PATIENT);
+//                try {
+//                    tool.setReservation(new Reservation(
+//                            "another_test_patient_id", "another_test_doctor_id", "2020/12/12/00/00"
+//                    ));
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
 
-                for (int i = 0 ; i < res.size() ;i ++) {
-                    Log.d("Test_check", res.get(i).toString());
-                }
+
+               // ArrayList<Reservation> res = tool.getReservations();
             }
         });
 

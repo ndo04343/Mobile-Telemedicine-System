@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -11,11 +12,15 @@ public class DHomeActivity extends AppCompatActivity {
     ImageButton btn_app;
     ImageButton btn_office;
     ImageButton btn_request;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_d_home);
+
+        intent = getIntent();
+        Log.i("HEESUNG_DHOME", "Welcome" + intent.getStringExtra("user_id"));
 
         // 객체 할당
         btn_app = (ImageButton) findViewById(R.id.d_app);

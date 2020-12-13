@@ -75,6 +75,7 @@ public class DAppActivity extends AppCompatActivity {
     }
 
     private void list_reservation() {
+        /*예약 리스트 만드는 부분인가???*/
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final String TAG = "제발좀되라 씨발2";
         if (user != null){

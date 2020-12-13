@@ -100,7 +100,7 @@ public class PHomeActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(PHomeActivity.this);
                 //builder.setTitle("걍 제목임. 여긴. 없어도 ㄱㅊ");
                 builder.setMessage("새로 예약을 잡으시겟습니까?");
-
+                DBTool.getHospital();
 
                 builder.setPositiveButton(Html.fromHtml("<font color='#7F7F7F'>NO</font>"), new DialogInterface.OnClickListener() {
                     @Override
@@ -181,7 +181,6 @@ public class PHomeActivity extends AppCompatActivity {
                 // 진료실 버튼을 눌렀을 때
                 // 현재 상황 :
                 // TODO :
-
             }
         });
         btn_refresh.setOnClickListener(new View.OnClickListener() {
@@ -193,8 +192,6 @@ public class PHomeActivity extends AppCompatActivity {
                 list_hospital();
             }
         });
-
-
         // 3초에 한번씩 자동 업데이트
         res_adapter = new ReservationAdapter(this, list_reservations);
         listview_res.setAdapter(res_adapter);
@@ -250,19 +247,10 @@ public class PHomeActivity extends AppCompatActivity {
         };
         handler.post(updater);
     }
-
-
-
-
-
-
-
-
     //정진이 보셈
     private Map<String,Object>  major = new HashMap<>();
     private void list_hospital() {
         db = FirebaseFirestore.getInstance();
-
         db.collection("Hospital")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

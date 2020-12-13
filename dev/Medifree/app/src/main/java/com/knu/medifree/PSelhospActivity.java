@@ -3,6 +3,7 @@ package com.knu.medifree;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -10,8 +11,22 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.knu.medifree.classes.DBTool;
+import com.knu.medifree.classes.Hospital;
+import com.knu.medifree.classes.HospitalAdapter;
+
+import java.util.ArrayList;
 
 //        import com.example.promise_lab.R;
 //        import com.example.promise_lab.lib.MyToast;
@@ -22,7 +37,7 @@ public class PSelhospActivity extends Activity implements View.OnClickListener {
     private ArrayAdapter<String> arrayAdapter;
     public static final String EXTRA_ADDRESS = "address";
     public LinearLayout samsung_hospital_select;
-
+    FirebaseFirestore db=FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +52,18 @@ public class PSelhospActivity extends Activity implements View.OnClickListener {
         spinnerSigungu = (Spinner) findViewById(R.id.spin_sigungu);
         spinnerDong = (Spinner) findViewById(R.id.spin_dong);
         initAddressSpinner();
-
+        final HospitalAdapter hospitalAdapter = new HospitalAdapter(this, DBTool.getHospitals_list());
+        ListView listView = (ListView)findViewById(R.id.listView);
+        listView.setAdapter(hospitalAdapter);
+        //왜 onclick이 되지 않을까..........
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            Log.d("TAG", "onCreate: "+view.toString());
+        String hospitalname = ((Hospital)hospitalAdapter.getItem(position)).getHospitalName();
+            Log.d("TAG", "onItemClick: " + hospitalname);
+        Intent intent = new Intent(PSelhospActivity.this, PSeldocActivity.class);
+        intent.putExtra("hospitalName",hospitalname);
+        startActivity(intent);
+        });
         //주소 검색버튼 정의
         ImageButton okBtn = findViewById(R.id.p_search_address);
         okBtn.setOnClickListener(this);
@@ -46,10 +72,12 @@ public class PSelhospActivity extends Activity implements View.OnClickListener {
         samsung_hospital_select = (LinearLayout) findViewById(R.id.samsung_hospital_select);
         samsung_hospital_select.setOnClickListener(this);
 
+
     }
 
     @Override
     public void onClick(View view) {
+        Log.d("TAG", "onClick: "+view.toString());
         if (view.getId() == R.id.p_search_address) {
             if (spinnerCity.getSelectedItemPosition() == 0) {
                 Toast.makeText(this, "행정구역 주소 입력", Toast.LENGTH_SHORT).show();

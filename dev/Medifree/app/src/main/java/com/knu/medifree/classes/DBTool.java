@@ -29,6 +29,7 @@ public class DBTool {
 
     // Encapsulate target
     private static ArrayList<Reservation> reservations_result;
+    private static ArrayList<Hospital> hospitals_list;
     private static boolean updated;
 
     // User info
@@ -42,6 +43,29 @@ public class DBTool {
         updated = false;
 
         DBTool.queryReservations(uid, utype);
+    }
+
+    public static void getHospital(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        hospitals_list = new ArrayList<Hospital>();
+        db.collection("Hospital")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                hospitals_list.add(new Hospital(document.getId()));
+                                Log.d("TAG", document.getId() + " => " + document.getData());
+                            }
+                        } else {
+                            Log.d("TAG", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+    public static ArrayList<Hospital> getHospitals_list(){
+        return hospitals_list;
     }
 
     // Getter

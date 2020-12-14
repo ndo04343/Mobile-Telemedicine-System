@@ -29,11 +29,14 @@ public class PSeltimeActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_p_sel_time);
+        Intent intent = getIntent();
+        TextView textView = (TextView)findViewById(R.id.who_select);
+        textView.setText(intent.getStringExtra("doctorName")+" is selected");
         // 객체 할당
         p_sel_time_btn_diag = (Button) findViewById(R.id.p_sel_time_btn_diag);
         p_sel_time_btn_diag.setOnClickListener(this);
     }
-
+    // 예약 주고 받는 부분은 어디서 하는지 모르겠어서 일단 킵 합니당...
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

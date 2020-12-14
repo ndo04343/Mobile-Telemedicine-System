@@ -1,5 +1,7 @@
 package com.knu.medifree.classes;
 
+import android.content.Intent;
+import android.content.res.Resources;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -14,11 +16,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.knu.medifree.PSelhospActivity;
+
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +31,7 @@ import java.util.Date;
 
 import static java.lang.Thread.sleep;
 
-public class DBTool {
+public class DBTool extends Thread {
     private static DateFormat dateformat;
 
     // Encapsulate target
@@ -50,6 +52,7 @@ public class DBTool {
 
         DBTool.queryReservations(uid, utype);
     }
+
     public static void getDoctor(String Hospital_Name){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         doctors_list = new ArrayList<Doctor>();
@@ -62,11 +65,9 @@ public class DBTool {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("TAG", "onComplete: "+document.getData());
                                doctors_list.add(new Doctor(document.get("Major").toString(), document.get("name").toString(), document.get("phoneNum").toString()));
                             }
                             Collections.sort(doctors_list);
-
                         } else {
                             Log.d("TAG", "Error getting documents: ", task.getException());
                         }
@@ -75,7 +76,6 @@ public class DBTool {
 
     }
     public static ArrayList<Doctor> getDoctors_list(){
-        Log.d("TAG", "getDoctors_list: "+doctors_list.size());
         return doctors_list;
     }
     public static void getHospital(){

@@ -61,11 +61,18 @@ public class PSelhospActivity extends Activity {
         HospitalAdapter hospitalAdapter = new HospitalAdapter(this, DBTool.getHospitals_list());
         ListView listView = (ListView)findViewById(R.id.listView);
         listView.setAdapter(hospitalAdapter);
+
+
         listView.setOnItemClickListener((parent, view, position, id) -> {
         String hospitalname = ((Hospital)hospitalAdapter.getItem(position)).getHospitalName();
         Intent intent = new Intent(PSelhospActivity.this, PSeldocActivity.class);
-        DBTool.getDoctor(hospitalname);
         intent.putExtra("hopitalname",hospitalname);
+        DBTool.getDoctor(hospitalname);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         startActivity(intent);
         });
         //주소 검색버튼 정의
@@ -107,7 +114,6 @@ public class PSelhospActivity extends Activity {
             }
         }
     };
-
     private void initAddressSpinner() {
         spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

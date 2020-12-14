@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -33,8 +34,11 @@ public class PSeldocActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_p_sel_doc);
+
+        Intent intent = getIntent();//병원 이름 받아옵니다.
+        TextView textView = (TextView)findViewById(R.id.p_sel_doc_name);
+        textView.setText(intent.getStringExtra("hopitalname")+" is selected");
 
         doctor1 = (LinearLayout) findViewById(R.id.doctor1);
         doctor1.setOnClickListener(this);

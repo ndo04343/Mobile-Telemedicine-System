@@ -1,6 +1,7 @@
 package com.knu.medifree.classes;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,7 @@ public class HospitalAdapter extends BaseAdapter {
         String packName = sample.get(position).getHospitalName();
 
         int resID = mContext.getResources().getIdentifier(resName,"drawable",packName);
-        imageView.setImageResource(R.drawable.yonseihos);
+        imageView.setImageResource(R.drawable.yonseihos); // 이 부분 사진 이슈 있어서 해결해야함.
         HospitalName.setText(sample.get(position).getHospitalName());
 
         return view;

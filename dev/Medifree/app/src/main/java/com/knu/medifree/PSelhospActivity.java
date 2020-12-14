@@ -31,7 +31,7 @@ import java.util.ArrayList;
 //        import com.example.promise_lab.R;
 //        import com.example.promise_lab.lib.MyToast;
 
-public class PSelhospActivity extends Activity implements View.OnClickListener {
+public class PSelhospActivity extends Activity {
 
     private Spinner spinnerCity, spinnerSigungu, spinnerDong;
     private ArrayAdapter<String> arrayAdapter;
@@ -48,66 +48,65 @@ public class PSelhospActivity extends Activity implements View.OnClickListener {
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, (String[]) getResources().getStringArray(R.array.spinner_region));
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCity.setAdapter(arrayAdapter);
-
         spinnerSigungu = (Spinner) findViewById(R.id.spin_sigungu);
         spinnerDong = (Spinner) findViewById(R.id.spin_dong);
         initAddressSpinner();
-        final HospitalAdapter hospitalAdapter = new HospitalAdapter(this, DBTool.getHospitals_list());
-        ListView listView = (ListView)findViewById(R.id.listView);
-        listView.setAdapter(hospitalAdapter);
-        //왜 onclick이 되지 않을까..........
-        listView.setOnItemClickListener((parent, view, position, id) -> {
-            Log.d("TAG", "onCreate: "+view.toString());
-        String hospitalname = ((Hospital)hospitalAdapter.getItem(position)).getHospitalName();
-            Log.d("TAG", "onItemClick: " + hospitalname);
-        Intent intent = new Intent(PSelhospActivity.this, PSeldocActivity.class);
-        intent.putExtra("hospitalName",hospitalname);
-        startActivity(intent);
-        });
-        //주소 검색버튼 정의
+
         ImageButton okBtn = findViewById(R.id.p_search_address);
-        okBtn.setOnClickListener(this);
+        okBtn.setOnClickListener(onClickListener);
 
         //일단은 삼성병원 클릭 경우만 doctor select로 넘어가게 함
         samsung_hospital_select = (LinearLayout) findViewById(R.id.samsung_hospital_select);
-        samsung_hospital_select.setOnClickListener(this);
+        samsung_hospital_select.setOnClickListener(onClickListener);
 
-
+        HospitalAdapter hospitalAdapter = new HospitalAdapter(this, DBTool.getHospitals_list());
+        ListView listView = (ListView)findViewById(R.id.listView);
+        listView.setAdapter(hospitalAdapter);
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+        String hospitalname = ((Hospital)hospitalAdapter.getItem(position)).getHospitalName();
+        Intent intent = new Intent(PSelhospActivity.this, PSeldocActivity.class);
+        intent.putExtra("hopitalname",hospitalname);
+        startActivity(intent);
+        });
+        //주소 검색버튼 정의
     }
 
-    @Override
-    public void onClick(View view) {
-        Log.d("TAG", "onClick: "+view.toString());
-        if (view.getId() == R.id.p_search_address) {
-            if (spinnerCity.getSelectedItemPosition() == 0) {
-                Toast.makeText(this, "행정구역 주소 입력", Toast.LENGTH_SHORT).show();
-                //아무것도 선택안하고 검색 시 행정구역 주소 입력 안내
-            } else {
-                Intent data = new Intent();
-
-                if (spinnerDong.getSelectedItem() != null) {
-                    String address = spinnerCity.getSelectedItem().toString() + " " + spinnerSigungu.getSelectedItem().toString() + " " + spinnerDong.getSelectedItem().toString();
-                    data.putExtra(EXTRA_ADDRESS, address);
-                    //서울특벽시 경우 동까지 포함 된 데이터 값 넘김
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+         public void onClick(View view) {
+            Log.d("TAG", "onClick: " + view.toString());
+            if (view.getId() == R.id.p_search_address) {
+                if (spinnerCity.getSelectedItemPosition() == 0) {
+                    //Toast.makeText(this, "행정구역 주소 입력", Toast.LENGTH_SHORT).show();
+                    //아무것도 선택안하고 검색 시 행정구역 주소 입력 안내
                 } else {
-                    String address = spinnerCity.getSelectedItem().toString() + " " + spinnerSigungu.getSelectedItem().toString();
-                    data.putExtra(EXTRA_ADDRESS, address);
-                    //서울특별시 제외 대구같은 경우 동 이전 시/군/구 까지의 데이터만 넘김
+                    Intent data = new Intent();
+
+                    if (spinnerDong.getSelectedItem() != null) {
+                        String address = spinnerCity.getSelectedItem().toString() + " " + spinnerSigungu.getSelectedItem().toString() + " " + spinnerDong.getSelectedItem().toString();
+                        data.putExtra(EXTRA_ADDRESS, address);
+                        //서울특벽시 경우 동까지 포함 된 데이터 값 넘김
+                    } else {
+                        String address = spinnerCity.getSelectedItem().toString() + " " + spinnerSigungu.getSelectedItem().toString();
+                        data.putExtra(EXTRA_ADDRESS, address);
+                        //서울특별시 제외 대구같은 경우 동 이전 시/군/구 까지의 데이터만 넘김
+                    }
+
+                    setResult(RESULT_OK, data);
+                    finish();
                 }
 
-                setResult(RESULT_OK, data);
-                finish();
             }
-
+            //삼성병원 클릭 시 삼성병원의 doctor select 액티비티 전환
+            else if (view.getId() == R.id.samsung_hospital_select) {
+                Intent intent = new Intent(PSelhospActivity.this, PSeldocActivity.class);
+                startActivity(intent);
+                finish();
+            } else if (view.getId() == R.id.listView) {
+                Log.d("TAG", "onClick: " + view.toString());
+            }
         }
-        //삼성병원 클릭 시 삼성병원의 doctor select 액티비티 전환
-        else if (view.getId() == R.id.samsung_hospital_select) {
-            Intent intent = new Intent(PSelhospActivity.this, PSeldocActivity.class);
-            startActivity(intent);
-            finish();
-        }
-
-    }
+    };
 
     private void initAddressSpinner() {
         spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

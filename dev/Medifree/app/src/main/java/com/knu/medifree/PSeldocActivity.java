@@ -1,36 +1,24 @@
 package com.knu.medifree;
 
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.knu.medifree.classes.DBTool;
+import com.knu.medifree.classes.Doctor;
+import com.knu.medifree.classes.DoctorAdapter;
 
-public class PSeldocActivity extends Activity implements View.OnClickListener {
+import java.util.ArrayList;
+
+public class PSeldocActivity extends Activity {
     public LinearLayout doctor1;
-
+    static ArrayList<Doctor> list = DBTool.getDoctors_list();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,8 +28,16 @@ public class PSeldocActivity extends Activity implements View.OnClickListener {
         TextView textView = (TextView)findViewById(R.id.p_sel_doc_name);
         textView.setText(intent.getStringExtra("hopitalname")+" is selected");
 
+        DoctorAdapter doctorAdapter = new DoctorAdapter(this, list);
+        ListView listView = (ListView)findViewById(R.id.listview_doctorlist);
+        listView.setAdapter(doctorAdapter);
+        doctorAdapter.notifyDataSetChanged();
+        Log.d("TAG", "onCreate: "+doctorAdapter.getCount());
+        for (int i = 0; i < list.size(); i++) {
+            Log.d("TAG", "list :  "+list.get(i).getName());
+        }
         doctor1 = (LinearLayout) findViewById(R.id.doctor1);
-        doctor1.setOnClickListener(this);
+        //doctor1.setOnClickListener(this);
 
     }
 

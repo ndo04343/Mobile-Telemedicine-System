@@ -16,6 +16,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,12 +27,15 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import static java.lang.Thread.sleep;
+
 public class DBTool {
     private static DateFormat dateformat;
 
     // Encapsulate target
     private static ArrayList<Reservation> reservations_result;
     private static ArrayList<Hospital> hospitals_list;
+    private static ArrayList<Doctor> doctors_list;
     private static boolean updated;
 
     // User info
@@ -44,7 +50,34 @@ public class DBTool {
 
         DBTool.queryReservations(uid, utype);
     }
+    public static void getDoctor(String Hospital_Name){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        doctors_list = new ArrayList<Doctor>();
+        Log.d("TAG", "getDoctor: "+Hospital_Name);
+        db.collection("Profile")
+                .whereEqualTo("Hospital_Name",Hospital_Name)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("TAG", "onComplete: "+document.getData());
+                               doctors_list.add(new Doctor(document.get("Major").toString(), document.get("name").toString(), document.get("phoneNum").toString()));
+                            }
+                            Collections.sort(doctors_list);
 
+                        } else {
+                            Log.d("TAG", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+    }
+    public static ArrayList<Doctor> getDoctors_list(){
+        Log.d("TAG", "getDoctors_list: "+doctors_list.size());
+        return doctors_list;
+    }
     public static void getHospital(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         hospitals_list = new ArrayList<Hospital>();
@@ -56,7 +89,6 @@ public class DBTool {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 hospitals_list.add(new Hospital(document.getId()));
-                                Log.d("TAG", document.getId() + " => " + document.getData());
                             }
                         } else {
                             Log.d("TAG", "Error getting documents: ", task.getException());

@@ -37,7 +37,6 @@ public class PSelhospActivity extends Activity {
     private ArrayAdapter<String> arrayAdapter;
     public static final String EXTRA_ADDRESS = "address";
     public LinearLayout samsung_hospital_select;
-    FirebaseFirestore db=FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +64,7 @@ public class PSelhospActivity extends Activity {
         listView.setOnItemClickListener((parent, view, position, id) -> {
         String hospitalname = ((Hospital)hospitalAdapter.getItem(position)).getHospitalName();
         Intent intent = new Intent(PSelhospActivity.this, PSeldocActivity.class);
+        DBTool.getDoctor(hospitalname);
         intent.putExtra("hopitalname",hospitalname);
         startActivity(intent);
         });

@@ -16,14 +16,10 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -57,6 +53,15 @@ public class PHomeActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private DatabaseReference mDatabase;
     private PHomeActivity control;
+    private static Boolean notResitered;
+
+    public static Boolean getNotResitered() {
+        return notResitered;
+    }
+
+    public static void setNotResitered(Boolean notResitered) {
+        PHomeActivity.notResitered = notResitered;
+    }
 
     // Additional member
     private TimerTask second;
@@ -126,8 +131,9 @@ public class PHomeActivity extends AppCompatActivity {
                                 // NO 버튼이 눌린거임.
                                 // 초진의 경우 병원과 의사 connect
                                 Intent intent=new Intent(PHomeActivity.this,PSelhospActivity.class);
+                                setNotResitered(false);
                                 startActivity(intent);
-                                finish();
+
                             }
                         });
                         builder.setNegativeButton(Html.fromHtml("<font color='#2F528F'>YES</font>"), new DialogInterface.OnClickListener() {
@@ -135,9 +141,10 @@ public class PHomeActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 // YES 버튼이 눌린거임.
                                 //재진의 경우 (병원측에서 예약 자동 설정? 혹 환자가 설정? 물어보기)
-                                Intent intent=new Intent(PHomeActivity.this,PSelhospAgainActivity.class);
+                                Intent intent=new Intent(PHomeActivity.this,PSelhospActivity.class);
+                                setNotResitered(true);
                                 startActivity(intent);
-                                finish();
+
                             }
                         });
 

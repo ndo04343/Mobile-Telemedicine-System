@@ -65,7 +65,13 @@ public class PSelhospActivity extends Activity {
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
         String hospitalname = ((Hospital)hospitalAdapter.getItem(position)).getHospitalName();
-        Intent intent = new Intent(PSelhospActivity.this, PSeldocActivity.class);
+        Intent intent;
+        if(PHomeActivity.getNotResitered()){
+            //재진의 경우임 ->
+             intent = new Intent(PSelhospActivity.this, PSeldocAgainActivity.class);
+        }else {
+             intent = new Intent(PSelhospActivity.this, PSeldocActivity.class);
+        }
         intent.putExtra("hopitalname",hospitalname);
         DBTool.getDoctor(hospitalname);
             try {

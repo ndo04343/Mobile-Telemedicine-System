@@ -32,6 +32,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/p_sel_doc_again_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="130dp"
@@ -52,7 +53,7 @@
         android:layout_marginTop="190dp"
         android:layout_marginBottom="220dp"
         android:gravity="center_horizontal"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -61,75 +62,21 @@
 
 
         <!--  해당 과 클릭시 전공의 출력하는 activity 필요      -->
+
         <LinearLayout
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/p_sel_doc_name">
 
-            <TextView
-                android:id="@+id/major_skin"
-                android:layout_width="90dp"
-                android:layout_height="68dp"
-                android:background="@drawable/border2"
-                android:gravity="center"
-                android:text="피부과"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground"/>
+            <ListView
+                android:id="@+id/listview_doctorlist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/major_inner"
-                android:layout_width="90dp"
-                android:layout_height="68dp"
-                android:background="@drawable/border2"
-                android:gravity="center"
-                android:text="내과"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground"/>
-
-            <TextView
-                android:id="@+id/major_binyo"
-                android:layout_width="90dp"
-                android:layout_height="68dp"
-                android:background="@drawable/border2"
-                android:gravity="center"
-                android:text="비뇨기과"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground"/>
-
-            <TextView
-                android:id="@+id/major_child"
-                android:layout_width="90dp"
-                android:layout_height="68dp"
-                android:background="@drawable/border2"
-                android:gravity="center"
-                android:text="소아과"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground"/>
-
-            <TextView
-                android:id="@+id/major_baby"
-                android:layout_width="90dp"
-                android:layout_height="68dp"
-                android:background="@drawable/border2"
-                android:gravity="center"
-                android:text="산부인과"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground"/>
+            </ListView>
         </LinearLayout>
 
         <LinearLayout

@@ -22,21 +22,21 @@ public class PSeldocActivity extends Activity {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_p_sel_doc);
         setContentView(R.layout.activity_p_sel_doc);
-        Intent intent = getIntent();//병원 이름 받아옵니다.
-        TextView textView = (TextView)findViewById(R.id.p_sel_doc_name);
-        textView.setText(intent.getStringExtra("hopitalname")+" is selected");
-
-
-        DoctorAdapter doctorAdapter = new DoctorAdapter(this, DBManager.getDoctors_list());
-        ListView listView2 = (ListView)findViewById(R.id.listview_doctorlist);
-        listView2.setAdapter(doctorAdapter);
-        listView2.setOnItemClickListener((parent, view, position, id) -> {
-            //String hospitalname = ((Hospital)hospitalAdapter.getItem(position)).getHospitalName();
-            String doctorName = ((Doctor)doctorAdapter.getItem(position)).getName();
-            Intent intent2 = new Intent(PSeldocActivity.this, PSeltimeActivity.class);
-            intent2.putExtra("doctorName",doctorName);
-            startActivity(intent2);
-        });
+//        Intent intent = getIntent();//병원 이름 받아옵니다.
+//        TextView textView = (TextView)findViewById(R.id.p_sel_doc_name);
+//        textView.setText(intent.getStringExtra("hopitalname")+" is selected");
+//
+////
+////        DoctorAdapter doctorAdapter = new DoctorAdapter(this, DBManager.getDoctors_list());
+////        ListView listView2 = (ListView)findViewById(R.id.listview_doctorlist);
+////        listView2.setAdapter(doctorAdapter);
+////        listView2.setOnItemClickListener((parent, view, position, id) -> {
+////            //String hospitalname = ((Hospital)hospitalAdapter.getItem(position)).getHospitalName();
+////            String doctorName = ((Doctor)doctorAdapter.getItem(position)).getName();
+////            Intent intent2 = new Intent(PSeldocActivity.this, PSeltimeActivity.class);
+////            intent2.putExtra("doctorName",doctorName);
+////            startActivity(intent2);
+////        });
 
 
 

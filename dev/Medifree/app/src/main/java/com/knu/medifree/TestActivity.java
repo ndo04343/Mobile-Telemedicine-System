@@ -32,11 +32,7 @@ public class TestActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 // Init DBManager
-                try {
-                    DBManager.initDBManager("oYnAfFJe8XXih2klptUueBnwtic2", User.TYPE_PATIENT);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                DBManager.initDBManager("oYnAfFJe8XXih2klptUueBnwtic2", User.TYPE_PATIENT);
 
                 DBManager.startActivityWithMajorReading("OXIRMiC9OS675mdikFZV",TestActivity.this, new Intent(getApplicationContext(), Test2Activity.class));
 

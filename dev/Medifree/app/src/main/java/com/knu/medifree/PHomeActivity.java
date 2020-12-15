@@ -3,6 +3,7 @@ package com.knu.medifree;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -19,20 +20,22 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.knu.medifree.classes.DBTool;
-import com.knu.medifree.classes.Reservation;
-import com.knu.medifree.classes.ReservationAdapter;
-import com.knu.medifree.classes.User;
+import com.knu.medifree.util.DBManager;
+import com.knu.medifree.model.Reservation;
+import com.knu.medifree.model.ReservationAdapter;
+import com.knu.medifree.model.User;
+import com.knu.medifree.util.ReservationUtil;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -47,12 +50,8 @@ public class PHomeActivity extends AppCompatActivity {
     private Button btn_reg, btn_diag;
     private ImageButton btn_refresh;
     private ListView listview_res;
-    private TextView tv_reservation;
 
-    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-    private DatabaseReference mDatabase;
-    private PHomeActivity control;
     private static Boolean notResitered;
 
     public static Boolean getNotResitered() {
@@ -63,11 +62,15 @@ public class PHomeActivity extends AppCompatActivity {
         PHomeActivity.notResitered = notResitered;
     }
 
-    // Additional member
     private TimerTask second;
     private final Handler handler = new Handler();
     private ArrayList<Reservation> list_reservations = new ArrayList<>();
     ReservationAdapter res_adapter;
+
+    // Additional 12.15
+    private FirebaseFirestore mFirestore;
+    private Query mQuery;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,13 +83,8 @@ public class PHomeActivity extends AppCompatActivity {
         uid = intent.getStringExtra("user_id");
 
         // Reservation Init
-        try {
-            DBTool.InitDBTool(uid, User.TYPE_PATIENT);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        initFirestore();
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         // 객체 할당
         btn_reg = (Button) findViewById(R.id.p_home_btn_reg);
@@ -95,113 +93,116 @@ public class PHomeActivity extends AppCompatActivity {
         listview_res = (ListView) findViewById(R.id.p_home_listview);
 
 
-        // 클릭 리스너 할당
-        btn_reg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 예약하기 버튼을 눌렀을 때
-                // 현재 상황 : 다이얼로그 뛰워줌 일단.
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(PHomeActivity.this);
-                //builder.setTitle("걍 제목임. 여긴. 없어도 ㄱㅊ");
-                builder.setMessage("새로 예약을 잡으시겟습니까?");
-                DBTool.getHospital();
-
-                builder.setPositiveButton(Html.fromHtml("<font color='#7F7F7F'>NO</font>"), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // NO 버튼이 눌린거임. 예약안할거니까 그냥 종료
-
-                    }
-                });
-                builder.setNegativeButton(Html.fromHtml("<font color='#2F528F'>YES</font>"), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // YES 버튼이 눌린거임.
-                        // 여기서 새로 다이어그램 만드는거
-                        /****************************************************/
-                        AlertDialog.Builder builder = new AlertDialog.Builder(PHomeActivity.this);
-                        //builder.setTitle("걍 제목임. 여긴. 없어도 ㄱ");
-                        builder.setMessage("등록 되지 않은 진료가 있습니까?");
 
 
-                        builder.setPositiveButton(Html.fromHtml("<font color='#7F7F7F'>NO</font>"), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                // NO 버튼이 눌린거임.
-                                // 초진의 경우 병원과 의사 connect
-                                Intent intent=new Intent(PHomeActivity.this,PSelhospActivity.class);
-                                setNotResitered(false);
-                                startActivity(intent);
 
-                            }
-                        });
-                        builder.setNegativeButton(Html.fromHtml("<font color='#2F528F'>YES</font>"), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                // YES 버튼이 눌린거임.
-                                //재진의 경우 (병원측에서 예약 자동 설정? 혹 환자가 설정? 물어보기)
-                                Intent intent=new Intent(PHomeActivity.this,PSelhospActivity.class);
-                                setNotResitered(true);
-                                startActivity(intent);
-
-                            }
-                        });
-
-                        AlertDialog dialog = builder.create();
-                       //다이얼로그 위치를 하단으로 조정
-                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-
-                        params.gravity = Gravity.TOP | Gravity.LEFT;
-                        params.x = 20;   //x position
-                        params.y = 1700;   //y position
-                       //조정 완료 후 화면출력
-                        dialog.show();
-                        //다이얼로그 크기를 조절 나중에 custom custom_dialog 로 ppt똑같이 만들기
-                        params.width =  WindowManager.LayoutParams.MATCH_PARENT;
-                        //params.height =  300;
-                        dialog.getWindow().setAttributes(params);
-                        /****************************************************/
-                    }
-                });
-
-                AlertDialog dialog = builder.create();
-                //다이얼로그 위치를 하단으로 조정
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-
-                params.gravity = Gravity.TOP | Gravity.LEFT;
-                params.x = 20;   //x position
-                params.y = 1700;   //y position
-                //조정 완료 후 화면출력
-                dialog.show();
-                //다이얼로그 크기를 조절 나중에 custom custom_dialog 로 ppt똑같이 만들기
-                params.width =  WindowManager.LayoutParams.MATCH_PARENT;
-                //params.height =  440;
-                dialog.getWindow().setAttributes(params);
-            }
-        });
-        btn_diag.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 진료실 버튼을 눌렀을 때
-                // 현재 상황 :
-                // TODO :
-            }
-        });
-        btn_refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 새로고침 버튼을 눌렀을 때
-                // 현재 상황 :
-                // TODO :
-                list_hospital();
-            }
-        });
-        // 3초에 한번씩 자동 업데이트
-        res_adapter = new ReservationAdapter(this, list_reservations);
-        listview_res.setAdapter(res_adapter);
+//        // 클릭 리스너 할당
+//        btn_reg.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // 예약하기 버튼을 눌렀을 때
+//                // 현재 상황 : 다이얼로그 뛰워줌 일단.
+//
+//                AlertDialog.Builder builder = new AlertDialog.Builder(PHomeActivity.this);
+//                //builder.setTitle("걍 제목임. 여긴. 없어도 ㄱㅊ");
+//                builder.setMessage("새로 예약을 잡으시겟습니까?");
+//                DBManager.getHospital();
+//
+//                builder.setPositiveButton(Html.fromHtml("<font color='#7F7F7F'>NO</font>"), new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        // NO 버튼이 눌린거임. 예약안할거니까 그냥 종료
+//
+//                    }
+//                });
+//                builder.setNegativeButton(Html.fromHtml("<font color='#2F528F'>YES</font>"), new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        // YES 버튼이 눌린거임.
+//                        // 여기서 새로 다이어그램 만드는거
+//                        /****************************************************/
+//                        AlertDialog.Builder builder = new AlertDialog.Builder(PHomeActivity.this);
+//                        //builder.setTitle("걍 제목임. 여긴. 없어도 ㄱ");
+//                        builder.setMessage("등록 되지 않은 진료가 있습니까?");
+//
+//
+//                        builder.setPositiveButton(Html.fromHtml("<font color='#7F7F7F'>NO</font>"), new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int i) {
+//                                // NO 버튼이 눌린거임.
+//                                // 초진의 경우 병원과 의사 connect
+//                                Intent intent=new Intent(PHomeActivity.this,PSelhospActivity.class);
+//                                setNotResitered(false);
+//                                startActivity(intent);
+//
+//                            }
+//                        });
+//                        builder.setNegativeButton(Html.fromHtml("<font color='#2F528F'>YES</font>"), new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int i) {
+//                                // YES 버튼이 눌린거임.
+//                                //재진의 경우 (병원측에서 예약 자동 설정? 혹 환자가 설정? 물어보기)
+//                                Intent intent=new Intent(PHomeActivity.this,PSelhospActivity.class);
+//                                setNotResitered(true);
+//                                startActivity(intent);
+//
+//                            }
+//                        });
+//
+//                        AlertDialog dialog = builder.create();
+//                       //다이얼로그 위치를 하단으로 조정
+//                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+//
+//                        params.gravity = Gravity.TOP | Gravity.LEFT;
+//                        params.x = 20;   //x position
+//                        params.y = 1700;   //y position
+//                       //조정 완료 후 화면출력
+//                        dialog.show();
+//                        //다이얼로그 크기를 조절 나중에 custom custom_dialog 로 ppt똑같이 만들기
+//                        params.width =  WindowManager.LayoutParams.MATCH_PARENT;
+//                        //params.height =  300;
+//                        dialog.getWindow().setAttributes(params);
+//                        /****************************************************/
+//                    }
+//                });
+//
+//                AlertDialog dialog = builder.create();
+//                //다이얼로그 위치를 하단으로 조정
+//                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+//
+//                params.gravity = Gravity.TOP | Gravity.LEFT;
+//                params.x = 20;   //x position
+//                params.y = 1700;   //y position
+//                //조정 완료 후 화면출력
+//                dialog.show();
+//                //다이얼로그 크기를 조절 나중에 custom custom_dialog 로 ppt똑같이 만들기
+//                params.width =  WindowManager.LayoutParams.MATCH_PARENT;
+//                //params.height =  440;
+//                dialog.getWindow().setAttributes(params);
+//            }
+//        });
+//        btn_diag.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // 진료실 버튼을 눌렀을 때
+//                // 현재 상황 :
+//                // TODO :
+//            }
+//        });
+//        btn_refresh.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // 새로고침 버튼을 눌렀을 때
+//                // 현재 상황 :
+//                // TODO :
+//                list_hospital();
+//            }
+//        });
+//        // 3초에 한번씩 자동 업데이트
+//        res_adapter = new ReservationAdapter(this, list_reservations);
+//        listview_res.setAdapter(res_adapter);
 
     }
 
@@ -211,6 +212,34 @@ public class PHomeActivity extends AppCompatActivity {
         reservationThreadStart();
 
     }
+
+    // Additional : TODO
+    private void initFirestore () {
+        mFirestore = FirebaseFirestore.getInstance();
+
+        // Get the 50 highest rated restaurants
+        // Ascending ordering... with 10 items
+        mQuery = mFirestore.collection("Reservation")
+                .orderBy("date", Query.Direction.ASCENDING)
+                .limit(10);
+    }
+
+
+    private void onAddItemsClicked() {
+        // Get a reference to the restaurants collection
+        CollectionReference reservations = mFirestore.collection("Reservation");
+
+        for (int i = 0; i < 10; i++) {
+            // Get a random Restaurant POJO
+            Reservation reservation = ReservationUtil.getSomeReservation(this);
+
+            // Add a new document to the restaurants collection
+            reservations.add(reservation);
+        }
+    }
+
+
+
 
     // 리스너를 구현하고 완전 비동기식으로 하고 싶지만,
     // 데이터 로딩시간하고 바쁘니까 그냥 이렇게 해둡니다.
@@ -245,7 +274,7 @@ public class PHomeActivity extends AppCompatActivity {
                     // TODO : 여기서 리스트뷰 리셋하고 업데이트
 
 
-                    list_reservations = DBTool.getReservations();
+                    list_reservations = DBManager.getReservations();
                     listview_res.setAdapter(res_adapter);
                 } catch (InterruptedException | ParseException e) {
                     e.printStackTrace();

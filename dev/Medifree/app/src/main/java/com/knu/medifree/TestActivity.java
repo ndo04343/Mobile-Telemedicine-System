@@ -2,24 +2,15 @@ package com.knu.medifree;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.ResultReceiver;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.knu.medifree.classes.DBTool;
-import com.knu.medifree.classes.Reservation;
-import com.knu.medifree.classes.User;
-
-import java.text.ParseException;
-import java.util.ArrayList;
+import com.knu.medifree.util.DBManager;
 
 public class TestActivity extends AppCompatActivity {
-    DBTool tool;
+    DBManager tool;
     Button btn;
     TextView tv;
 

@@ -30,7 +30,7 @@
 
         <!-- Added -->
         <activity
-            android:name=".webrtc.ConnectActivity"
+            android:name=".util.webrtc.ConnectActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustPan">
 
@@ -55,10 +55,10 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".webrtc.SettingsActivity"
+            android:name=".util.webrtc.SettingsActivity"
             android:label="@string/settings_name" />
         <activity
-            android:name=".webrtc.CallActivity"
+            android:name=".util.webrtc.CallActivity"
             android:configChanges="orientation|smallestScreenSize|screenSize|screenLayout"
             android:label="@string/app_name"
             android:screenOrientation="fullUser"

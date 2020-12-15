@@ -7,26 +7,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.knu.medifree.classes.DBTool;
-import com.knu.medifree.classes.Hospital;
-import com.knu.medifree.classes.HospitalAdapter;
-
-import java.util.ArrayList;
+import com.knu.medifree.util.DBManager;
+import com.knu.medifree.model.Hospital;
+import com.knu.medifree.model.HospitalAdapter;
 
 //        import com.example.promise_lab.R;
 //        import com.example.promise_lab.lib.MyToast;
@@ -58,7 +46,7 @@ public class PSelhospActivity extends Activity {
         samsung_hospital_select = (LinearLayout) findViewById(R.id.samsung_hospital_select);
         samsung_hospital_select.setOnClickListener(onClickListener);
 
-        HospitalAdapter hospitalAdapter = new HospitalAdapter(this, DBTool.getHospitals_list());
+        HospitalAdapter hospitalAdapter = new HospitalAdapter(this, DBManager.getHospitals_list());
         ListView listView = (ListView)findViewById(R.id.listView);
         listView.setAdapter(hospitalAdapter);
 
@@ -73,7 +61,7 @@ public class PSelhospActivity extends Activity {
              intent = new Intent(PSelhospActivity.this, PSeldocActivity.class);
         }
         intent.putExtra("hopitalname",hospitalname);
-        DBTool.getDoctor(hospitalname);
+        DBManager.getDoctor(hospitalname);
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

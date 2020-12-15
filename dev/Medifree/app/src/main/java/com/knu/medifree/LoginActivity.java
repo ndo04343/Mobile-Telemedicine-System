@@ -22,7 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.knu.medifree.classes.AuthTool;
+import com.knu.medifree.model.AuthTool;
 
 public class LoginActivity extends AppCompatActivity {
     // View

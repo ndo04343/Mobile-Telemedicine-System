@@ -4,17 +4,13 @@ package com.knu.medifree;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.knu.medifree.classes.DBTool;
-import com.knu.medifree.classes.Doctor;
-import com.knu.medifree.classes.DoctorAdapter;
-import com.knu.medifree.classes.Hospital;
-import com.knu.medifree.classes.HospitalAdapter;
+import com.knu.medifree.util.DBManager;
+import com.knu.medifree.model.Doctor;
+import com.knu.medifree.model.DoctorAdapter;
 
 import java.util.ArrayList;
 
@@ -31,7 +27,7 @@ public class PSeldocActivity extends Activity {
         textView.setText(intent.getStringExtra("hopitalname")+" is selected");
 
 
-        DoctorAdapter doctorAdapter = new DoctorAdapter(this, DBTool.getDoctors_list());
+        DoctorAdapter doctorAdapter = new DoctorAdapter(this, DBManager.getDoctors_list());
         ListView listView2 = (ListView)findViewById(R.id.listview_doctorlist);
         listView2.setAdapter(doctorAdapter);
         listView2.setOnItemClickListener((parent, view, position, id) -> {

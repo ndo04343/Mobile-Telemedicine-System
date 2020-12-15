@@ -19,6 +19,9 @@ import android.widget.ListView;
 import com.knu.medifree.model.Doctor;
 import com.knu.medifree.model.DoctorAdapter;
 import com.knu.medifree.model.Hospital;
+import com.knu.medifree.model.HospitalAdapter;
+import com.knu.medifree.model.Patient;
+import com.knu.medifree.model.PatientAdapter;
 import com.knu.medifree.util.DBManager;
 
 import java.util.ArrayList;
@@ -28,24 +31,12 @@ import java.util.List;
 public class ResCheckActivity extends AppCompatActivity {
     public Button first_btn, origin_btn;
     public ImageButton dhome_btn;
-    static final String[] PatientName={"Kim Haseung","Kim Semin"};
-    static final String[] Patienttime={"10/20 15:00","10/21 14:00"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_d_res_check);
+        populatePatientsList();
 
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_2, PatientName) ;
-        ArrayAdapter adapter2 = new ArrayAdapter(this, android.R.layout.simple_list_item_1, Patienttime) ;
-
-        ListView listview = (ListView) findViewById(R.id.listview_patientrequest) ;
-        listview.setAdapter(adapter) ;
-
-        listview.setOnItemClickListener((parent, view, position, id) -> {
-            String patientName = (String) parent.getItemAtPosition(position) ;
-            textView1.setText(currentWord.getS1());
-
-        });
         first_btn = (Button) findViewById(R.id.d_req_first);
         origin_btn = (Button) findViewById(R.id.d_req_origin);
         dhome_btn=(ImageButton)findViewById(R.id.backtodhome);
@@ -73,6 +64,15 @@ public class ResCheckActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void populatePatientsList() {
+        ArrayList arrayOfUsers = Patient.getPatient();
+        // Create the adapter to convert the array to views
+        PatientAdapter adapter = new PatientAdapter(this, arrayOfUsers);
+        // Attach the adapter to a ListView
+        ListView listView = (ListView) findViewById(R.id.listview_patientrequest);
+        listView.setAdapter(adapter);
     }
 
 }

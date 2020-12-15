@@ -46,7 +46,7 @@ public class PSelhospActivity extends Activity {
         samsung_hospital_select = (LinearLayout) findViewById(R.id.samsung_hospital_select);
         samsung_hospital_select.setOnClickListener(onClickListener);
 
-        HospitalAdapter hospitalAdapter = new HospitalAdapter(this, DBManager.getHospitals_list());
+        HospitalAdapter hospitalAdapter = new HospitalAdapter(this, DBManager.getHospitals());
         ListView listView = (ListView)findViewById(R.id.listView);
         listView.setAdapter(hospitalAdapter);
 

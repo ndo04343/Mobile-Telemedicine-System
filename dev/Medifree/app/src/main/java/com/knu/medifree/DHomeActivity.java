@@ -59,6 +59,4 @@ public class DHomeActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }

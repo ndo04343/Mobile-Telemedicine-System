@@ -23,14 +23,12 @@ import com.knu.medifree.model.User;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import static java.lang.Thread.sleep;
 
 public class DBManager extends Thread {
     private static DateFormat dateformat;
@@ -51,56 +49,8 @@ public class DBManager extends Thread {
         DBManager.utype = utype;
     }
 
-    public static void getDoctor(String Hospital_Name){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        doctors_list = new ArrayList<Doctor>();
-        Log.d("TAG", "getDoctor: "+Hospital_Name);
-        db.collection("Profile")
-                .whereEqualTo("Hospital_Name",Hospital_Name)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                               doctors_list.add(new Doctor(document.get("Major").toString(), document.get("name").toString(), document.get("phoneNum").toString()));
-                            }
-                            Collections.sort(doctors_list);
-                        } else {
-                            Log.d("TAG", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-
-    }
-    public static ArrayList<Doctor> getDoctors_list(){
-        return doctors_list;
-    }
-//    public static void getHospital(){
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        hospitals_list = new ArrayList<Hospital>();
-//        db.collection("Hospital")
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//                                hospitals_list.add(new Hospital(document.getId()));
-//                            }
-//                        } else {
-//                            Log.d("TAG", "Error getting documents: ", task.getException());
-//                        }
-//                    }
-//                });
-//    }
-
-
-
-    //
-    // Reservation Control
     // Setter
-    public static void setReservation(Reservation reservation) throws ParseException {
+    public static void setReservation(Reservation reservation) {
         // Return reservation_id
         Map<String, Object> resMap = new HashMap<>();
 
@@ -129,7 +79,6 @@ public class DBManager extends Thread {
                 });
     }
 
-
     // Getter
     public static ArrayList<Reservation> getReservations() {
        return DBManager.reservations_list;
@@ -140,6 +89,10 @@ public class DBManager extends Thread {
     public static ArrayList<String> getMajors() {
         return DBManager.major_list;
     }
+    public static ArrayList<Doctor> getDoctors() {
+        return DBManager.doctors_list;
+    }
+
 
     // Activity Starter
     public static void startActivityWithReservationReading( Activity from, Intent to) {
@@ -259,10 +212,12 @@ public class DBManager extends Thread {
         });
     }
 
-    public static void startActivityWithDoctorReading(String hospital_name, Activity from, Intent to) {
+    public static void startActivityWithDoctorReading(String hospital_name, String major_name, Activity from, Intent to) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db.collection("Profile");
-        Query query = collectionReference.whereEqualTo("Hospital_Name", hospital_name);
+        Query query = collectionReference
+                .whereEqualTo("Hospital_Name", hospital_name)
+                .whereEqualTo("Major", major_name);
 
         Log.i("HEESUNG", "Waiting DB Callback...");
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -270,15 +225,17 @@ public class DBManager extends Thread {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     Log.i("HEESUNG", "Getting DB Callback...");
-                    hospitals_list = new ArrayList<Hospital>();
+                    doctors_list = new ArrayList<Doctor>();
 
                     // Critical section control
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        hospitals_list.add(new Hospital(
-                                document.getString("name")
+                        doctors_list.add(new Doctor(
+                                document.getString("Hospital_Name")
+                                , document.getString("Major")
+                                , document.getString("name")
+                                , document.getString("phoneNum")
                                 , document.getId()
                         ));
-
                     }
                     Log.i("HEESUNG", "Reservation DB Updeate complete.");
                     from.startActivity(to);

@@ -1,14 +1,24 @@
 package com.knu.medifree.model;
 
 public class Doctor  implements Comparable<Doctor>{
+    private String hospital_name;
     private String major;
     private String name;
     private String phoneNum;
+    private String id;
 
-    public Doctor(String major, String name, String phoneNum) {
+    public Doctor(
+            String hospital_name
+            , String major
+            , String name
+            , String phoneNum
+            , String id)
+    {
+        this.hospital_name = hospital_name;
         this.major = major;
         this.name = name;
         this.phoneNum = phoneNum;
+        this.id = id;
     }
 
 

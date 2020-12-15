@@ -29,7 +29,6 @@ import java.util.Map;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-
 public class DBManager extends Thread {
     private static DateFormat dateformat;
 
@@ -43,14 +42,26 @@ public class DBManager extends Thread {
     private static String uid;
     private static int utype;
 
-    public static void initDBManager(String uid, int utype) throws ParseException {
+    public static void initDBManager(String uid, int utype)
+    /*  LoginActivity.class 에서 DBManager 초기화후 진입합니다(사용할 일 없습니다.)
+    *   Usage :
+    *   DBManager.initDBManger(user_id, User.TYPE_PATIENT);
+    *
+    *   */
+    {
         dateformat = new SimpleDateFormat("yyyy/MM/dd/kk/mm");
         DBManager.uid = uid;
         DBManager.utype = utype;
     }
 
     // Setter
-    public static void setReservation(Reservation reservation) {
+    public static void createReservation(Reservation reservation)
+    /*  Firestore DB 에 Reservation을 추가합니다.
+     *   Usage :
+     *   DBManager.createReservation(reservation);
+     *
+     *   */
+    {
         // Return reservation_id
         Map<String, Object> resMap = new HashMap<>();
 
@@ -63,6 +74,38 @@ public class DBManager extends Thread {
         // Set
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Reservation")
+                .add(resMap)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.i("DBManager", documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.i("DBManager", "setReservation() error!", e);
+                    }
+                });
+    }
+
+    public static void createHospital(Hospital hospital)
+    /*  Firestore DB 에 Hospital을 추가합니다.
+     *  Hospital 에서 name 필드만 형성되고, 각각의 Major 필드는 createMajor를 사용하셔야 됩니다.
+     *   Usage :
+     *   DBManager.createHospital(hospital);
+     *
+     *   */
+    {
+        // Return reservation_id
+        Map<String, Object> resMap = new HashMap<>();
+
+        // Create map
+        resMap.put("name", hospital.getHospitalName());
+
+        // Set
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Hospital")
                 .add(resMap)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
 
@@ -79,27 +122,100 @@ public class DBManager extends Thread {
                 });
     }
 
-    // Getter
-    public static ArrayList<Reservation> getReservations() {
-       return DBManager.reservations_list;
+    public static void createMajor(String hospital_id, String majorName)
+    /*  Firestore DB 에서 해당하는 Hospital 객체에서 Major collection 진입후 document를 추가합니다.
+     *   Usage :
+     *   DBManager.createHospital(hospital_id, "외과");
+     *
+     *   */
+    {
+        // Return reservation_id
+        Map<String, Object> resMap = new HashMap<>();
+
+        // Create map
+        resMap.put("name", majorName);
+
+        // Set
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Hospital/" + hospital_id + "/Major")
+                .add(resMap)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.i("DBManager", documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.i("DBManager", "setReservation() error!", e);
+                    }
+                });
     }
-    public static ArrayList<Hospital> getHospitals() {
+
+
+    // Getter
+    public static ArrayList<Reservation> getReservations()
+    /*  Firestore DB 에서
+     *   initDBManager()에서 세팅된 user_id에 대응하는 Reservation 객체들을 ArrayList 타입으로 받아옵니다.
+     *   반드시, 이전 액티비티에서 startActivityWithReservationReading() 메소드가 선행되어야 합니다.
+     *   Usage :
+     *   ArrayList<Reservation> reservationList = getReservations()
+     *
+     *   */
+    {
+        return DBManager.reservations_list;
+    }
+
+    public static ArrayList<Hospital> getHospitals()
+    /*  Firestore DB 에서
+     *   Hospital 객체들을 ArrayList 타입으로 받아옵니다.
+     *   반드시, 이전 액티비티에서 startActivityWithHospitalReading() 메소드가 선행되어야 합니다.
+     *   Usage :
+     *   ArrayList<Hospital> hospitalList = getHospital()
+     *
+     *   */
+    {
         return DBManager.hospitals_list;
     }
-    public static ArrayList<String> getMajors() {
+
+    public static ArrayList<String> getMajors()
+    /*  Firestore DB 에서
+     *   이전 액티비티에서 선택된 Hospital에 존재하는 Major들을 ArrayList<String> 타입으로 받아옵니다.
+     *   반드시, 이전 액티비티에서 startActivityWithMajorReading() 메소드가 선행되어야 합니다.
+     *   Usage :
+     *   ArrayList<String> majorList = getMajors()
+     *
+     *   */
+    {
         return DBManager.major_list;
     }
-    public static ArrayList<Doctor> getDoctors() {
+    public static ArrayList<Doctor> getDoctors()
+    /*  Firestore DB 에서
+     *   이전 액티비티에서 선택된 Hospital와 Major에 존재하는 Doctor 객체들을 ArrayList 타입으로 받아옵니다.
+     *   반드시, 이전 액티비티에서 startActivityWithMajorDoctor() 메소드가 선행되어야 합니다.
+     *   Usage :
+     *   ArrayList<Doctor> doctorList = getDoctors()
+     *
+     *   */
+    {
         return DBManager.doctors_list;
     }
 
-
     // Activity Starter
-    public static void startActivityWithReservationReading( Activity from, Intent to) {
-        // Warning! You need not use this method!
-        // Date control ("yyyy/MM/dd/kk/mm format")
-        // Index : Date format
-
+    public static void startActivityWithReservationReading(Activity from, Intent to)
+    /*
+     *   from Activity에서 to Activity로 넘어갑니다. 이때, from Activity는 종료됩니다.
+     *   넘어가면서, DB에서 initDBManager()에서 초기화한 uid를 기준으로 Reservation관련 정보들을 받아옵니다.
+     *   Usage :
+     *      Intent intent = new Intent(getApplicationContext(), PHomeActivity.class);
+     *      intent.putExtra("info", info);
+     *      DBManager.startActivityWithReservationReading(FromActivity.this, intent);
+     *
+     *   */
+    {
+        
         if (DBManager.utype == User.TYPE_DOCTOR) {
             // Query Setting
             FirebaseFirestore db = FirebaseFirestore.getInstance();

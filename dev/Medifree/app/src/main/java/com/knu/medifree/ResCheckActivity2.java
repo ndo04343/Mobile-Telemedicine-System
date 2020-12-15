@@ -9,10 +9,11 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 public class ResCheckActivity2 extends AppCompatActivity {
     public Button first_btn, origin_btn;
-
+    public ImageButton dhome_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +22,7 @@ public class ResCheckActivity2 extends AppCompatActivity {
 
         first_btn = (Button) findViewById(R.id.d_req_first);
         origin_btn = (Button) findViewById(R.id.d_req_origin);
+        dhome_btn=(ImageButton)findViewById(R.id.backtodhome);
 
         first_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,7 +38,13 @@ public class ResCheckActivity2 extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        dhome_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), DHomeActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

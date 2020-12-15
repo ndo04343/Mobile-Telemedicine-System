@@ -12,14 +12,13 @@
 
     <LinearLayout
         android:id="@+id/samsung_hospital_select"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="330dp"
+        android:layout_height="68dp"
         android:layout_gravity="center"
         android:background="@drawable/border"
-        android:clickable="false"
+        android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
-        android:gravity="center"
         android:orientation="horizontal">
 
         <ImageView
@@ -29,11 +28,11 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10dp"
             android:clickable="false"
-            android:src="@drawable/samsunghos"></ImageView>
+            android:src="@drawable/hospital"></ImageView>
 
         <TextView
             android:id="@+id/list_item_name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
@@ -43,5 +42,6 @@
             android:textStyle="bold">
 
         </TextView>
+
     </LinearLayout>
 </LinearLayout>

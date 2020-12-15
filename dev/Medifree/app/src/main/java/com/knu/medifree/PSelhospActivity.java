@@ -44,7 +44,7 @@ public class PSelhospActivity extends Activity {
 
         //일단은 삼성병원 클릭 경우만 doctor select로 넘어가게 함
         samsung_hospital_select = (LinearLayout) findViewById(R.id.samsung_hospital_select);
-        samsung_hospital_select.setOnClickListener(onClickListener);
+       // samsung_hospital_select.setOnClickListener(onClickListener);
 
         HospitalAdapter hospitalAdapter = new HospitalAdapter(this, DBManager.getHospitals());
         ListView listView = (ListView)findViewById(R.id.listView);

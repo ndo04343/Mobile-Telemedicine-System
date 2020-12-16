@@ -31,6 +31,7 @@ import java.text.SimpleDateFormat;
 
 public class DBManager extends Thread {
     private static DateFormat dateformat;
+    private static String TAG = "DBManager";
 
     // Encapsulate target
     private static ArrayList<Reservation> reservations_list = new ArrayList<Reservation>();
@@ -53,8 +54,7 @@ public class DBManager extends Thread {
         DBManager.utype = utype;
     }
 
-
-    // Setter
+    // Creator
     public static void createReservation(Reservation reservation)
     /*  Firestore DB 에 Reservation을 추가합니다.
      *   Usage :
@@ -102,7 +102,7 @@ public class DBManager extends Thread {
 
         // Create map
         resMap.put("name", hospital.getHospitalName());
-        resMap.put("major_mask", hospital.getBitmask());
+        resMap.put("major_mask", Integer.toString(hospital.getBitmask()));
 
         // Set
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -159,6 +159,37 @@ public class DBManager extends Thread {
      *   */
     {
         return DBManager.doctors_list;
+    }
+
+    public static String getHospitalId(String hospital_name)
+    /*      Must use after startActivityWithHospitalReading() please.   */
+    /*      return : (Success : hospital_id), (Failure : null)          */
+    {
+        for (int i = 0 ;i < DBManager.hospitals_list.size() ;i ++)
+            if (DBManager.hospitals_list.get(i).getHospitalName().equals(hospital_name))
+                return DBManager.hospitals_list.get(i).getHospitalId();
+        return null;
+    }
+
+
+    // Deleter
+    public static void deleteHospital(String hospital_id) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("Hospital").document(hospital_id)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error deleting document", e);
+                    }
+                });
     }
 
 
@@ -232,7 +263,7 @@ public class DBManager extends Thread {
                 }
             });
         } // End of if (type == User.TYPE_DOCTOR)
-    } // End of method
+    }
 
     public static void startActivityWithHospitalReading(Activity from, Intent to) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -266,9 +297,6 @@ public class DBManager extends Thread {
     public static void startActivityWithDoctorReading(String hospital_name, String major_name, Activity from, Intent to) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db.collection("Profile");
-//        Query query = collectionReference
-//                .whereEqualTo("Hospital_Name", hospital_name)
-//                .whereEqualTo("Major", major_name);
 
         Log.i("HEESUNG", "Waiting DB Callback...");
         collectionReference
@@ -299,4 +327,6 @@ public class DBManager extends Thread {
             }
         });
     }
+
+
 }

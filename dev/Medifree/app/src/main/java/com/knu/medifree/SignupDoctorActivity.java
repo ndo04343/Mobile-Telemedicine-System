@@ -19,6 +19,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.knu.medifree.util.DBManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -110,10 +111,11 @@ public class SignupDoctorActivity extends AppCompatActivity implements View.OnCl
                     public void onSuccess(Void avoid) {
                         //uid정보에 다음 페이지로 넘어가 hospital & major에 넣기.
                         Intent intent = new Intent(getApplicationContext(), SignupDoctor2Activity.class);
-                        intent.putExtra("name",name);
-                        intent.putExtra("phone",phone);
-                        startActivity(intent);
-                        finish();
+                        intent.putExtra("user_id", uid);
+                        intent.putExtra("name", name);
+                        intent.putExtra("phone", phone);
+                        DBManager.startActivityWithHospitalReading(SignupDoctorActivity.this, intent);
+                        // Auto termination
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

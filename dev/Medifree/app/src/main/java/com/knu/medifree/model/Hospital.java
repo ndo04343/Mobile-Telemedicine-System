@@ -31,6 +31,10 @@ public class Hospital {
         this.id = id;
         this.major_bit_mask = major_bit_flag;
     }
+    public Hospital(String hospitalName, int major_bit_flag){
+        this.hospitalName = hospitalName;
+        this.major_bit_mask = major_bit_flag;
+    }
 
     public Hospital(String hospital_name) {
         this.hospitalName = hospital_name;
@@ -43,6 +47,18 @@ public class Hospital {
     public String getHospitalName(){
         return hospitalName;
     }
+    public static int getBitmaskByMajorTag(String major) {
+        if (major.equals(MAJOR1_TAG)) return MAJOR1;
+        else if (major.equals(MAJOR2_TAG)) return MAJOR2;
+        else if (major.equals(MAJOR3_TAG)) return MAJOR3;
+        else if (major.equals(MAJOR4_TAG)) return MAJOR4;
+        else if (major.equals(MAJOR5_TAG)) return MAJOR5;
+        else if (major.equals(MAJOR6_TAG)) return MAJOR6;
+        else if (major.equals(MAJOR7_TAG)) return MAJOR7;
+        else if (major.equals(MAJOR8_TAG)) return MAJOR8;
+        return 0;
+    }
+
     public int getBitmask() {
         return this.major_bit_mask;
     }

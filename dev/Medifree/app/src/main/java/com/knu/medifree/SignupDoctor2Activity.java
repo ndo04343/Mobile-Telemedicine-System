@@ -19,6 +19,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.knu.medifree.model.Hospital;
+import com.knu.medifree.model.User;
 import com.knu.medifree.util.DBManager;
 
 import java.util.ArrayList;
@@ -40,15 +41,18 @@ public class SignupDoctor2Activity<database> extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-
+        // Hospital Name Spinner
         Spinner hospitalNameSpinner=(Spinner)findViewById(R.id.hospital_Name);
-        arrayAdapter = new ArrayAdapter<String>(this
+        arrayAdapter = new ArrayAdapter<String>(
+                this
                 , android.R.layout.simple_spinner_item
                 , (String[]) getResources().getStringArray(R.array.spinner_hospital)
         );
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         hospitalNameSpinner.setAdapter(arrayAdapter);
         hospitalNameSpinner.setSelection(0);
+
+        // Major Name Spinner
         Spinner majorSpinner = (Spinner) findViewById(R.id.major);
         arrayAdapter = new ArrayAdapter<String>(this
                 , android.R.layout.simple_spinner_item
@@ -57,6 +61,7 @@ public class SignupDoctor2Activity<database> extends AppCompatActivity {
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         majorSpinner.setAdapter(arrayAdapter);
         majorSpinner.setSelection(0);
+
 
         // 병원_메이저 보내주는 버튼 객체 할당
         btn_reg = (ImageButton) findViewById(R.id.d_reg_btn_reg);
@@ -71,6 +76,9 @@ public class SignupDoctor2Activity<database> extends AppCompatActivity {
                 FirebaseUser user = mAuth.getCurrentUser();
                 String uid = user.getUid();
                 insert_user_Information(uid);
+                Intent intent = getIntent();
+                DBManager.initDBManager(intent.getStringExtra("user_id"), User.TYPE_DOCTOR);
+                startActivity(new Intent(getApplicationContext(), DHomeActivity.class));
             }
         });
 
@@ -128,41 +136,26 @@ public class SignupDoctor2Activity<database> extends AppCompatActivity {
 
     private void insert_doctor_to_hospital(String uid) {
         String hospital_Name = ((Spinner)findViewById((R.id.hospital_Name))).getSelectedItem().toString();
-        String hospital_id = null;
         String major = ((Spinner)findViewById(R.id.major)).getSelectedItem().toString();
-        ArrayList<Hospital> hospitalList = DBManager.getHospitals();
-
-
-        for (int i = 0 ;i < hospitalList.size() ;i ++) {
-            if (hospital_Name.equals(hospitalList.get(i).getHospitalName())) {
-                hospital_id = hospitalList.get(i).getHospitalId();
-            }
-        }
+        String hospital_id = DBManager.getHospitalId(hospital_Name);
 
         if (hospital_id == null) {
             // There is not corresponding hospital in DB.
-            DBManager.createHospital(new Hospital(hospital_Name));
-
+            DBManager.createHospital(new Hospital(hospital_Name, Hospital.getBitmaskByMajorTag(major)));
         } else {
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            db.collection("Hospital").document(hospital_id)
-                    .update(major, FieldValue.arrayUnion(uid))
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void avoid) {
-                            //Doctor 홈화면으로 이동.
-                            startToast(hospital_Name + "의 첫 번째 의사입니다.");
-                            Intent intent = new Intent(getApplicationContext(), DHomeActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            startToast(hospital_Name+"에 합류합니다.");
-                        }
-                    });
+            DBManager.deleteHospital(hospital_id);
+            ArrayList<Hospital> hospitals = DBManager.getHospitals();
+            for (int i = 0 ;i < hospitals.size(); i ++) {
+                if (hospital_id.equals(hospitals.get(i).getHospitalId())) {
+                    int major_bit_mask = hospitals.get(i).getBitmask();
+
+                    if ((major_bit_mask & Hospital.getBitmaskByMajorTag(major)) != 0) return;
+                    else {
+                        major_bit_mask += Hospital.getBitmaskByMajorTag(major);
+                        DBManager.createHospital(new Hospital(hospital_Name, major_bit_mask));
+                    }
+                }
+            }
         }
     }
 

@@ -53,7 +53,6 @@ import static com.google.firebase.firestore.core.UserData.Source.Update;
 public class PHomeActivity extends AppCompatActivity {
     private String uid;
     private Button btn_reg, btn_diag;
-    private ImageButton btn_refresh;
     private ListView listview_res;
 
     private FirebaseFirestore db;
@@ -101,7 +100,6 @@ public class PHomeActivity extends AppCompatActivity {
         // 객체 할당
         btn_reg = (Button) findViewById(R.id.p_home_btn_reg);
         btn_diag = (Button) findViewById(R.id.p_home_btn_diag);
-        btn_refresh = (ImageButton) findViewById(R.id.p_home_btn_refresh);
         listview_res = (ListView) findViewById(R.id.p_home_listview);
 
         btn_reg.setOnClickListener(new View.OnClickListener() {
@@ -115,14 +113,6 @@ public class PHomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // 진료실 버튼을 눌렀을 때
-                // 현재 상황 :
-                // TODO :
-            }
-        });
-        btn_refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 새로고침 버튼을 눌렀을 때
                 // 현재 상황 :
                 // TODO :
             }

@@ -35,19 +35,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
-            android:id="@+id/p_home_btn_refresh"
-            android:layout_width="39dp"
-            android:layout_height="52dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginBottom="12dp"
-            android:background="#FFFFFF"
-            android:baselineAligned="false"
-            android:src="@drawable/refresh" />
-
     </LinearLayout>
 
 

@@ -1,6 +1,7 @@
 package com.knu.medifree;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,8 +13,13 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +30,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.knu.medifree.model.Reservation;
 import com.knu.medifree.util.DBManager;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.StringTokenizer;
 
 public class PSeltimeActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -36,13 +48,19 @@ public class PSeltimeActivity extends AppCompatActivity implements View.OnClickL
     private String cur_uid;
     private String date;
     private String doctor_name;
+
+    static int year;
+    static int monthOfYear;
+    static int dayOfMonth;
+    static private boolean check1,check2;
+    static private String time;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_p_sel_time);
 
         Intent intent = getIntent();
-
+        check1=false;check2=false;
         TextView textView = (TextView)findViewById(R.id.who_select);
         textView.setText(intent.getStringExtra("hospital_name")+" " +intent.getStringExtra("name")+" is selected");
 
@@ -51,6 +69,52 @@ public class PSeltimeActivity extends AppCompatActivity implements View.OnClickL
         doctor_id = intent.getExtras().getString("id");
         // Debug
         Log.e("D_name : ",doctor_name);
+
+        TextView patient_date = (TextView) findViewById(R.id.p_res_date2);
+        DatePickerDialog.OnDateSetListener callbackMethod = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                patient_date.setText(year + "/" + monthOfYear + "/" + dayOfMonth);
+                PSeltimeActivity.year=year;
+                PSeltimeActivity.monthOfYear=monthOfYear;
+                PSeltimeActivity.dayOfMonth=dayOfMonth;
+                PSeltimeActivity.check1 =true;
+            }
+        };
+        patient_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Date currentTime = Calendar.getInstance().getTime();
+                String current = new SimpleDateFormat("yyyy MM dd", Locale.getDefault()).format(currentTime);
+                StringTokenizer st = new StringTokenizer(current);
+                DatePickerDialog dialog = new DatePickerDialog(PSeltimeActivity.this, callbackMethod, Integer.parseInt(st.nextToken()),
+                        Integer.parseInt(st.nextToken()) , Integer.parseInt(st.nextToken()));
+                dialog.show();
+            }
+        });
+
+        //라디오 그룹 부분
+        date = null;
+        RadioGroup group=(RadioGroup)findViewById(R.id.time_list);
+        RadioButton time10 = (RadioButton) findViewById(R.id.ten_oclock);
+        RadioButton time11 = (RadioButton) findViewById(R.id.eleven_oclock);
+        RadioButton time15 = (RadioButton) findViewById(R.id.fifthteen_oclock);
+        RadioButton time16 = (RadioButton) findViewById(R.id.sixteen_oclock);
+        time10.setOnClickListener(RadioClick);
+        time11.setOnClickListener(RadioClick);
+        time15.setOnClickListener(RadioClick);
+        time16.setOnClickListener(RadioClick);
+
+        group.setOnCheckedChangeListener(checkedChangeListener);
+        //시간 골라서 보내는 거임!
+
+//        Spinner patient_time = (Spinner) findViewById(R.id.p_res_time);
+//        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
+//                (String[]) getResources().getStringArray(R.array.spinner_time));
+//        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        patient_time.setAdapter(arrayAdapter);
+//        patient_time.setSelection(0);
+
 
         // 객체 할당
         /* 일단 이 Acitivity 흐름
@@ -67,30 +131,52 @@ public class PSeltimeActivity extends AppCompatActivity implements View.OnClickL
         cur_uid = user.getUid();
 
         // Reservation 객체 생성 , date 는 임시로 넣음.
-        date = "2020/12/16/11/00";
-        Reservation res = new Reservation(cur_uid, doctor_id, date,false);
-
+//        date = "2020/12/16/11/00";
+//        Reservation res = new Reservation(cur_uid, doctor_id, date,false);
 
         p_sel_time_btn_diag = (Button) findViewById(R.id.p_sel_time_btn_diag);
         p_sel_time_btn_diag.setOnClickListener(this);
+
+
+
     }
+    RadioButton.OnClickListener RadioClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            PSeltimeActivity.time = v.getTag().toString();
+            check2 = true;
+            Log.d("TAG", "onClick: " + PSeltimeActivity.time);
+        }
+    };
+    RadioGroup.OnCheckedChangeListener checkedChangeListener = new RadioGroup.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+            Log.d("TAG", "onCheckedChanged: "+ checkedId);
+        }
+    };
     // 예약 주고 받는 부분은 어디서 하는지 모르겠어서 일단 킵 합니당...
     @Override
     public void onClick(View v) {
+        //예외처리해야함!!!
         /* 밑에 time dialog가 먼지몰라서 일단 주석해놓음*/
         /* 예약 누르면 PHomeActivity로 옮기면서 예약메소드 실행 */
 
-        // Reservation 객체 생성 , date 는 임시로 넣음.
-        date = "2020/12/16/11/00";
-        Reservation res = new Reservation(cur_uid, doctor_id, date,false);
-        // 예약 메소드 실행
-        DBManager.createReservation(res);
-        //PHomeActivity로가면서 요청 기다리기
-        startToast("예약요청을 성공하였습니다. 요청이 완료되면 예약목록에 추가됩니다.");
-        Intent intent2 = new Intent(getApplicationContext(), PHomeActivity.class);
-        startActivity(intent2);
-        finish();
-
+        if(!check1 && !check2  ){
+            startToast("시간을 선택해 주세요.");}
+        else {
+            // Reservation 객체 생성 , date 는 임시로 넣음.
+            date = String.valueOf(PSeltimeActivity.year)+"/"+String.valueOf(PSeltimeActivity.monthOfYear)+"/"+
+                    String.valueOf(PSeltimeActivity.dayOfMonth)+"/"+PSeltimeActivity.time;
+            Reservation res = new Reservation(cur_uid, doctor_id, date, false);
+            Log.d("TAG", "onClick: "+res);
+            // 예약 메소드 실행
+            DBManager.createReservation(res);
+            //PHomeActivity로가면서 요청 기다리기
+            startToast(res.getDate()+" 예약요청을 성공하였습니다. 요청이 완료되면 예약목록에 추가됩니다.");
+            Intent intent2 = new Intent(getApplicationContext(), PHomeActivity.class);
+            startActivity(intent2);
+            finish();
+        }
 
 
 //        switch (v.getId()) {

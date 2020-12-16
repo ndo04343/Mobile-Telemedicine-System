@@ -67,21 +67,15 @@ public class PSelmajorActivity extends Activity {
                 break;
             }
         }
-
+        ArrayList<String> tmp = new ArrayList<>();
         //  log.e로 major 이름들 확인.
         for (int i = 0 ;i < list_majors.size(); i ++) {
             Log.e("List of Hospital", list_majors.get(i));
+            tmp.add(list_majors.get(i));
         }
         // dunp majors 만들어서 사용하는 부분임.
-        ArrayList<String> tmp = new ArrayList<>();
-        tmp.add("피부과");
-        tmp.add("산부인과");
-        tmp.add("정형외과");
-        tmp.add("내과");
-        tmp.add("비뇨기과");
-        tmp.add("신경외과");
-        tmp.add("안과");
-        tmp.add("치과");
+
+
 //        tmp.add("123");
 //        tmp.add("123");tmp.add("123");tmp.add("123");tmp.add("123");tmp.add("123");
         // tmp부분 지우고 넣으면 됨

@@ -24,7 +24,7 @@
             android:layout_marginTop="23dp"
             android:layout_marginBottom="15dp"
             android:baselineAligned="false"
-            android:text="Select Doctor"
+            android:text="Select Major"
             android:textColor="#0070C0"
             android:textSize="40sp"
             android:textStyle="bold" />
@@ -37,14 +37,14 @@
         android:gravity="center_horizontal"
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
+
         <TextView
             android:id="@+id/p_sel_doc_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="삼성병원 is selected"
             android:layout_marginTop="120dp"
-            android:paddingStart="40dp"
             android:layout_marginBottom="30dp"
+            android:paddingStart="40dp"
             android:textSize="18sp" />
         <ListView
             android:id="@+id/listview_major"

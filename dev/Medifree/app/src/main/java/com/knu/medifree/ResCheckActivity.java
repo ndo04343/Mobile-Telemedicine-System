@@ -31,6 +31,7 @@ import java.util.List;
 public class ResCheckActivity extends AppCompatActivity {
     public Button first_btn, origin_btn;
     public ImageButton dhome_btn;
+    private Button btn_true,btn_false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,8 +40,8 @@ public class ResCheckActivity extends AppCompatActivity {
 
         first_btn = (Button) findViewById(R.id.d_req_first);
         dhome_btn=(ImageButton)findViewById(R.id.backtodhome);
-
-
+        btn_true = (Button)findViewById(R.id.btn_true);
+        btn_false = (Button)findViewById(R.id.btn_true);
         first_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,6 +55,19 @@ public class ResCheckActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), DHomeActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        btn_true.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        btn_false.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
 

@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.knu.medifree.util.DBManager;
+
 public class DHomeActivity extends AppCompatActivity {
     ImageButton btn_app;
     ImageButton btn_office;
@@ -53,7 +55,7 @@ public class DHomeActivity extends AppCompatActivity {
                 // 새로고침 버튼을 눌렀을 때
                 // 현재 상황 :
                 Intent intent = new Intent(getApplicationContext(), ResCheckActivity.class);
-                startActivity(intent);
+                DBManager.startActivityWithReservationReading(DHomeActivity.this, intent);
                 // TODO :
 
             }

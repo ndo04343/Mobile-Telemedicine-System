@@ -45,25 +45,27 @@
                 android:textSize="15dp" />
         </LinearLayout>
 
-        <Button
-            android:layout_width="82dp"
-            android:layout_height="45dp"
-            android:layout_gravity="center"
-            android:layout_marginStart="7dp"
-            android:background="@drawable/button_round2"
-            android:text="수락"
-            android:textColor="#FFFFFF"
-            android:textSize="17sp"
-            android:textStyle="bold" />
+    <Button
+        android:id="@+id/btn_true"
+        android:layout_width="82dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="7dp"
+        android:background="@drawable/button_round2"
+        android:text="수락"
+        android:textColor="#FFFFFF"
+        android:textSize="17sp"
+        android:textStyle="bold" />
 
-        <Button
-            android:layout_width="82dp"
-            android:layout_height="45dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="7dp"
-            android:background="@drawable/button_round"
-            android:text="거절"
-            android:textSize="17sp" />
+    <Button
+        android:id="@+id/btn_false"
+        android:layout_width="82dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="7dp"
+        android:background="@drawable/button_round"
+        android:text="거절"
+        android:textSize="17sp" />
 
     </LinearLayout>
 </LinearLayout>

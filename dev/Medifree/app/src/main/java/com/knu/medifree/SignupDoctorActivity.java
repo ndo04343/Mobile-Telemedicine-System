@@ -6,12 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,16 +18,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class DRegActivity extends AppCompatActivity implements View.OnClickListener {
+public class SignupDoctorActivity extends AppCompatActivity implements View.OnClickListener {
     ImageButton btn_next;
     private FirebaseAuth mAuth;
     private EditText emailEditView, passwordEditView, pwChkEditView, hospitalNameEditView;
@@ -38,7 +31,7 @@ public class DRegActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_d_reg);
+        setContentView(R.layout.activity_signup_doctor);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -116,7 +109,7 @@ public class DRegActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onSuccess(Void avoid) {
                         //uid정보에 다음 페이지로 넘어가 hospital & major에 넣기.
-                        Intent intent = new Intent(getApplicationContext(), DRegNextActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), SignupDoctor2Activity.class);
                         intent.putExtra("name",name);
                         intent.putExtra("phone",phone);
                         startActivity(intent);

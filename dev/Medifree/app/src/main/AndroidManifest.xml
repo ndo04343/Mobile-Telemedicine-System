@@ -69,10 +69,10 @@
         <activity android:name=".PSeldocAgainActivity" />
         <activity android:name=".PSeltimeActivity" />
         <activity android:name=".ResCheckActivity2" />
-        <activity android:name=".DRegActivity" />
-        <activity android:name=".DRegNextActivity" />
+        <activity android:name=".SignupDoctorActivity" />
+        <activity android:name=".SignupDoctor2Activity" />
         <activity android:name=".DResNextActivity" />
-        <activity android:name=".PRegActivity" />
+        <activity android:name=".SignupPatientActivity" />
         <activity android:name=".TypeActivity" />
         <activity android:name=".DHomeActivity" />
         <activity android:name=".DAppActivity" />

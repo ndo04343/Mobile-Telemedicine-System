@@ -2,44 +2,30 @@ package com.knu.medifree;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.Query;
+import com.knu.medifree.model.Hospital;
+import com.knu.medifree.util.DBManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class DRegNextActivity<database> extends AppCompatActivity {
+public class SignupDoctor2Activity<database> extends AppCompatActivity {
     ImageButton btn_reg;
     private FirebaseAuth mAuth;
     private Spinner hospitalNameSpinner,majorSpinner;
@@ -49,19 +35,25 @@ public class DRegNextActivity<database> extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_d_reg_next);
+        setContentView(R.layout.activity_signup_doctor_next);
 
 
         mAuth = FirebaseAuth.getInstance();
 
 
         Spinner hospitalNameSpinner=(Spinner)findViewById(R.id.hospital_Name);
-        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, (String[]) getResources().getStringArray(R.array.spinner_hospital));
+        arrayAdapter = new ArrayAdapter<String>(this
+                , android.R.layout.simple_spinner_item
+                , (String[]) getResources().getStringArray(R.array.spinner_hospital)
+        );
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         hospitalNameSpinner.setAdapter(arrayAdapter);
         hospitalNameSpinner.setSelection(0);
         Spinner majorSpinner = (Spinner) findViewById(R.id.major);
-        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, (String[]) getResources().getStringArray(R.array.spinner_major));
+        arrayAdapter = new ArrayAdapter<String>(this
+                , android.R.layout.simple_spinner_item
+                , (String[]) getResources().getStringArray(R.array.spinner_major)
+        );
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         majorSpinner.setAdapter(arrayAdapter);
         majorSpinner.setSelection(0);
@@ -97,10 +89,9 @@ public class DRegNextActivity<database> extends AppCompatActivity {
 
     //생성된 uid 및 나머지 정보들 firestore에 넣는 작업.
     private void insert_user_Information(final String uid) {
-
-
         String hospital_Name = ((Spinner)findViewById((R.id.hospital_Name))).getSelectedItem().toString();
         String major = ((Spinner)findViewById(R.id.major)).getSelectedItem().toString();
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Intent intent=getIntent();
         String name=intent.getStringExtra("name");
@@ -112,6 +103,7 @@ public class DRegNextActivity<database> extends AppCompatActivity {
         user.put("phoneNum",phone);
         user.put("Hospital_Name",hospital_Name);
         user.put("Major",major);
+
         //실제 firestore에 추가하는 작업, add=> 자동으로 문서id(문서이름)를 만들어줌
 
         // Add a new document with a generated ID
@@ -136,41 +128,42 @@ public class DRegNextActivity<database> extends AppCompatActivity {
 
     private void insert_doctor_to_hospital(String uid) {
         String hospital_Name = ((Spinner)findViewById((R.id.hospital_Name))).getSelectedItem().toString();
+        String hospital_id = null;
         String major = ((Spinner)findViewById(R.id.major)).getSelectedItem().toString();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        ArrayList<Hospital> hospitalList = DBManager.getHospitals();
 
 
-        //Map<String, Object> dataa = new HashMap<>();
-        //dataa.put(major, true);
+        for (int i = 0 ;i < hospitalList.size() ;i ++) {
+            if (hospital_Name.equals(hospitalList.get(i).getHospitalName())) {
+                hospital_id = hospitalList.get(i).getHospitalId();
+            }
+        }
 
-//        db.collection("Hospital").document(hospital_Name)
-//                .set(dataa, SetOptions.merge());
+        if (hospital_id == null) {
+            // There is not corresponding hospital in DB.
+            DBManager.createHospital(new Hospital(hospital_Name));
 
-        //Map<String, Object> data = new HashMap<>();
-        //data.put(major, true);
-
-        //db.collection(hospital_Name).document(major)
-        //        .set(data, SetOptions.merge());
-
-        db.collection("Hospital").document(hospital_Name)
-                .update(major, FieldValue.arrayUnion(uid))
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void avoid) {
-                        //Doctor 홈화면으로 이동.
-                        startToast("회원가입이 완료되었습니다.");
-                        Intent intent = new Intent(getApplicationContext(), DHomeActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        startToast("정보저장에 실패하였습니다2.");
-
-                    }
-                });
+        } else {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("Hospital").document(hospital_id)
+                    .update(major, FieldValue.arrayUnion(uid))
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void avoid) {
+                            //Doctor 홈화면으로 이동.
+                            startToast(hospital_Name + "의 첫 번째 의사입니다.");
+                            Intent intent = new Intent(getApplicationContext(), DHomeActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            startToast(hospital_Name+"에 합류합니다.");
+                        }
+                    });
+        }
     }
 
 }

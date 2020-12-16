@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:backgroundTint="#FFFFFF"
-    tools:context=".PRegActivity">
+    tools:context=".SignupPatientActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
             app:srcCompat="@drawable/patient_logo" />
 
         <EditText
-            android:id="@+id/email_P"
+            android:id="@+id/signup_patient_email"
             android:layout_width="270dp"
             android:layout_height="38dp"
             android:layout_marginTop="50dp"
@@ -35,14 +35,14 @@
             android:ems="10"
             android:hint="  E-mail"
             android:inputType="textEmailAddress"
-            app:layout_constraintBottom_toTopOf="@id/password_P"
+            app:layout_constraintBottom_toTopOf="@id/signup_patient_password"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/password_P"
+            android:id="@+id/signup_patient_password"
             android:layout_width="270dp"
             android:layout_height="38dp"
             android:layout_marginTop="10dp"
@@ -50,14 +50,14 @@
             android:ems="10"
             android:hint="  Password"
             android:inputType="textPassword"
-            app:layout_constraintBottom_toTopOf="@id/passwordCheck_P"
+            app:layout_constraintBottom_toTopOf="@id/signup_patient_password_again"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/email_P" />
+            app:layout_constraintTop_toBottomOf="@+id/signup_patient_email" />
 
         <EditText
-            android:id="@+id/passwordCheck_P"
+            android:id="@+id/signup_patient_password_again"
             android:layout_width="270dp"
             android:layout_height="38dp"
             android:layout_marginTop="10dp"
@@ -69,23 +69,23 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password_P" />
+            app:layout_constraintTop_toBottomOf="@+id/signup_patient_password" />
 
         <EditText
-            android:id="@+id/name_P"
+            android:id="@+id/signup_patient_name"
             android:layout_width="270dp"
             android:layout_height="38dp"
             android:layout_marginTop="10dp"
             android:background="#F2F2F2"
             android:ems="10"
             android:hint="  Name"
-            app:layout_constraintBottom_toTopOf="@+id/email_P"
+            app:layout_constraintBottom_toTopOf="@+id/signup_patient_email"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/phone_P"
+            android:id="@+id/signup_patient_tel"
             android:layout_width="270dp"
             android:layout_height="38dp"
             android:layout_marginTop="10dp"
@@ -93,13 +93,13 @@
             android:ems="10"
             android:hint="  Tel."
             android:inputType="phone"
-            app:layout_constraintBottom_toTopOf="@+id/password_P"
+            app:layout_constraintBottom_toTopOf="@+id/signup_patient_password"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/email_P" />
+            app:layout_constraintTop_toBottomOf="@+id/signup_patient_email" />
 
         <EditText
-            android:id="@+id/address_P"
+            android:id="@+id/signup_patient_address"
             android:layout_width="270dp"
             android:layout_height="38dp"
             android:layout_marginTop="10dp"
@@ -107,13 +107,13 @@
             android:ems="10"
             android:hint="  Address"
             android:inputType="textPostalAddress"
-            app:layout_constraintBottom_toTopOf="@+id/passwordCheck_P"
+            app:layout_constraintBottom_toTopOf="@+id/signup_patient_password_again"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password_P" />
+            app:layout_constraintTop_toBottomOf="@+id/signup_patient_password" />
 
         <ImageButton
-            android:id="@+id/p_reg_btn_reg"
+            android:id="@+id/signup_patient_btn_reg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

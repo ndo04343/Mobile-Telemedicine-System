@@ -93,7 +93,6 @@ public class DResNextActivity extends AppCompatActivity {
 
     public void onClick(View view) {
 
-
         if (view.getId() == R.id.p_res_no) {
             Intent intent=new Intent(DResNextActivity.this,DAppActivity.class);
             startActivity(intent);

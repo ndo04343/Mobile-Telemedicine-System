@@ -23,6 +23,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.knu.medifree.model.AuthTool;
+import com.knu.medifree.model.User;
+import com.knu.medifree.util.DBManager;
 
 public class LoginActivity extends AppCompatActivity {
     // View
@@ -41,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        DBManager.refreshHospitals();
 
         // Controller
         activity = LoginActivity.this;
@@ -62,9 +65,6 @@ public class LoginActivity extends AppCompatActivity {
 
         // Listeners
         btn_signin.setOnClickListener(new View.OnClickListener() {
-            /*
-            *  Sign in
-            * */
             @Override
             public void onClick(View view) {
                 /* Go PHomeActivity */
@@ -74,13 +74,10 @@ public class LoginActivity extends AppCompatActivity {
                 String password = et_password.getText().toString();
 
                 // Go in below method
-                SignUp_P(email, password);
+                signin(email, password);
             }
         });
         btn_signup.setOnClickListener(new View.OnClickListener() {
-            /*
-             *  Sign up
-             * */
             @Override
             public void onClick(View view) {
                 // Go TypeActivity
@@ -91,7 +88,8 @@ public class LoginActivity extends AppCompatActivity {
 
     } // End of onCreate()
 
-    private void SignUp_P(String email, String password) {
+    // completed
+    private void signin(String email, String password) {
         if (email.length() > 0 && password.length() > 0 ){
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -116,20 +114,18 @@ public class LoginActivity extends AppCompatActivity {
                                                 String userType= document.getData().get("userType").toString();
                                                 if ( userType.equals("Patient")){
                                                     //patient일때 patient 홈 화면으로 간다.
-                                                    Intent intent = new Intent(getApplicationContext(), PHomeActivity.class);
 
-                                                    // Addition
-                                                    intent.putExtra("user_id", uid);
-                                                    startActivity(intent);
-                                                    finish();
+                                                    Intent intent = new Intent(getApplicationContext(), PHomeActivity.class);
+                                                    DBManager.initDBManager(uid, User.TYPE_PATIENT);
+                                                    DBManager.startActivityWithReservationReading(LoginActivity.this, intent);
+                                                    // Auto Termination
                                                 }else {
                                                     //Doctor라면 Doctor홈화면으로 간다.
                                                     Intent intent = new Intent(getApplicationContext(), DHomeActivity.class);
-
-                                                    // Addition
-                                                    intent.putExtra("user_id", uid);
+                                                    DBManager.initDBManager(uid, User.TYPE_DOCTOR);
                                                     startActivity(intent);
                                                     finish();
+                                                    // Auto Termination
                                                 }
 
                                             } else {

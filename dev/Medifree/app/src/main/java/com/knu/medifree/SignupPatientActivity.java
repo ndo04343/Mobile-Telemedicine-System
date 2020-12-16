@@ -5,9 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -20,39 +18,42 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.knu.medifree.model.User;
+import com.knu.medifree.util.DBManager;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class PRegActivity extends AppCompatActivity {
-    // 인스턴스 생성
+public class SignupPatientActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private String user_id;
-    //Button
-    ImageButton btn_reg;
+    private ImageButton btn_reg;
+    private EditText et_email, et_password, et_password_again, et_name, et_tel, et_address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_p_reg);
-        // Auth 인스턴스 생성
-        mAuth = FirebaseAuth.getInstance();
+        setContentView(R.layout.activity_signup_patient);
 
-        // 객체 할당
-        btn_reg = (ImageButton) findViewById(R.id.p_reg_btn_reg);
+        mAuth = FirebaseAuth.getInstance();
+        btn_reg = (ImageButton) findViewById(R.id.signup_patient_btn_reg);
+        et_email = (EditText) findViewById(R.id.signup_patient_email);
+        et_password = (EditText) findViewById(R.id.signup_patient_password);
+        et_password_again = (EditText) findViewById(R.id.signup_patient_password_again);
+        et_name = (EditText) findViewById(R.id.signup_patient_name);
+        et_tel = (EditText) findViewById(R.id.signup_patient_tel);
+        et_address = (EditText) findViewById(R.id.signup_patient_address);
 
         // 클릭 리스너 할당
         btn_reg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 회원 가입 버튼을 눌렀을 때
+                // 계정 생성후 PHome으로 이동
                 createAccount_Patient();
-                // 현재 상황 : PHomeActivity로 이동
-
             }
         });
+
     }
 
 
@@ -64,9 +65,9 @@ public class PRegActivity extends AppCompatActivity {
     }
 
     private void createAccount_Patient() {
-        String email = ((TextView) findViewById(R.id.email_P)).getText().toString();
-        String password = ((TextView) findViewById(R.id.password_P)).getText().toString();
-        String passwordCheck = ((TextView) findViewById(R.id.passwordCheck_P)).getText().toString();
+        String email = ((TextView) findViewById(R.id.signup_patient_email)).getText().toString();
+        String password = ((TextView) findViewById(R.id.signup_patient_password)).getText().toString();
+        String passwordCheck = ((TextView) findViewById(R.id.signup_patient_password_again)).getText().toString();
 
         if (email.length() > 0 && password.length() > 0 && passwordCheck.length() > 0){
             if (password.equals(passwordCheck)) {
@@ -104,9 +105,9 @@ public class PRegActivity extends AppCompatActivity {
     //생성된 uid 및 나머지 정보들 firestore에 넣는 작업.
     private void insert_user_Information(String uid) {
 
-        String name = ((EditText)findViewById(R.id.name_P)).getText().toString();
-        String phone = ((EditText)findViewById((R.id.phone_P))).getText().toString();
-        String address = ((EditText)findViewById(R.id.address_P)).getText().toString();
+        String name = ((EditText)findViewById(R.id.signup_patient_name)).getText().toString();
+        String phone = ((EditText)findViewById((R.id.signup_patient_tel))).getText().toString();
+        String address = ((EditText)findViewById(R.id.signup_patient_address)).getText().toString();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         Map<String, Object> user = new HashMap<>();
@@ -125,8 +126,8 @@ public class PRegActivity extends AppCompatActivity {
                     public void onSuccess(Void avoid) {
                         //홈화면으로 이동.
                         Intent intent = new Intent(getApplicationContext(), PHomeActivity.class);
-                        intent.putExtra("user_id", user_id);
-                        startActivity(intent);
+                        DBManager.initDBManager(uid, User.TYPE_PATIENT);
+                        DBManager.startActivityWithReservationReading(SignupPatientActivity.this, intent);
 
                         // Addition
                         LoginActivity act_login = (LoginActivity) LoginActivity.activity;
@@ -141,6 +142,5 @@ public class PRegActivity extends AppCompatActivity {
                         startToast("정보저장에 실패하였습니다.");
                     }
                 });
-
     }
 }

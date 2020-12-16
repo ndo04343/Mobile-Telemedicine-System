@@ -33,10 +33,9 @@ public class DBManager extends Thread {
     private static DateFormat dateformat;
 
     // Encapsulate target
-    private static ArrayList<Reservation> reservations_list;
-    private static ArrayList<Hospital> hospitals_list;
-    private static ArrayList<String> major_list;
-    private static ArrayList<Doctor> doctors_list;
+    private static ArrayList<Reservation> reservations_list = new ArrayList<Reservation>();
+    private static ArrayList<Hospital> hospitals_list = new ArrayList<Hospital>();
+    private static ArrayList<Doctor> doctors_list = new ArrayList<Doctor>() ;
 
     // User info
     private static String uid;
@@ -53,6 +52,7 @@ public class DBManager extends Thread {
         DBManager.uid = uid;
         DBManager.utype = utype;
     }
+
 
     // Setter
     public static void createReservation(Reservation reservation)
@@ -96,12 +96,13 @@ public class DBManager extends Thread {
      *   DBManager.createHospital(hospital);
      *
      *   */
-    {
+     {
         // Return reservation_id
         Map<String, Object> resMap = new HashMap<>();
 
         // Create map
         resMap.put("name", hospital.getHospitalName());
+        resMap.put("major_mask", hospital.getBitmask());
 
         // Set
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -121,39 +122,6 @@ public class DBManager extends Thread {
                     }
                 });
     }
-
-    public static void createMajor(String hospital_id, String majorName)
-    /*  Firestore DB 에서 해당하는 Hospital 객체에서 Major collection 진입후 document를 추가합니다.
-     *   Usage :
-     *   DBManager.createHospital(hospital_id, "외과");
-     *
-     *   */
-    {
-        // Return reservation_id
-        Map<String, Object> resMap = new HashMap<>();
-
-        // Create map
-        resMap.put("name", majorName);
-
-        // Set
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Hospital/" + hospital_id + "/Major")
-                .add(resMap)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.i("DBManager", documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.i("DBManager", "setReservation() error!", e);
-                    }
-                });
-    }
-
 
     // Getter
     public static ArrayList<Reservation> getReservations()
@@ -180,17 +148,7 @@ public class DBManager extends Thread {
         return DBManager.hospitals_list;
     }
 
-    public static ArrayList<String> getMajors()
-    /*  Firestore DB 에서
-     *   이전 액티비티에서 선택된 Hospital에 존재하는 Major들을 ArrayList<String> 타입으로 받아옵니다.
-     *   반드시, 이전 액티비티에서 startActivityWithMajorReading() 메소드가 선행되어야 합니다.
-     *   Usage :
-     *   ArrayList<String> majorList = getMajors()
-     *
-     *   */
-    {
-        return DBManager.major_list;
-    }
+
     public static ArrayList<Doctor> getDoctors()
     /*  Firestore DB 에서
      *   이전 액티비티에서 선택된 Hospital와 Major에 존재하는 Doctor 객체들을 ArrayList 타입으로 받아옵니다.
@@ -202,6 +160,7 @@ public class DBManager extends Thread {
     {
         return DBManager.doctors_list;
     }
+
 
     // Activity Starter
     public static void startActivityWithReservationReading(Activity from, Intent to)
@@ -292,32 +251,7 @@ public class DBManager extends Thread {
                         hospitals_list.add(new Hospital(
                                 document.getString("name")
                                 , document.getId()
-                        ));
-                    }
-                    Log.i("HEESUNG", "Reservation DB Updeate complete.");
-                    from.startActivity(to);
-                    from.finish();
-                }
-            }
-        });
-    }
-
-    public static void startActivityWithMajorReading(String hospital_id, Activity from, Intent to) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference collectionReference = db.collection("Hospital/" + hospital_id + "/Major" );
-
-        Log.i("HEESUNG", "Waiting DB Callback...");
-        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    Log.i("HEESUNG", "Getting DB Callback...");
-                    major_list = new ArrayList<String>();
-
-                    // Critical section control
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        major_list.add(new String(
-                                document.getString("name")
+                                , Integer.valueOf(document.getString("major_mask"))
                         ));
                     }
                     Log.i("HEESUNG", "Reservation DB Updeate complete.");
@@ -333,7 +267,8 @@ public class DBManager extends Thread {
         CollectionReference collectionReference = db.collection("Profile");
         Query query = collectionReference
                 .whereEqualTo("Hospital_Name", hospital_name)
-                .whereEqualTo("Major", major_name);
+                .whereEqualTo("Major", major_name)
+                .whereEqualTo("userType", "Doctor");
 
         Log.i("HEESUNG", "Waiting DB Callback...");
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

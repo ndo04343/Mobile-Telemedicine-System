@@ -49,6 +49,7 @@ public class PSeltimeActivity extends AppCompatActivity implements View.OnClickL
     private String cur_uid;
     private String date;
     private String doctor_name;
+    private String patient_name;
     private String checkdate,currentdate;
     static int year;
     static int monthOfYear;
@@ -70,6 +71,8 @@ public class PSeltimeActivity extends AppCompatActivity implements View.OnClickL
         //intent를 통해 정보 받아오기
         doctor_name =intent.getExtras().getString("name");
         doctor_id = intent.getExtras().getString("id");
+        patient_name = DBManager.getPatientName();
+
         // Debug
         Log.e("D_name : ",doctor_name);
         Log.d("TAG", "onCreate: boolean "+check1+check2);
@@ -167,7 +170,7 @@ public class PSeltimeActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onClick(View v) {
 
-                Reservation res = new Reservation(cur_uid, doctor_id, date, false);
+                Reservation res = new Reservation(cur_uid, doctor_id, date, false,patient_name ,doctor_name);
                 Log.d("TAG", "onClick: "+res);
                 // 예약 메소드 실행
                 DBManager.createReservation(res);

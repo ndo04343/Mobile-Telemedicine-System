@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -37,17 +38,19 @@ public class DBManager extends Thread {
     private static ArrayList<Reservation> reservations_list = new ArrayList<Reservation>();
     private static ArrayList<Hospital> hospitals_list = new ArrayList<Hospital>();
     private static ArrayList<Doctor> doctors_list = new ArrayList<Doctor>() ;
+    private static String result_patient_name = new String();
+
 
     // User info
     private static String uid;
     private static int utype;
 
     public static void initDBManager(String uid, int utype)
-    /*  LoginActivity.class 에서 DBManager 초기화후 진입합니다(사용할 일 없습니다.)
-    *   Usage :
-    *   DBManager.initDBManger(user_id, User.TYPE_PATIENT);
-    *
-    *   */
+        /*  LoginActivity.class 에서 DBManager 초기화후 진입합니다(사용할 일 없습니다.)
+         *   Usage :
+         *   DBManager.initDBManger(user_id, User.TYPE_PATIENT);
+         *
+         *   */
     {
         dateformat = new SimpleDateFormat("yyyy/MM/dd/kk/mm");
         DBManager.uid = uid;
@@ -70,7 +73,8 @@ public class DBManager extends Thread {
         resMap.put("doctor_id", reservation.getDoctor_id());
         resMap.put("date", reservation.getDate());
         resMap.put("completed", reservation.isCompleted());
-
+        resMap.put("patient_name", reservation.getPatient_name());
+        resMap.put("doctor_name", reservation.getDoctor_name());
         // Set
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Reservation")
@@ -90,13 +94,13 @@ public class DBManager extends Thread {
     }
 
     public static void createHospital(Hospital hospital)
-    /*  Firestore DB 에 Hospital을 추가합니다.
-     *  Hospital 에서 name 필드만 형성되고, 각각의 Major 필드는 createMajor를 사용하셔야 됩니다.
-     *   Usage :
-     *   DBManager.createHospital(hospital);
-     *
-     *   */
-     {
+        /*  Firestore DB 에 Hospital을 추가합니다.
+         *  Hospital 에서 name 필드만 형성되고, 각각의 Major 필드는 createMajor를 사용하셔야 됩니다.
+         *   Usage :
+         *   DBManager.createHospital(hospital);
+         *
+         *   */
+    {
         // Return reservation_id
         Map<String, Object> resMap = new HashMap<>();
 
@@ -137,33 +141,33 @@ public class DBManager extends Thread {
     }
 
     public static ArrayList<Hospital> getHospitals()
-    /*  Firestore DB 에서
-     *   Hospital 객체들을 ArrayList 타입으로 받아옵니다.
-     *   반드시, 이전 액티비티에서 startActivityWithHospitalReading() 메소드가 선행되어야 합니다.
-     *   Usage :
-     *   ArrayList<Hospital> hospitalList = getHospital()
-     *
-     *   */
+        /*  Firestore DB 에서
+         *   Hospital 객체들을 ArrayList 타입으로 받아옵니다.
+         *   반드시, 이전 액티비티에서 startActivityWithHospitalReading() 메소드가 선행되어야 합니다.
+         *   Usage :
+         *   ArrayList<Hospital> hospitalList = getHospital()
+         *
+         *   */
     {
         return DBManager.hospitals_list;
     }
 
 
     public static ArrayList<Doctor> getDoctors()
-    /*  Firestore DB 에서
-     *   이전 액티비티에서 선택된 Hospital와 Major에 존재하는 Doctor 객체들을 ArrayList 타입으로 받아옵니다.
-     *   반드시, 이전 액티비티에서 startActivityWithMajorDoctor() 메소드가 선행되어야 합니다.
-     *   Usage :
-     *   ArrayList<Doctor> doctorList = getDoctors()
-     *
-     *   */
+        /*  Firestore DB 에서
+         *   이전 액티비티에서 선택된 Hospital와 Major에 존재하는 Doctor 객체들을 ArrayList 타입으로 받아옵니다.
+         *   반드시, 이전 액티비티에서 startActivityWithMajorDoctor() 메소드가 선행되어야 합니다.
+         *   Usage :
+         *   ArrayList<Doctor> doctorList = getDoctors()
+         *
+         *   */
     {
         return DBManager.doctors_list;
     }
 
     public static String getHospitalId(String hospital_name)
-    /*      Must use after startActivityWithHospitalReading() please.   */
-    /*      return : (Success : hospital_id), (Failure : null)          */
+        /*      Must use after startActivityWithHospitalReading() please.   */
+        /*      return : (Success : hospital_id), (Failure : null)          */
     {
         for (int i = 0 ;i < DBManager.hospitals_list.size() ;i ++)
             if (DBManager.hospitals_list.get(i).getHospitalName().equals(hospital_name))
@@ -171,6 +175,9 @@ public class DBManager extends Thread {
         return null;
     }
 
+    public static String getPatientName() {
+        return DBManager.result_patient_name;
+    }
 
     // Deleter
     public static void deleteHospital(String hospital_id) {
@@ -205,7 +212,7 @@ public class DBManager extends Thread {
      *
      *   */
     {
-        
+
         if (DBManager.utype == User.TYPE_DOCTOR) {
             // Query Setting
             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -222,7 +229,9 @@ public class DBManager extends Thread {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             reservations_list.add(new Reservation(
                                     document.getString("patient_id")
+                                    , document.getString("patient_name")
                                     , document.getString("doctor_id")
+                                    , document.getString("doctor_name")
                                     , document.getString("date")
                                     , document.getBoolean("completed")
                                     , document.getId()
@@ -250,7 +259,9 @@ public class DBManager extends Thread {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             reservations_list.add(new Reservation(
                                     document.getString("patient_id")
+                                    , document.getString("patient_name")
                                     , document.getString("doctor_id")
+                                    , document.getString("doctor_name")
                                     , document.getString("date")
                                     , document.getBoolean("completed")
                                     , document.getId()
@@ -324,6 +335,29 @@ public class DBManager extends Thread {
                     from.startActivity(to);
                     from.finish();
                 }
+            }
+        });
+    }
+
+    public static void startActivityWithPatientReading(String patient_id, Activity from, Intent to) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("Profile").document(patient_id);
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        DBManager.result_patient_name = document.getString("name");
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+                from.startActivity(to);
+                from.finish();
             }
         });
     }

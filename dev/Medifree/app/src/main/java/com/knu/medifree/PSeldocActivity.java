@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.knu.medifree.util.DBManager;
 import com.knu.medifree.model.Doctor;
@@ -28,7 +30,7 @@ public class PSeldocActivity extends Activity  {
 //    public Button selectdoctor;
     private String Doctor_name ;
     private String Doctor_id;
-
+    private FirebaseAuth mAuth;
     private ArrayList<Doctor> list_doctors = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,9 @@ public class PSeldocActivity extends Activity  {
                    -> 그 후 PSeltimeActivity로 넘어감.
          */
 
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        String cur_uid = user.getUid();
         // doctor를 Array list로 받아옴.
         list_doctors = DBManager.getDoctors();
         //for debug
@@ -59,7 +64,7 @@ public class PSeldocActivity extends Activity  {
             intent2.putExtra("name",Doctor_name);
             intent2.putExtra("id",Doctor_id);
             Log.d("TAG", "onCreate: doctorname " + Doctor_name+Doctor_id+getIntent().getExtras().getString("hospital_name"));
-            startActivity(intent2);
+            DBManager.startActivityWithPatientReading(cur_uid,PSeldocActivity.this, intent2);
 
             finish();
         });

@@ -11,13 +11,17 @@ public class Reservation implements Serializable {
     private String doctor_id;
     private String date;
     private boolean completed;
+    private String patient_name;
+    private String doctor_name;
     private String id;
 
     // Constructor
-    public Reservation(String patient_id, String Doctor_id, String date, Boolean completed) {
+    public Reservation(String patient_id, String Doctor_id, String date, Boolean completed,String patient_name, String doctor_name) {
         this.doctor_id = Doctor_id;
         this.date = date;
         this.patient_id = patient_id;
+        this.patient_name = patient_name;
+        this.doctor_name = doctor_name;
         this.completed = completed;
     }
     public Reservation(String patient_id, String doctor_id, String date) {
@@ -32,8 +36,10 @@ public class Reservation implements Serializable {
         this.patient_id = patient_id;
         this.completed = false;
     }
-    public Reservation(String patient_id, String Doctor_id, String date, Boolean completed, String res_id) {
+    public Reservation(String patient_id,String Patient_name, String Doctor_id, String Doctor_name,String date, Boolean completed, String res_id) {
         this.doctor_id = Doctor_id;
+        this.doctor_name =Doctor_name;
+        this.patient_name = Patient_name;
         this.date = date;
         this.patient_id = patient_id;
         this.completed = completed;
@@ -82,6 +88,12 @@ public class Reservation implements Serializable {
         this.id = id;
     }
 
+    public String getPatient_name( ) {
+        return patient_name;
+    }
+    public String getDoctor_name( ) {
+        return doctor_name;
+    }
     @Override
     public String toString() {
         return "Reservation{" +

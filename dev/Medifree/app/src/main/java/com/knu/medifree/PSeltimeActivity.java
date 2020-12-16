@@ -44,7 +44,7 @@ public class PSeltimeActivity extends AppCompatActivity implements View.OnClickL
         Intent intent = getIntent();
 
         TextView textView = (TextView)findViewById(R.id.who_select);
-        textView.setText(intent.getStringExtra("doctorName")+" is selected");
+        textView.setText(intent.getStringExtra("hospital_name")+" " +intent.getStringExtra("name")+" is selected");
 
         //intent를 통해 정보 받아오기
         doctor_name =intent.getExtras().getString("name");

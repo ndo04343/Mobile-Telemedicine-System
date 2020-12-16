@@ -36,4 +36,5 @@ public class PatientAdapter2 extends ArrayAdapter {
         // Return the completed view to render on screen
         return convertView;
     }
+
 }

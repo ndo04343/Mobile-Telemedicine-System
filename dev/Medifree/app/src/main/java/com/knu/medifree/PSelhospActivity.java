@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.knu.medifree.model.HospitalAdapter;
 import com.knu.medifree.util.DBManager;
 import com.knu.medifree.model.Hospital;
 
@@ -46,6 +48,18 @@ public class PSelhospActivity extends Activity {
         for (int i = 0 ;i < list_Hospital.size(); i ++) {
             Log.e("List of Hospital", list_Hospital.get(i).getHospitalName());
         }
+        HospitalAdapter hospitalAdapter = new HospitalAdapter(this,list_Hospital);
+        ListView listView = (ListView)findViewById(R.id.listView);
+        listView.setAdapter(hospitalAdapter);
+
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+        String hospitalname = ((Hospital)hospitalAdapter.getItem(position)).getHospitalName();
+        Intent intent = new Intent(getApplicationContext(), PSelmajorActivity.class);
+            Log.d("TAG", "onCreate: btn click");
+        intent.putExtra("hospital_name",hospitalname);
+        startActivity(intent);
+        });
+
         /*
          *
          *  이 밑부터 ListView 관련해서 구현해줘 혹시나 몰라서 밑에 혜교가 해놓은 코드 다 주석처리해놓음
@@ -60,9 +74,12 @@ public class PSelhospActivity extends Activity {
          *  구현 :*/
         // 현재는 hospital : "서울대병원" 이라고 설정(id값임). 버튼 하나 누르면 넘어가도록 설정해놓음.
 
+
         hospital_id = "OXIRMiC9OS675mdikFZV";
         hospital_name = "서울대병원";
         Button btn_temp = (Button) findViewById(R.id.temp_button);
+
+
 
         btn_temp.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {

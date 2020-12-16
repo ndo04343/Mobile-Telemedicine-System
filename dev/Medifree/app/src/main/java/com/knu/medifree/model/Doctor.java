@@ -20,9 +20,6 @@ public class Doctor  implements Comparable<Doctor>{
         this.phoneNum = phoneNum;
         this.id = id;
     }
-
-
-
     public String getMajor() {
         return major;
     }

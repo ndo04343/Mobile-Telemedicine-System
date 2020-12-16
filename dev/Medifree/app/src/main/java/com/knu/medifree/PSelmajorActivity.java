@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -14,6 +16,8 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.knu.medifree.model.Hospital;
+import com.knu.medifree.model.MajorAdapter;
+import com.knu.medifree.model.PatientAdapter2;
 import com.knu.medifree.util.DBManager;
 import com.knu.medifree.model.Doctor;
 import com.knu.medifree.model.DoctorAdapter;
@@ -42,6 +46,8 @@ public class PSelmajorActivity extends Activity {
 
         Intent intent = getIntent();
         hospital_name = intent.getExtras().getString("hospital_name");
+        TextView textView = (TextView)findViewById(R.id.p_sel_doc_name);
+        textView.setText(hospital_name+" is selected");
 
         //Debug
         Log.e("hos name :", hospital_name);
@@ -52,19 +58,45 @@ public class PSelmajorActivity extends Activity {
         String cur_uid = user.getUid();
 
         // Major_list
+        //16:48 Major_list 어떻게 할건지 모르겠음 일단 넘어감.
         ArrayList<Hospital> hospital_list = DBManager.getHospitals();
         for (int i= 0 ;i < hospital_list.size() ;i ++) {
             if (hospital_list.get(i).getHospitalName().equals(hospital_name)) {
                 list_majors = hospital_list.get(i).getMajors();
+                Log.d("TAG", "onCreate:  list_majors"+ list_majors.size());
                 break;
             }
         }
-
 
         //  log.e로 major 이름들 확인.
         for (int i = 0 ;i < list_majors.size(); i ++) {
             Log.e("List of Hospital", list_majors.get(i));
         }
+        // dunp majors 만들어서 사용하는 부분임.
+        ArrayList<String> tmp = new ArrayList<>();
+        tmp.add("피부과");
+        tmp.add("산부인과");
+        tmp.add("정형외과");
+        tmp.add("내과");
+        tmp.add("비뇨기과");
+        tmp.add("신경외과");
+        tmp.add("안과");
+        tmp.add("치과");
+        tmp.add("123");
+        tmp.add("123");tmp.add("123");tmp.add("123");tmp.add("123");tmp.add("123");
+        // tmp부분 지우고 넣으면 됨
+
+        MajorAdapter adapter = new MajorAdapter(this, tmp);//tmp에 list_majors넣으면 됨
+        // Attach the adapter to a ListView
+        ListView listView = (ListView) findViewById(R.id.listview_major);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            major_name = ((adapter.getItem(position))).toString();
+            Log.d("TAG", "onCreate: majorname "+major_name);
+            Intent intent2 = new Intent(getApplicationContext(), PSeldocActivity.class);
+            intent2.putExtra("hospital_name",hospital_name);
+            DBManager.startActivityWithDoctorReading(hospital_name,major_name,PSelmajorActivity.this,intent2);
+        });
 
         /*
          *   PSelhospAcitivity와 같이 여기서 부터 Listview를 구성
@@ -75,16 +107,6 @@ public class PSelmajorActivity extends Activity {
          *       - hospital name은 intent를 통해 넘어옴.
          */
 
-        major_name = "피부과"; //피부과가 선택되었다고 가정.
-        // "선택되었을때"를 버튼이 눌렸을때로 가정.
-        Button btn_temp = (Button) findViewById(R.id.temp_button2);
-
-        btn_temp.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent intent2 = new Intent(getApplicationContext(), PSeldocActivity.class);
-                DBManager.startActivityWithDoctorReading(hospital_name,major_name,PSelmajorActivity.this,intent2);
-            }
-        });
 
     }
 }

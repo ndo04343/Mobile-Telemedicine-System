@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.firestore.DocumentReference;
 import com.knu.medifree.util.DBManager;
 import com.knu.medifree.model.Doctor;
 import com.knu.medifree.model.DoctorAdapter;
@@ -41,11 +42,27 @@ public class PSeldocActivity extends Activity  {
 
         // doctor를 Array list로 받아옴.
         list_doctors = DBManager.getDoctors();
-
         //for debug
         for (int i =0 ;i<list_doctors.size();i++){
             Log.e("Doctor list :" , list_doctors.get(i).getName()); // method, model.Doctor 참조.
         }
+
+        DoctorAdapter doctorAdapter = new DoctorAdapter(this, list_doctors);
+        ListView listView2 = (ListView)findViewById(R.id.listview_doctorlist);
+        listView2.setAdapter(doctorAdapter);
+        listView2.setOnItemClickListener((parent, view, position, id) -> {
+            Doctor_name  = ((Doctor)doctorAdapter.getItem(position)).getName();
+            Doctor_id = ((Doctor)doctorAdapter.getItem(position)).getDocid();
+
+            Intent intent2 = new Intent(getApplicationContext(), PSeltimeActivity.class);
+            intent2.putExtra("hospital_name",getIntent().getExtras().getString("hospital_name"));
+            intent2.putExtra("name",Doctor_name);
+            intent2.putExtra("id",Doctor_id);
+            Log.d("TAG", "onCreate: doctorname " + Doctor_name+Doctor_id+getIntent().getExtras().getString("hospital_name"));
+            startActivity(intent2);
+
+            finish();
+        });
 
         /*
          *           이밑으로 ListView 구현
@@ -58,20 +75,20 @@ public class PSeldocActivity extends Activity  {
          *
          */
 
-        Doctor_name = "양닥터";    // get(i).getName()으로 받기가능
-        Doctor_id = "A9H8hbW4hAUa6FC781xjNsZYWmz2"; // get(i).getDocid()로 받기가능.
-
-        Button btn_time = (Button) findViewById(R.id.p_sel_doctor_again_btn_diag);
-
-        btn_time.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent intent2 = new Intent(getApplicationContext(), PSeltimeActivity.class);
-                intent2.putExtra("name",Doctor_name);
-                intent2.putExtra("id",Doctor_id);
-                startActivity(intent2);
-                finish();
-            }
-        });
+//        Doctor_name = "양닥터";    // get(i).getName()으로 받기가능
+//        Doctor_id = "A9H8hbW4hAUa6FC781xjNsZYWmz2"; // get(i).getDocid()로 받기가능.
+//
+//        Button btn_time = (Button) findViewById(R.id.p_sel_doctor_again_btn_diag);
+//
+//        btn_time.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                Intent intent2 = new Intent(getApplicationContext(), PSeltimeActivity.class);
+//                intent2.putExtra("name",Doctor_name);
+//                intent2.putExtra("id",Doctor_id);
+//                startActivity(intent2);
+//                finish();
+//            }
+//        });
 
     }
 }

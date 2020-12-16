@@ -23,7 +23,7 @@ public class DAppActivity extends AppCompatActivity {
     Button btn_check;
     Button btn_diag;
     ImageButton btn_refresh;
-    TextView timelist;
+    TextView timelist,timelist1,timelist2,timelist3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,16 +35,16 @@ public class DAppActivity extends AppCompatActivity {
         btn_diag = (Button) findViewById(R.id.d_home_btn_diag);
         btn_refresh = (ImageButton) findViewById(R.id.d_home_btn_refresh);
         timelist=(TextView)findViewById(R.id.ten_oclock);
+        timelist1 = (TextView)findViewById(R.id.eleven_oclock);
+        timelist2 = (TextView)findViewById(R.id.fourteen_oclock);
+        timelist3 = (TextView)findViewById(R.id.fifthteen_oclock);
+
         // 클릭 리스너 할당
 
-       timelist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), DetailAppActivity.class);
-                startActivity(intent);
-                //finish(); 일단 뒤로 버튼을 눌러서 의사 홈으로 돌아올 수 있게 해둠.
-            }
-        });
+        timelist.setOnClickListener(time);
+        timelist1.setOnClickListener(time);
+        timelist2.setOnClickListener(time);
+        timelist3.setOnClickListener(time);
         btn_check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,7 +73,14 @@ public class DAppActivity extends AppCompatActivity {
             }
         });
     }
-
+    View.OnClickListener time = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(getApplicationContext(), DetailAppActivity.class);
+            intent.putExtra("time",v.getTag().toString());
+            startActivity(intent);
+        }
+    };
     private void list_reservation() {
         /*예약 리스트 만드는 부분인가???*/
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

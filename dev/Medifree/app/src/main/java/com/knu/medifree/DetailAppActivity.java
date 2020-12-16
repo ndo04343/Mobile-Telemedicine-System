@@ -1,8 +1,10 @@
 package com.knu.medifree;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.knu.medifree.model.Patient;
 import com.knu.medifree.model.PatientAdapter;
@@ -17,6 +19,9 @@ public class DetailAppActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_d_detailapp);
+        Intent intent = getIntent();
+        TextView textView = (TextView)findViewById(R.id.d_dtailapp_time);
+        textView.setText(intent.getStringExtra("time")+" is selected");
         populatePatientsList();
 }
     private void populatePatientsList() {

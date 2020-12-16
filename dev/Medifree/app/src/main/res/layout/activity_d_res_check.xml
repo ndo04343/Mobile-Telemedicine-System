@@ -81,20 +81,20 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="#0070C0"
-                android:text="초진요청"
+                android:text="진료요청 목록"
                 android:textColor="#FFFFFF"
                 android:textSize="28sp"
                 android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/d_req_origin"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:textColor="#616161"
-                android:background="#d6d6d6"
-                android:text="기존환자"
-                android:textSize="28sp"/>
+<!--            <Button-->
+<!--                android:id="@+id/d_req_origin"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="50dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:textColor="#616161"-->
+<!--                android:background="#d6d6d6"-->
+<!--                android:text="기존환자"-->
+<!--                android:textSize="28sp"/>-->
 
         </LinearLayout>
         <ListView

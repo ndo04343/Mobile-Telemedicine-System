@@ -2,6 +2,9 @@ package com.knu.medifree.model;
 
 import java.util.ArrayList;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+
 public class Patient {
     private String name;
     private String time;

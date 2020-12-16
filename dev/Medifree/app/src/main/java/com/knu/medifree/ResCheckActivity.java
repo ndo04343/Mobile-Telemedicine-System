@@ -38,7 +38,6 @@ public class ResCheckActivity extends AppCompatActivity {
         populatePatientsList();
 
         first_btn = (Button) findViewById(R.id.d_req_first);
-        origin_btn = (Button) findViewById(R.id.d_req_origin);
         dhome_btn=(ImageButton)findViewById(R.id.backtodhome);
 
 
@@ -49,13 +48,7 @@ public class ResCheckActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        origin_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ResCheckActivity2.class);
-                startActivity(intent);
-            }
-        });
+
         dhome_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -71,123 +71,12 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
         tools:layout_editor_absoluteX="0dp">
 
-
-        <LinearLayout
+        <ListView
+            android:id="@+id/listview_office_patient"
             android:layout_width="330dp"
-            android:layout_height="68dp"
-            android:background="@drawable/border"
-            android:gravity="center_vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintVertical_bias="0.0">
+            android:layout_height="wrap_content"
+            ></ListView>
 
-
-            <TextView
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:text="비대면"
-                android:textColor="#0070C0"
-                android:textSize="20sp" />
-
-
-            <TextView
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="20dp"
-                android:text="Kim Chulsu"
-                android:textColor="#000000"
-                android:textSize="20dp"
-                android:textStyle="bold"></TextView>
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp"
-                android:src="@drawable/check" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="330dp"
-            android:layout_height="68dp"
-            android:background="@drawable/border"
-            android:gravity="center_vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
-            app:layout_constraintVertical_bias="0.0">
-
-            <TextView
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:text="대면"
-                android:textSize="20sp" />
-
-
-            <TextView
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="20dp"
-                android:text="Kim Chulmi"
-                android:textColor="#000000"
-                android:textSize="20dp"
-                android:textStyle="bold"></TextView>
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp"
-                android:src="@drawable/check" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="330dp"
-            android:layout_height="68dp"
-            android:background="@drawable/border"
-            android:gravity="center_vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
-            app:layout_constraintVertical_bias="0.0">
-
-            <TextView
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:text="대면"
-                android:textSize="20sp" />
-
-
-            <TextView
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="20dp"
-                android:text="Kim Chulmi"
-                android:textColor="#000000"
-                android:textSize="20dp"
-                android:textStyle="bold"></TextView>
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp" />
-
-        </LinearLayout>
 
     </LinearLayout>
 

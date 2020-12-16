@@ -82,8 +82,8 @@ public class PSelmajorActivity extends Activity {
         tmp.add("신경외과");
         tmp.add("안과");
         tmp.add("치과");
-        tmp.add("123");
-        tmp.add("123");tmp.add("123");tmp.add("123");tmp.add("123");tmp.add("123");
+//        tmp.add("123");
+//        tmp.add("123");tmp.add("123");tmp.add("123");tmp.add("123");tmp.add("123");
         // tmp부분 지우고 넣으면 됨
 
         MajorAdapter adapter = new MajorAdapter(this, tmp);//tmp에 list_majors넣으면 됨

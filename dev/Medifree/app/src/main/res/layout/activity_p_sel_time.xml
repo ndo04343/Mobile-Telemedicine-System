@@ -19,8 +19,10 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/who_select"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <TextView
             android:layout_width="wrap_content"
@@ -47,28 +49,30 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/time_list"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/p_res_date2"
         android:layout_width="330dp"
-        android:layout_height="68dp"
+        android:layout_height="50dp"
         android:background="@drawable/border"
         android:ems="10"
+        android:textSize="18sp"
         android:gravity="center"
-        android:hint="   YY/MM/DD"
+        android:hint="YY / MM / DD"
         android:onClick="OnClickHandler"
         android:textColor="#000000"
         android:textColorHint="#000000"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.363"
-        android:textStyle="bold"
-        />
+        app:layout_constraintVertical_bias="0.274" />
 
     <RadioGroup
         android:id="@+id/time_list"
@@ -81,7 +85,7 @@
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.777"
+        app:layout_constraintVertical_bias="0.613"
         app:singleSelection="true">
 
         <RadioButton
@@ -96,8 +100,8 @@
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center"
-            android:text="10:00"
             android:tag="10/00"
+            android:text="10:00"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -107,13 +111,13 @@
             android:layout_height="68dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/border"
+            android:button="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center"
-            android:button="?attr/selectableItemBackgroundBorderless"
-            android:text="11:00"
             android:tag="11/00"
+            android:text="11:00"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -133,22 +137,21 @@
             android:tag="15/00"
             android:text="15:00"
             android:textSize="20sp"
-            android:textStyle="bold"
-             />
+            android:textStyle="bold" />
 
         <RadioButton
-            android:button="?attr/selectableItemBackgroundBorderless"
             android:id="@+id/sixteen_oclock"
             android:layout_width="330dp"
             android:layout_height="68dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/border"
+            android:button="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center"
-            android:text="16:00"
             android:tag="16/00"
+            android:text="16:00"
             android:textSize="20sp"
             android:textStyle="bold" />
     </RadioGroup>

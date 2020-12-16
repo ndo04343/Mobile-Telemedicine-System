@@ -55,9 +55,7 @@ public class PHomeActivity extends AppCompatActivity {
     private Button btn_reg, btn_diag;
     private ImageButton btn_refresh;
     private ListView listview_res;
-    private static int flag ;    // flag를 통해서 초진, 등록되지않은진료를 구분, Intent에 추가해서 넘김.
-    // 2 : 등록되지않은 진료.
-    // 1 : 초진.
+
     private FirebaseFirestore db;
     private static Boolean notResitered;
 
@@ -85,23 +83,20 @@ public class PHomeActivity extends AppCompatActivity {
         //
         // Additional part
         Intent intent = getIntent();
-        uid = intent.getStringExtra("user_id");
 
-        Log.d("tag" , uid);
         // 현재 uid
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         String cur_uid = user.getUid();
 
 
-        // 현재 uid와 같지않다면 액티비티종료.
-        if (cur_uid.equals(uid) == false ) {
-            startToast("사용자 정보가 일치하지않습니다. 다시 로그인 해주십시오.");
-            finish();
-        }
 
         // Reservation Init
         list_reservations = DBManager.getReservations();
+        // reservation log로 확인 , get(i) 하고 .하면 관련해서 뭐 가져올수있는지 볼 수 있음.
+        /*for (int i = 0 ;i < list_reservations.size(); i ++) {
+            Log.e("List of Reservation", list_reservations.get(i).getDate());
+        }*/
 
         // 객체 할당
         btn_reg = (Button) findViewById(R.id.p_home_btn_reg);
@@ -111,55 +106,9 @@ public class PHomeActivity extends AppCompatActivity {
 
         btn_reg.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(PHomeActivity.this);
-                //builder.setTitle("걍 제목임. 여긴. 없어도 ㄱㅊ");
-                builder.setMessage("새로 예약을 하시겠습니까?");
-
-
-                builder.setPositiveButton("네", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // Ok 버튼이 눌린거임.
-                        flag = 1;
-                        Intent intent2 = new Intent(getApplicationContext(), PSelhospActivity.class);
-                        intent2.putExtra("Flag", flag);
-                        DBManager.startActivityWithHospitalReading(PHomeActivity.this , intent2);
-                    }
-                });
-                builder.setNegativeButton("아니오.", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // No 버튼이 눌린거임.
-                        // 여기서 새로 다이어그램 만드는거
-                        /****************************************************/
-                        AlertDialog.Builder builder = new AlertDialog.Builder(PHomeActivity.this);
-                        //builder.setTitle("걍 제목임. 여긴. 없어도 ㄱ");
-                        builder.setMessage("현재 앱에 등록 되지 않은 진료가 있습니까?");
-
-
-                        builder.setPositiveButton("네", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                // Ok 버튼이 눌린거임. -> 의사에게 자신의 환자가 맞는지 요청
-
-                            }
-                        });
-                        builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                // No 버튼이 눌린거임. -> 홈 그대로.
-
-                            }
-                        });
-
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
-                        /****************************************************/
-                    }
-                });
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                // 초진,등록안된 진료 좇같아서 그냥 합치기로했음.
+                Intent intent2 = new Intent(getApplicationContext(), PSelhospActivity.class);
+                DBManager.startActivityWithHospitalReading(PHomeActivity.this , intent2);
             }
         });
         btn_diag.setOnClickListener(new View.OnClickListener() {

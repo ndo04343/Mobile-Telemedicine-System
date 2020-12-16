@@ -65,8 +65,8 @@
             android:theme="@style/CallActivityTheme" /> <!-- Added end -->
         <activity android:name=".ResCheckActivity" />
         <activity android:name=".PSelhospActivity" />
+        <activity android:name=".PSelmajorActivity" />
         <activity android:name=".PSeldocActivity" />
-        <activity android:name=".PSeldocAgainActivity" />
         <activity android:name=".PSeltimeActivity" />
         <activity android:name=".ResCheckActivity2" />
         <activity android:name=".SignupDoctorActivity" />

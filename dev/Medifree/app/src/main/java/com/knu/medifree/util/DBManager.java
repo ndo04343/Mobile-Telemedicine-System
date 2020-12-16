@@ -253,6 +253,7 @@ public class DBManager extends Thread {
                                 , document.getId()
                                 , Integer.valueOf(document.getString("major_mask"))
                         ));
+                        Log.e("HEESUNG", Integer.toString(Integer.valueOf(document.getString("major_mask"))));
                     }
                     Log.i("HEESUNG", "Reservation DB Updeate complete.");
                     from.startActivity(to);
@@ -265,13 +266,15 @@ public class DBManager extends Thread {
     public static void startActivityWithDoctorReading(String hospital_name, String major_name, Activity from, Intent to) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db.collection("Profile");
-        Query query = collectionReference
-                .whereEqualTo("Hospital_Name", hospital_name)
-                .whereEqualTo("Major", major_name)
-                .whereEqualTo("userType", "Doctor");
+//        Query query = collectionReference
+//                .whereEqualTo("Hospital_Name", hospital_name)
+//                .whereEqualTo("Major", major_name);
 
         Log.i("HEESUNG", "Waiting DB Callback...");
-        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        collectionReference
+                .whereEqualTo("Hospital_Name", hospital_name)
+                .whereEqualTo("Major", major_name)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -280,6 +283,7 @@ public class DBManager extends Thread {
 
                     // Critical section control
                     for (QueryDocumentSnapshot document : task.getResult()) {
+
                         doctors_list.add(new Doctor(
                                 document.getString("Hospital_Name")
                                 , document.getString("Major")

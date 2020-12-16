@@ -14,8 +14,11 @@ public class Reservation implements Serializable {
     private String id;
 
     // Constructor
-    public Reservation() {
-
+    public Reservation(String patient_id, String Doctor_id, String date, Boolean completed) {
+        this.doctor_id = Doctor_id;
+        this.date = date;
+        this.patient_id = patient_id;
+        this.completed = completed;
     }
     public Reservation(String patient_id, String doctor_id, String date) {
         this.doctor_id = doctor_id;

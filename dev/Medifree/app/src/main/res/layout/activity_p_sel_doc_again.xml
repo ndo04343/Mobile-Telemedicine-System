@@ -215,13 +215,14 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
     <Button
         android:id="@+id/p_sel_doctor_again_btn_diag"
         android:layout_width="match_parent"
         android:layout_height="67dp"
         android:layout_weight="1"
         android:background="#0070C0"
-        android:text="담당의 확인"
+        android:text="예약 시간 설정"
         android:textColor="#FFFFFF"
         android:textSize="28sp"
         android:textStyle="bold"

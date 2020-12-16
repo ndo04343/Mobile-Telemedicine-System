@@ -27,6 +27,8 @@ public class Doctor  implements Comparable<Doctor>{
         return major;
     }
 
+    public String getDocid() { return id; }
+
     public void setMajor(String major) {
         this.major = major;
     }

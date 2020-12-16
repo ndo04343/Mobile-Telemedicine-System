@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        DBManager.refreshHospitals();
+        //DBManager.refreshHospitals();
 
         // Controller
         activity = LoginActivity.this;

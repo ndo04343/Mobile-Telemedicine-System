@@ -50,34 +50,14 @@ public class Hospital {
     public ArrayList<String> getMajors() {
         ArrayList<String> result = new ArrayList<String>();
 
-        for (int i = 0b00000001 ; i < 0b100000000 ; i <<= 1) {
-            switch (i) {
-                case MAJOR1:
-                    result.add(MAJOR1_TAG);
-                    break;
-                case MAJOR2:
-                    result.add(MAJOR2_TAG);
-                    break;
-                case MAJOR3:
-                    result.add(MAJOR3_TAG);
-                    break;
-                case MAJOR4:
-                    result.add(MAJOR4_TAG);
-                    break;
-                case MAJOR5:
-                    result.add(MAJOR5_TAG);
-                    break;
-                case MAJOR6:
-                    result.add(MAJOR6_TAG);
-                    break;
-                case MAJOR7:
-                    result.add(MAJOR7_TAG);
-                    break;
-                case MAJOR8:
-                    result.add(MAJOR8_TAG);
-                    break;
-            }
-        }
+        if ((this.major_bit_mask & MAJOR1) != 0)  result.add(MAJOR1_TAG);
+        if ((this.major_bit_mask & MAJOR2) != 0)  result.add(MAJOR2_TAG);
+        if ((this.major_bit_mask & MAJOR3) != 0)  result.add(MAJOR3_TAG);
+        if ((this.major_bit_mask & MAJOR4) != 0)  result.add(MAJOR4_TAG);
+        if ((this.major_bit_mask & MAJOR5) != 0)  result.add(MAJOR5_TAG);
+        if ((this.major_bit_mask & MAJOR6) != 0)  result.add(MAJOR6_TAG);
+        if ((this.major_bit_mask & MAJOR7) != 0)  result.add(MAJOR7_TAG);
+        if ((this.major_bit_mask & MAJOR8) != 0)  result.add(MAJOR8_TAG);
 
         return result;
     }

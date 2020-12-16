@@ -5,19 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Spinner;
+import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.knu.medifree.model.Reservation;
 import com.knu.medifree.util.DBManager;
 import com.knu.medifree.model.Hospital;
-import com.knu.medifree.model.HospitalAdapter;
 
 import java.util.ArrayList;
 
@@ -33,21 +26,15 @@ public class PSelhospActivity extends Activity {
 
     // Hospital list담는 객체 생성.(12.16 - 김동희)
     private ArrayList<Hospital> list_Hospital = new ArrayList<>();
-    private String uid;
     private FirebaseAuth mAuth;
-    private int flag;
+    private String hospital_name;
+    private String hospital_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_p_sel_hosp);
-
-        // Flag 값 가져오기
-        // Flag = 1 : 초진인경우
-        // Flag = 2 : 등록되지않은 진료가 있는 경우.
-        // 당장은 여기서 flag는 안씀 마지막 Time에서 쓸꺼임.
-        Intent intent = getIntent();
-        flag = intent.getExtras().getInt("Flag");
 
         // 현재 uid 가져오기.
         mAuth = FirebaseAuth.getInstance();
@@ -55,22 +42,51 @@ public class PSelhospActivity extends Activity {
         String cur_uid = user.getUid();
         // Hospital_list
         list_Hospital = DBManager.getHospitals();
-
+        //  log.e로 확인하는 부분.
+        for (int i = 0 ;i < list_Hospital.size(); i ++) {
+            Log.e("List of Hospital", list_Hospital.get(i).getHospitalName());
+        }
         /*
          *
          *  이 밑부터 ListView 관련해서 구현해줘 혹시나 몰라서 밑에 혜교가 해놓은 코드 다 주석처리해놓음
          *  아마 주소값은 사용안할듯.
          *   ### intent로 옮길 것 ###
-         *   조건 : ListView안에서 병원이름이 "클릭"되었을때 intent를 PSeldocActivity.class로 옮김.
-         *           옮길 것 :
-         *               (1) flag값
-         *               (2) 어떤 hospital을 선택 했는 지(string값)
+         *   조건 : ListView안에서 병원이름이 "클릭"되었을때 intent를 PSelmajorActivity.class로 옮김.
          *
+         *      참고 : -이미 startActivityWithMajor~~~함수로 선택한 hospital_id를 넘겨주면
+         *               자동으로 다음 Activity에서  major List를 가져옴.
+         *             - Hospital은 각각 getHospitalName과 getHospitalId로 가져오기 가능 Index활용.
+         *
+         *  구현 :*/
+        // 현재는 hospital : "서울대병원" 이라고 설정(id값임). 버튼 하나 누르면 넘어가도록 설정해놓음.
+
+        hospital_id = "OXIRMiC9OS675mdikFZV";
+        hospital_name = "서울대병원";
+        Button btn_temp = (Button) findViewById(R.id.temp_button);
+
+        btn_temp.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent intent2 = new Intent(getApplicationContext(), PSelmajorActivity.class);
+                intent2.putExtra("hospital_name",hospital_name);
+                startActivity(intent2);
+                finish();
+            }
+        });
+        /*
+         *
+         *  참고사항 :
+         *      PSeldocAcitivity -> PSelmajorAcitivity로 이름 바꿨음
+         *      PSeldocAgainA~~ -> PSeldocAcitivity로 이름 바꿨음.
+         *      # 관련해서 Acitivity이름만 바뀜, layout xml은 그대로임.
+         *          PSelmajorAcitivity => activity_p_sel_doc.xml씀.
+         *          PSeldocActivity => activity_p_sel_doc_again.xml씀.
          *
          */
 
     }
 }
+
+/* 여기서부터는 참조할껀 참조해서 위에 구현하고 나머지는 삭제 */
 
 //        spinnerCity = (Spinner) findViewById(R.id.spin_city);
 //        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, (String[]) getResources().getStringArray(R.array.spinner_region));

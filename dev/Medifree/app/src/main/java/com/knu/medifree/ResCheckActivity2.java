@@ -10,6 +10,12 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
+
+import com.knu.medifree.model.Patient;
+import com.knu.medifree.model.PatientAdapter;
+
+import java.util.ArrayList;
 
 public class ResCheckActivity2 extends AppCompatActivity {
     public Button first_btn, origin_btn;
@@ -19,7 +25,7 @@ public class ResCheckActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_d_res_check2);
-
+        populatePatientsList();
         first_btn = (Button) findViewById(R.id.d_req_first);
         origin_btn = (Button) findViewById(R.id.d_req_origin);
         dhome_btn=(ImageButton)findViewById(R.id.backtodhome);
@@ -47,5 +53,12 @@ public class ResCheckActivity2 extends AppCompatActivity {
         });
 
     }
-
+    private void populatePatientsList() {
+        ArrayList arrayOfUsers = Patient.getPatient();
+        // Create the adapter to convert the array to views
+        PatientAdapter adapter = new PatientAdapter(this, arrayOfUsers);
+        // Attach the adapter to a ListView
+        ListView listView = (ListView) findViewById(R.id.listview_patientrequest);
+        listView.setAdapter(adapter);
+    }
 }

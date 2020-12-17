@@ -79,20 +79,16 @@
         android:paddingTop="30dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout1">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
+        app:layout_constraintVertical_bias="0.073">
 
 
         <ListView
             android:id="@+id/p_home_listview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-
-
-        </ListView>
+            android:layout_width="330dp"
+            android:layout_height="match_parent"></ListView>
 
     </LinearLayout>
 

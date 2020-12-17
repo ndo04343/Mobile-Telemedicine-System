@@ -42,7 +42,6 @@ public class ReservationAdapter extends BaseAdapter {
     public View getView(int position, View converView, ViewGroup parent) {
         View view = mLayoutInflater.inflate(R.layout.listview_reservations, null);
 
-        TextView patient_id = (TextView)view.findViewById(R.id.lay_res_patient_id);
         TextView doctor_id = (TextView)view.findViewById(R.id.lay_res_doctor_id);
         TextView date = (TextView)view.findViewById(R.id.lay_res_date);
         TextView daysText = (TextView)view.findViewById(R.id.lay_res_days);
@@ -51,8 +50,7 @@ public class ReservationAdapter extends BaseAdapter {
         days = st.nextToken()+"/"+st.nextToken()+"/"+st.nextToken();
         time = st.nextToken()+":"+st.nextToken();
 
-        patient_id.setText("예약자 : " + sample.get(position).getPatient_name());
-        doctor_id.setText("의사성명 : "+ sample.get(position).getDoctor_name());
+        doctor_id.setText(sample.get(position).getDoctor_name());
         date.setText(time);
         daysText.setText(days);
 

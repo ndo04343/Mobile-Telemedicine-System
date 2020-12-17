@@ -50,19 +50,29 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appointment_titlebar"
-        app:layout_constraintVertical_bias="0.127">
+        app:layout_constraintVertical_bias="0.0">
 
         <TextView
             android:id="@+id/d_dtailapp_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:gravity="left"
+            android:paddingStart="40dp"
+            android:text="김동희 is selected"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/time_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <ListView
             android:id="@+id/listview_patientlist"
             android:layout_width="330dp"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
 
         </ListView>
 

@@ -11,6 +11,7 @@ public class Reservation implements Serializable {
     private String doctor_id;
     private String date;
     private boolean completed;
+    private boolean done;
     private String patient_name;
     private String doctor_name;
     private String id;
@@ -23,18 +24,21 @@ public class Reservation implements Serializable {
         this.patient_name = patient_name;
         this.doctor_name = doctor_name;
         this.completed = completed;
+        this.done = false;
     }
     public Reservation(String patient_id, String doctor_id, String date) {
         this.doctor_id = doctor_id;
         this.date = date;
         this.patient_id = patient_id;
         this.completed = false;
+        this.done = false;
     }
     public Reservation(String patient_id, String Doctor_id, String date, String res_id) {
         this.doctor_id =Doctor_id;
         this.date = date;
         this.patient_id = patient_id;
         this.completed = false;
+        this.done = false;
     }
     public Reservation(String patient_id,String Patient_name, String Doctor_id, String Doctor_name,String date, Boolean completed, String res_id) {
         this.doctor_id = Doctor_id;
@@ -44,15 +48,34 @@ public class Reservation implements Serializable {
         this.patient_id = patient_id;
         this.completed = completed;
         this.id = res_id;
+        this.done = false;
     }
+    public Reservation(String patient_id,String Patient_name, String Doctor_id, String Doctor_name,String date, Boolean completed, String res_id, boolean done) {
+        this.doctor_id = Doctor_id;
+        this.doctor_name =Doctor_name;
+        this.patient_name = Patient_name;
+        this.date = date;
+        this.patient_id = patient_id;
+        this.completed = completed;
+        this.id = res_id;
+        this.done = done;
+    }
+
     public void aceept(){
         this.completed = true;
     }
 
+    public boolean isDone() {
+        return this.done;
+    }
 
     // Getter Setter
     public String getDoctor_id() {
         return doctor_id;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
     }
 
     public void setDoctor_id(String doctor_id) {

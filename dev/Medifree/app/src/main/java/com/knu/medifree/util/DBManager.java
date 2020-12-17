@@ -77,6 +77,7 @@ public class DBManager extends Thread {
         resMap.put("completed", reservation.isCompleted());
         resMap.put("patient_name", reservation.getPatient_name());
         resMap.put("doctor_name", reservation.getDoctor_name());
+        resMap.put("done", reservation.isDone());
         // Set
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Reservation")
@@ -149,6 +150,7 @@ public class DBManager extends Thread {
                 transaction.update(reservationDocRef, "doctor_name", reservation.getDoctor_name());
                 transaction.update(reservationDocRef, "patient_id", reservation.getPatient_id());
                 transaction.update(reservationDocRef, "patient_name", reservation.getPatient_name());
+                transaction.update(reservationDocRef, "done", reservation.isDone());
 
                 // Success
                 return null;
@@ -292,6 +294,7 @@ public class DBManager extends Thread {
                                     , document.getString("date")
                                     , document.getBoolean("completed")
                                     , document.getId()
+                                    , document.getBoolean("done")
                             ));
                         }
                         Log.i("HEESUNG", "Reservation DB Updeate complete.");
@@ -322,6 +325,7 @@ public class DBManager extends Thread {
                                     , document.getString("date")
                                     , document.getBoolean("completed")
                                     , document.getId()
+                                    , document.getBoolean("done")
                             ));
                         }
                         Log.i("HEESUNG", "Reservation DB Updeate complete.");

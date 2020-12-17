@@ -1,5 +1,6 @@
 package com.knu.medifree;
 
+import com.knu.medifree.util.DBManager;
 import com.knu.medifree.util.webrtc.*;
 
 import android.annotation.SuppressLint;
@@ -62,7 +63,6 @@ public class PatientDiagnosisAcitivity extends Activity {
         // Get Layout
         requestPermissions();
         connectToRoom(room_id, false, false, false, 0);
-        setContentView(R.layout.activity_patient_diagnosis);
     }
 
     @Override

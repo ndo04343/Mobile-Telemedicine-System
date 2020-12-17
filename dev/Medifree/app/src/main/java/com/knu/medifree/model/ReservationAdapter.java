@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.knu.medifree.R;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class ReservationAdapter extends BaseAdapter {
     Context mContext = null;
@@ -44,10 +45,16 @@ public class ReservationAdapter extends BaseAdapter {
         TextView patient_id = (TextView)view.findViewById(R.id.lay_res_patient_id);
         TextView doctor_id = (TextView)view.findViewById(R.id.lay_res_doctor_id);
         TextView date = (TextView)view.findViewById(R.id.lay_res_date);
+        TextView daysText = (TextView)view.findViewById(R.id.lay_res_days);
+        String days,time;
+        StringTokenizer st = new StringTokenizer(sample.get(position).getDate(), "/");
+        days = st.nextToken()+"/"+st.nextToken()+"/"+st.nextToken();
+        time = st.nextToken()+":"+st.nextToken();
 
         patient_id.setText("예약자 : " + sample.get(position).getPatient_name());
         doctor_id.setText("의사성명 : "+ sample.get(position).getDoctor_name());
-        date.setText(sample.get(position).getDate());
+        date.setText(time);
+        daysText.setText(days);
 
         return view;
     }

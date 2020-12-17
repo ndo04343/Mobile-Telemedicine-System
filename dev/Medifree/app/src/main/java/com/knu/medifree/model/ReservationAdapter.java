@@ -47,7 +47,7 @@ public class ReservationAdapter extends BaseAdapter {
 
         patient_id.setText(sample.get(position).getPatient_id());
         doctor_id.setText(sample.get(position).getDoctor_id());
-        doctor_id.setText(sample.get(position).getDate());
+        date.setText(sample.get(position).getDate());
 
         return view;
     }

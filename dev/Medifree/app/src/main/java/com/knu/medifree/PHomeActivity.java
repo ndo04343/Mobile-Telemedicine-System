@@ -96,7 +96,9 @@ public class PHomeActivity extends AppCompatActivity {
         /*for (int i = 0 ;i < list_reservations.size(); i ++) {
             Log.e("List of Reservation", list_reservations.get(i).getDate());
         }*/
-
+        ListView p_home_listview = (ListView)findViewById(R.id.p_home_listview);
+        res_adapter = new ReservationAdapter(this,list_reservations);
+        p_home_listview.setAdapter(res_adapter);
         // 객체 할당
         btn_reg = (Button) findViewById(R.id.p_home_btn_reg);
         btn_diag = (Button) findViewById(R.id.p_home_btn_diag);

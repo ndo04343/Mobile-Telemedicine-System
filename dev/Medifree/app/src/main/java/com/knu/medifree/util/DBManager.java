@@ -299,7 +299,7 @@ public class DBManager extends Thread {
                         }
                         Log.i("HEESUNG", "Reservation DB Updeate complete.");
                         from.startActivity(to);
-                        from.finish();
+
                     }
                 }
             });

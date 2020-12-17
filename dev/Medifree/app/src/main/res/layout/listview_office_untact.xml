@@ -9,6 +9,7 @@
         android:layout_height="68dp"
         android:background="@drawable/border"
         android:gravity="center_vertical"
+        android:foreground="?android:attr/selectableItemBackground"
         >
 
         <TextView

@@ -57,19 +57,13 @@ public class ResCheckActivity extends AppCompatActivity {
 
         list_reservations = DBManager.getReservations();
 
-        first_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ResCheckActivity.class);
-                startActivity(intent);
-            }
-        });
+
 
         dhome_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), DHomeActivity.class);
-                startActivity(intent);
+                onBackPressed();
+                finish();
             }
         });
 

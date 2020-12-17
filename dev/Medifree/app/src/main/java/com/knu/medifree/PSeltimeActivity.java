@@ -1,29 +1,20 @@
 package com.knu.medifree;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -107,7 +98,7 @@ public class PSeltimeActivity extends AppCompatActivity implements View.OnClickL
         RadioGroup group=(RadioGroup)findViewById(R.id.time_list);
         RadioButton time10 = (RadioButton) findViewById(R.id.ten_oclock);
         RadioButton time11 = (RadioButton) findViewById(R.id.eleven_oclock);
-        RadioButton time15 = (RadioButton) findViewById(R.id.fifthteen_oclock);
+        RadioButton time15 = (RadioButton) findViewById(R.id.sixteen_oclock);
         RadioButton time16 = (RadioButton) findViewById(R.id.sixteen_oclock);
         time10.setOnClickListener(RadioClick);
         time11.setOnClickListener(RadioClick);

@@ -122,7 +122,7 @@
             android:textStyle="bold" />
 
         <RadioButton
-            android:id="@+id/fifthteen_oclock"
+            android:id="@+id/sixteen_oclock"
             android:layout_width="330dp"
             android:layout_height="68dp"
             android:layout_marginBottom="10dp"

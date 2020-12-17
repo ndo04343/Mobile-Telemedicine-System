@@ -72,7 +72,7 @@ public class DAppActivity extends AppCompatActivity {
         public void onClick(View v) {
             Intent intent = new Intent(getApplicationContext(), DetailAppActivity.class);
             intent.putExtra("time",v.getTag().toString());
-            startActivity(intent);
+            DBManager.startActivityWithReservationReading(DAppActivity.this, intent);
         }
     };
 

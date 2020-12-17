@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -52,14 +53,30 @@ public class Patient {
         ArrayList patient = new ArrayList();
         ArrayList<Reservation> list_reservations = DBManager.getReservations();
 
-        String currentDate = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault()).format(new Date());
+        SimpleDateFormat todaySdf = new SimpleDateFormat("yyyy/MM/dd", Locale.KOREA);
+        //한국기준 날짜
+        Calendar calendar = Calendar.getInstance();
+        Date date = new Date(calendar.getTimeInMillis());
+        todaySdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+        String todayDate = todaySdf.format(date);
 
-        Log.e("time : " , time);
-        Log.e("current Date : ", currentDate);
+        todayDate  = todayDate+"/"+time.charAt(0)+time.charAt(1);
 
         for(int i=0;i<list_reservations.size();i++){
-            
+
+            if (list_reservations.get(i).isCompleted()) {
+
+                String temp = list_reservations.get(i).getDate().substring(0,13);
+                Log.e("temp : ", temp);
+                if (temp.equals(todayDate)) {
+                    patient.add(new Patient(
+                            list_reservations.get(i).getPatient_name(),
+                            list_reservations.get(i).getDate()
+                    ));
+                }
+            }
         }
+
         return patient;
     }
 

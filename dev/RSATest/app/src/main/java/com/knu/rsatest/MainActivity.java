@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             //공개키 및 개인키 생성
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-            keyPairGenerator.initialize(256);
+            keyPairGenerator.initialize(2048);
 
             KeyPair keyPair = keyPairGenerator.genKeyPair();
             Key publicKey = keyPair.getPublic(); // 공개키
@@ -51,12 +51,7 @@ public class MainActivity extends AppCompatActivity {
             String strCipher = new String(arrCipherData);
 
             Log.i("HEESUNG", strCipher); // 암호화 결과물 출력(눈으로 보이기에는 깨질 수 있음)
-
-
-
-
-
-
+             
 
             // 복호화(Decryption) 예제
             cipher.init(Cipher.DECRYPT_MODE, privateKey);

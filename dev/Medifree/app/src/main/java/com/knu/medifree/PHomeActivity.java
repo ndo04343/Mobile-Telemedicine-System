@@ -39,10 +39,14 @@ import com.knu.medifree.model.Reservation;
 import com.knu.medifree.model.ReservationAdapter;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -117,9 +121,18 @@ public class PHomeActivity extends AppCompatActivity {
                 // 진료실 버튼을 눌렀을 때
                 // 현재 상황 :
                 // TODO :
-                Intent intent = new Intent(getApplicationContext(), PatientDiagnosisAcitivity.class);
-                intent.putExtra("Reservation_ID","test1234");
-                startActivity(intent);
+                String today = getToday();
+                Log.e("today",today);
+
+                for(int i =0;i<list_reservations.size();i++){
+                    if(list_reservations.get(i).getDate().substring(0,13).equals(today)) {
+                        Intent intent = new Intent(getApplicationContext(), PatientDiagnosisAcitivity.class);
+                        Log.e("Reservation_ID : ",list_reservations.get(i).getId());
+                        intent.putExtra("Reservation_ID", list_reservations.get(i).getId());
+                        startActivity(intent);
+                    }
+                }
+
             }
         });
     }
@@ -128,7 +141,15 @@ public class PHomeActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
     }
-
+    private String getToday(){
+        SimpleDateFormat todaySdf = new SimpleDateFormat("yyyy/MM/dd/HH", Locale.KOREA);
+        //한국기준 날짜
+        Calendar calendar = Calendar.getInstance();
+        Date date = new Date(calendar.getTimeInMillis());
+        todaySdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+        String todayDate = todaySdf.format(date);
+        return todayDate;
+    }
     private void startToast(String msg) { Toast.makeText(this, msg, Toast.LENGTH_SHORT).show(); }
 }
 

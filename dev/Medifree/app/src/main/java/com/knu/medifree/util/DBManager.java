@@ -14,9 +14,11 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
 import com.knu.medifree.model.Doctor;
 import com.knu.medifree.model.Hospital;
 import com.knu.medifree.model.Reservation;
@@ -127,6 +129,44 @@ public class DBManager extends Thread {
                 });
     }
 
+    // Updator
+    public static void updateReservation(Reservation reservation) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final DocumentReference reservationDocRef =
+                db.collection("Reservation")
+                        .document(reservation.getId());
+
+        db.runTransaction(new Transaction.Function<Void>() {
+            @Override
+            public Void apply(Transaction transaction) throws FirebaseFirestoreException {
+                DocumentSnapshot snapshot = transaction.get(reservationDocRef);
+
+                // Note: this could be done without a transaction
+                //       by updating the population using FieldValue.increment()
+                transaction.update(reservationDocRef, "completed", reservation.isCompleted());
+                transaction.update(reservationDocRef, "date", reservation.getDate());
+                transaction.update(reservationDocRef, "doctor_id", reservation.getDoctor_id());
+                transaction.update(reservationDocRef, "doctor_name", reservation.getDoctor_name());
+                transaction.update(reservationDocRef, "patient_id", reservation.getPatient_id());
+                transaction.update(reservationDocRef, "patient_name", reservation.getPatient_name());
+
+                // Success
+                return null;
+            }
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "Transaction success!");
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Transaction failure.", e);
+                    }
+                });
+    }
+
     // Getter
     public static ArrayList<Reservation> getReservations()
     /*  Firestore DB 에서
@@ -151,7 +191,6 @@ public class DBManager extends Thread {
     {
         return DBManager.hospitals_list;
     }
-
 
     public static ArrayList<Doctor> getDoctors()
         /*  Firestore DB 에서
@@ -199,6 +238,24 @@ public class DBManager extends Thread {
                 });
     }
 
+    public static void deleteReservation(String reservation_id) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("Reservation").document(reservation_id)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error deleting document", e);
+                    }
+                });
+    }
 
     // Activity Starter
     public static void startActivityWithReservationReading(Activity from, Intent to)
@@ -361,6 +418,5 @@ public class DBManager extends Thread {
             }
         });
     }
-
 
 }

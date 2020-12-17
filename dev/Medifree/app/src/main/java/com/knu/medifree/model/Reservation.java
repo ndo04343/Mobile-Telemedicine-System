@@ -45,6 +45,9 @@ public class Reservation implements Serializable {
         this.completed = completed;
         this.id = res_id;
     }
+    public void aceept(){
+        this.completed = true;
+    }
 
 
     // Getter Setter

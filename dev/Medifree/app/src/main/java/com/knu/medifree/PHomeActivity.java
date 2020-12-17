@@ -115,6 +115,9 @@ public class PHomeActivity extends AppCompatActivity {
                 // 진료실 버튼을 눌렀을 때
                 // 현재 상황 :
                 // TODO :
+                Intent intent = new Intent(getApplicationContext(), PatientDiagnosisAcitivity.class);
+                intent.putExtra("Reservation_ID","test");
+                startActivity(intent);
             }
         });
     }

@@ -38,7 +38,6 @@ import static org.webrtc.ContextUtils.getApplicationContext;
 public class ResCheckActivity extends AppCompatActivity {
     public Button first_btn, origin_btn;
     public ImageButton dhome_btn;
-    public static Context context;
     private Button btn_true,btn_false;
     private ArrayList<Reservation> list_reservations;
     @Override
@@ -46,8 +45,9 @@ public class ResCheckActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_d_res_check);
 
-        context = getApplicationContext();
         populatePatientsList();
+
+
 
         first_btn = (Button) findViewById(R.id.d_req_first);
         dhome_btn=(ImageButton)findViewById(R.id.backtodhome);

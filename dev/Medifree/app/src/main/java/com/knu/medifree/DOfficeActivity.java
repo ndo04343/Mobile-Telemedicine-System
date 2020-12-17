@@ -11,23 +11,29 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.knu.medifree.model.Patient;
 import com.knu.medifree.model.PatientAdapter2;
 import com.knu.medifree.model.PatientAdapter3;
+import com.knu.medifree.model.Reservation;
+import com.knu.medifree.util.DBManager;
 
 import java.util.ArrayList;
 
 public class DOfficeActivity extends AppCompatActivity {
 
     public Button office_btn;
-
+    private ArrayList<Reservation> list_reservations;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_d_office);
+        list_reservations = DBManager.getReservations();
+
         populatePatientsList();
+
 
         office_btn=(Button)findViewById(R.id.d_office_btn);
         office_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), DResNextActivity.class);
+                Intent intent = new Intent(getApplicationContext(), DoctorDiagnosisActivity.class);
+                intent.putExtra("Reservion_ID", "test");
                 startActivity(intent);
             }
         });

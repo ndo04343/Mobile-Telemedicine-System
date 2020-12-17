@@ -31,10 +31,12 @@ public class Patient {
         ArrayList<Reservation> list_reservations = DBManager.getReservations();
 
         for(int i=0;i<list_reservations.size();i++){
-            patient.add(new Patient(
-                    list_reservations.get(i).getPatient_name(),
-                    list_reservations.get(i).getDate()
-            ));
+            if (list_reservations.get(i).isCompleted() == false) {
+                patient.add(new Patient(
+                        list_reservations.get(i).getPatient_name(),
+                        list_reservations.get(i).getDate()
+                ));
+            }
         }
 
         return patient;

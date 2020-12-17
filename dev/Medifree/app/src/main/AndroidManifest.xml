@@ -27,8 +27,9 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         tools:ignore="HardcodedDebugMode">
-        <activity android:name=".Test2Activity"></activity>
-        <!-- Added -->
+        <activity android:name=".PatientDiagnosisAcitivity"></activity>
+        <activity android:name=".DoctorDiagnosisActivity" />
+        <activity android:name=".Test2Activity" /> <!-- Added -->
         <activity
             android:name=".util.webrtc.ConnectActivity"
             android:label="@string/app_name"
@@ -88,9 +89,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TestActivity">
-
-        </activity>
+        <activity android:name=".TestActivity" />
     </application>
 
 </manifest>

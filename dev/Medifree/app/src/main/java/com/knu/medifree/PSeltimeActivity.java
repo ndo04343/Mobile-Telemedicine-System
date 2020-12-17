@@ -98,7 +98,7 @@ public class PSeltimeActivity extends AppCompatActivity implements View.OnClickL
         RadioGroup group=(RadioGroup)findViewById(R.id.time_list);
         RadioButton time10 = (RadioButton) findViewById(R.id.ten_oclock);
         RadioButton time11 = (RadioButton) findViewById(R.id.eleven_oclock);
-        RadioButton time15 = (RadioButton) findViewById(R.id.sixteen_oclock);
+        RadioButton time15 = (RadioButton) findViewById(R.id.fifteen_oclock);
         RadioButton time16 = (RadioButton) findViewById(R.id.sixteen_oclock);
         time10.setOnClickListener(RadioClick);
         time11.setOnClickListener(RadioClick);

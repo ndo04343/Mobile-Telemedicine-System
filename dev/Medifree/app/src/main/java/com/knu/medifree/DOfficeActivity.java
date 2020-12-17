@@ -33,7 +33,7 @@ public class DOfficeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), DoctorDiagnosisActivity.class);
-                intent.putExtra("Reservion_ID", "test");
+                intent.putExtra("Reservation_ID", "test1234");
                 startActivity(intent);
             }
         });

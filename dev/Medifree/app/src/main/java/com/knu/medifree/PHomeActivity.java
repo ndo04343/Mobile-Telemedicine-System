@@ -116,7 +116,7 @@ public class PHomeActivity extends AppCompatActivity {
                 // 현재 상황 :
                 // TODO :
                 Intent intent = new Intent(getApplicationContext(), PatientDiagnosisAcitivity.class);
-                intent.putExtra("Reservation_ID","test");
+                intent.putExtra("Reservation_ID","test1234");
                 startActivity(intent);
             }
         });

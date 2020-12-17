@@ -277,7 +277,7 @@ public class DBManager extends Thread {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             CollectionReference resRef = db.collection("Reservation");
             Query resDataQuery = resRef
-                    .whereEqualTo("patient_id", DBManager.uid)
+                    .whereEqualTo("doctor_id", DBManager.uid)
                     .whereEqualTo("done", false);
             Log.i("HEESUNG", "Waiting DB Callback...");
             resDataQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

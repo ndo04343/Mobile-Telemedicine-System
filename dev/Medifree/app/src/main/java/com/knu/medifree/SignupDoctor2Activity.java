@@ -77,6 +77,7 @@ public class SignupDoctor2Activity<database> extends AppCompatActivity {
                 String uid = user.getUid();
                 insert_user_Information(uid);
                 Intent intent = getIntent();
+                finish();
                 DBManager.initDBManager(intent.getStringExtra("user_id"), User.TYPE_DOCTOR);
                 startActivity(new Intent(getApplicationContext(), DHomeActivity.class));
             }

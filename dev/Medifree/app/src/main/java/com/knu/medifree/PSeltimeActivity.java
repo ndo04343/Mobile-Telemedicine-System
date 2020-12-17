@@ -206,7 +206,7 @@ public class PSeltimeActivity extends AppCompatActivity implements View.OnClickL
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        if(date1.before(date2))
+        if(date1.before(date2) || date1.equals(date2))
             startToast("현재시간 보다 미래를 선택해 주세요.");
         else if(!check1 || !check2){
             startToast("시간을 선택해 주세요.");}

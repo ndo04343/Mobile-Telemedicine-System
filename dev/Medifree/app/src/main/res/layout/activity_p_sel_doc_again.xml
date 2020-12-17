@@ -64,8 +64,7 @@
             android:id="@+id/p_sel_doc_again_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="25dp"
             android:gravity="left"
             android:paddingStart="40dp"
             android:textSize="18sp" />

@@ -36,16 +36,20 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints">
 
         <TextView
             android:id="@+id/p_sel_doc_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="120dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginTop="115dp"
+            android:text="병원 is selected"
+            android:layout_marginBottom="25dp"
             android:paddingStart="40dp"
             android:textSize="18sp" />
+
         <ListView
             android:id="@+id/listview_major"
             android:layout_width="330dp"

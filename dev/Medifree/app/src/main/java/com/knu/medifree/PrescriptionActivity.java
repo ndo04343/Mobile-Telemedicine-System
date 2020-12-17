@@ -9,20 +9,36 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
-import com.knu.medifree.model.Reservation;
 import com.knu.medifree.util.DBManager;
 
-public class
-PrescriptionActivity extends AppCompatActivity {
+import java.util.ArrayList;
 
+
+public class PrescriptionActivity extends AppCompatActivity {
     private Dialog dialog;
+    private EditText et_content;
+    private Button btn_send;
+    String reservation_id;
+    String content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prescription);
+
+        // View Assigning
+        btn_send = (Button) findViewById(R.id.d_office_btn);
+        et_content = (EditText) findViewById(R.id.d_office_et_content);
+
+        reservation_id = getIntent().getStringExtra("Reservation_ID");
+        ArrayList<Reservation> reservations = DBManager.getReservations();
+
+
+
+
 
         dialog = new Dialog(PrescriptionActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -30,36 +46,14 @@ PrescriptionActivity extends AppCompatActivity {
         ((TextView)(dialog.findViewById(R.id.timecheck))).setText("다음 예약을 하시겠습니까?");
 
 
-        findViewById(R.id.d_office_btn).setOnClickListener(new View.OnClickListener() {
+        btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog();
+                DBManager.showDialogWithGetPatientTel();
             }
         });
-    }
-    public void showDialog(){
-        dialog.show();
-        Button noBtn = dialog.findViewById(R.id.noBtn);
-        noBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.findViewById(R.id.yesBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-               // Reservation res = new Reservation(cur_uid, doctor_id, date, false,patient_name ,doctor_name);
-                //Log.d("TAG", "onClick: "+res);
-                // 예약 메소드 실행
-                //DBManager.createReservation(res);
-                //PHomeActivity로가면서 요청 기다리기
-                //startToast(res.getDate()+" 예약요청을 성공하였습니다. 요청이 완료되면 예약목록에 추가됩니다.");
-               // Intent intent2 = new Intent(getApplicationContext(), PHomeActivity.class);
-                //startActivity(intent2);
-               // finish();
-            }
-        });
+
+
+
     }
 }

@@ -1,8 +1,12 @@
 package com.knu.medifree.util;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 
@@ -19,10 +23,13 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
+import com.knu.medifree.R;
 import com.knu.medifree.model.Doctor;
 import com.knu.medifree.model.Hospital;
 import com.knu.medifree.model.Reservation;
 import com.knu.medifree.model.User;
+import com.knu.medifree.DHomeActivity;
+import com.knu.medifree.DResNextActivity;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -41,6 +48,7 @@ public class DBManager extends Thread {
     private static ArrayList<Hospital> hospitals_list = new ArrayList<Hospital>();
     private static ArrayList<Doctor> doctors_list = new ArrayList<Doctor>() ;
     private static String result_patient_name = new String();
+    private static String result_tel = new String();
 
 
     // User info
@@ -425,6 +433,70 @@ public class DBManager extends Thread {
                 from.finish();
             }
         });
+    }
+
+    public static void showDialogWithGetPatientTel(String patient_id, String content, Activity activity, Dialog dialog) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("Profile").document(patient_id);
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        DBManager.result_tel = document.getString("phoneNum");
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+
+                dialog.show();
+                Button noBtn = dialog.findViewById(R.id.noBtn);
+                noBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+
+                        Uri smsUri = Uri.parse("tel:" + DBManager.result_tel);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, smsUri); // 보내는 화면이 팝업됨
+
+                        intent.putExtra("address", DBManager.result_tel); // 받는 번호
+                        intent.putExtra("sms_body", content); // 보낼 문자내용
+                        intent.setType("vnd.android-dir/mms-sms");
+                        activity.startActivity(intent);
+
+                        activity.startActivity(new Intent(activity.getApplicationContext(), DHomeActivity.class));
+                        activity.finish();
+                    }
+                });
+                dialog.findViewById(R.id.yesBtn).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+
+                        Uri smsUri = Uri.parse("tel:" + DBManager.result_tel);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, smsUri); // 보내는 화면이 팝업됨
+
+                        intent.putExtra("address", DBManager.result_tel); // 받는 번호
+                        intent.putExtra("sms_body", content); // 보낼 문자내용
+                        intent.setType("vnd.android-dir/mms-sms");
+                        activity.startActivity(intent);
+
+                        Intent toIntent = new Intent(activity.getApplicationContext(), DResNextActivity.class);
+                        activity.startActivity(intent);
+                        activity.finish();
+                    }
+                });
+
+
+            }
+        });
+
+
+
     }
 
 }

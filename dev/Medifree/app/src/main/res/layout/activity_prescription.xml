@@ -81,7 +81,9 @@
             android:paddingStart="42dp"
             android:text="하단에 처방전을 써주세요"
             android:textSize="18sp"></TextView>
+
         <EditText
+            android:id="@+id/d_office_et_content"
             android:layout_width="330dp"
             android:layout_height="400dp"
             android:background="@drawable/border2"></EditText>

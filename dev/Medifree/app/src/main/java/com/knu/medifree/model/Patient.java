@@ -78,5 +78,32 @@ public class Patient {
         return patient;
     }
 
+    public static ArrayList getPatientForDiagnosis(){
+        ArrayList patient = new ArrayList();
+        ArrayList<Reservation> list_reservations = DBManager.getReservations();
 
+        SimpleDateFormat todaySdf = new SimpleDateFormat("yyyy/MM/dd", Locale.KOREA);
+        //한국기준 날짜
+        Calendar calendar = Calendar.getInstance();
+        Date date = new Date(calendar.getTimeInMillis());
+        todaySdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+        String todayDate = todaySdf.format(date);
+
+        Log.e("asdf",todayDate);
+        for(int i=0;i<list_reservations.size();i++){
+
+            if (list_reservations.get(i).isCompleted()) {
+
+                String temp = list_reservations.get(i).getDate().substring(0,10);
+                Log.e("asdffff",temp);
+                if (temp.equals(todayDate)) {
+                    patient.add(new Patient(
+                            list_reservations.get(i).getPatient_name(),
+                            list_reservations.get(i).getDate()
+                    ));
+                }
+            }
+        }
+        return patient;
+    }
 }

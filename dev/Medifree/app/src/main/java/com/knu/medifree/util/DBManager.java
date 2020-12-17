@@ -48,11 +48,11 @@ public class DBManager extends Thread {
     private static int utype;
 
     public static void initDBManager(String uid, int utype)
-        /*  LoginActivity.class 에서 DBManager 초기화후 진입합니다(사용할 일 없습니다.)
-         *   Usage :
-         *   DBManager.initDBManger(user_id, User.TYPE_PATIENT);
-         *
-         *   */
+    /*  LoginActivity.class 에서 DBManager 초기화후 진입합니다(사용할 일 없습니다.)
+     *   Usage :
+     *   DBManager.initDBManger(user_id, User.TYPE_PATIENT);
+     *
+     *   */
     {
         dateformat = new SimpleDateFormat("yyyy/MM/dd/kk/mm");
         DBManager.uid = uid;
@@ -276,7 +276,9 @@ public class DBManager extends Thread {
             // Query Setting
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             CollectionReference resRef = db.collection("Reservation");
-            Query resDataQuery = resRef.whereEqualTo("doctor_id", DBManager.uid);
+            Query resDataQuery = resRef
+                    .whereEqualTo("patient_id", DBManager.uid)
+                    .whereEqualTo("done", false);
             Log.i("HEESUNG", "Waiting DB Callback...");
             resDataQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
@@ -307,7 +309,9 @@ public class DBManager extends Thread {
             // Query Setting
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             CollectionReference resRef = db.collection("Reservation");
-            Query resDataQuery = resRef.whereEqualTo("patient_id", DBManager.uid);
+            Query resDataQuery = resRef
+                    .whereEqualTo("patient_id", DBManager.uid)
+                    .whereEqualTo("done", false);
             Log.i("HEESUNG", "Waiting DB Callback...");
             resDataQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override

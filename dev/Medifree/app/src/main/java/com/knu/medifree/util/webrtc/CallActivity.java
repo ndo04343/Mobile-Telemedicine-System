@@ -12,6 +12,7 @@ package com.knu.medifree.util.webrtc;
 
 import com.knu.medifree.PrescriptionActivity;
 import com.knu.medifree.R;
+import com.knu.medifree.*;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -40,6 +41,9 @@ import java.lang.RuntimeException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import com.knu.medifree.model.Reservation;
+import com.knu.medifree.util.DBManager;
 import com.knu.medifree.util.webrtc.AppRTCAudioManager.AudioDevice;
 import com.knu.medifree.util.webrtc.AppRTCAudioManager.AudioManagerEvents;
 import com.knu.medifree.util.webrtc.AppRTCClient.RoomConnectionParameters;
@@ -529,11 +533,26 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
   @Override
   public void onCallHangUp() {
     disconnect();
+
     if (isDoctor) {
       Intent toIntent = new Intent(this, PrescriptionActivity.class);
       toIntent.putExtra("Reservation_ID", this.reservation_id);
       startActivity(toIntent);
       finish();
+    } else {
+      ArrayList<Reservation> reservations = DBManager.getReservations();
+      for (int i = 0 ;i < reservations.size(); i ++) {
+        if (reservations.get(i).getId().equals(this.reservation_id)) {
+          Reservation reservation = reservations.get(i);
+          reservation.setDone(true);
+          DBManager.updateReservation(reservation);
+          break;
+        }
+      }
+      DBManager.startActivityWithReservationReading(
+              CallActivity.this
+              , new Intent(getApplicationContext(), PHomeActivity.class)
+      );
     }
   }
 

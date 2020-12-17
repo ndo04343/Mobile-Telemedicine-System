@@ -1,5 +1,6 @@
 package com.knu.medifree;
 
+import com.knu.medifree.model.Reservation;
 import com.knu.medifree.util.DBManager;
 import com.knu.medifree.util.webrtc.*;
 
@@ -20,6 +21,7 @@ import androidx.annotation.Nullable;
 import android.util.Log;
 import android.webkit.URLUtil;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 

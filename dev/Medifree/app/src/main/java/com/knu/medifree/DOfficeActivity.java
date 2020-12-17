@@ -53,6 +53,7 @@ public class DOfficeActivity extends AppCompatActivity {
                     break;
                 }
             }
+
         });
         office_btn=(Button)findViewById(R.id.d_office_btn);
         office_btn.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +70,7 @@ public class DOfficeActivity extends AppCompatActivity {
                     if (list_reservations.get(i).getId() == reservation_id) {
                         Log.e("Here",reservation_id);
                         if(list_reservations.get(i).getDate().substring(0,13).equals(today)) {
-                            Intent intent = new Intent(getApplicationContext(), PatientDiagnosisAcitivity.class);
+                            Intent intent = new Intent(getApplicationContext(), DoctorDiagnosisActivity.class);
                             Log.e("Reservation_ID : ", list_reservations.get(i).getId());
                             Log.e("Reservation_ID : ", reservation_id);
                             intent.putExtra("Reservation_ID", list_reservations.get(i).getId());

@@ -10,6 +10,7 @@
 
 package com.knu.medifree.util.webrtc;
 
+import com.knu.medifree.PrescriptionActivity;
 import com.knu.medifree.R;
 
 import android.annotation.TargetApi;
@@ -71,6 +72,10 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
                                                       PeerConnectionClient.PeerConnectionEvents,
                                                       CallFragment.OnCallEvents {
   private static final String TAG = "CallRTCClient";
+
+  // Medifree Doctor Checking
+  private Boolean isDoctor;
+  private String reservation_id;
 
   public static final String EXTRA_ROOMID = "org.appspot.apprtc.ROOMID";
   public static final String EXTRA_URLPARAMETERS = "org.appspot.apprtc.URLPARAMETERS";
@@ -233,6 +238,10 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
 
     final Intent intent = getIntent();
     final EglBase eglBase = EglBase.create();
+
+    // Medifree Doctor Checking
+    this.isDoctor = intent.getBooleanExtra("IS_DOCTOR", false);
+    this.reservation_id = intent.getStringExtra("Reservation_ID");
 
     // Create video renderers.
     pipRenderer.init(eglBase.getEglBaseContext(), null);
@@ -520,6 +529,12 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
   @Override
   public void onCallHangUp() {
     disconnect();
+    if (isDoctor) {
+      Intent toIntent = new Intent(this, PrescriptionActivity.class);
+      toIntent.putExtra("Reservation_ID", this.reservation_id);
+      startActivity(toIntent);
+      finish();
+    }
   }
 
   @Override

@@ -39,13 +39,15 @@ public class DoctorDiagnosisActivity extends Activity {
     private String keyprefRoomServerUrl;
     private String keyprefRoom;
 
+    String room_id;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Get Reservation Information
         Intent intent = getIntent();
-        String room_id = intent.getStringExtra("Reservation_ID");
+        room_id = intent.getStringExtra("Reservation_ID");
 
         // Get setting keys.
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
@@ -62,11 +64,6 @@ public class DoctorDiagnosisActivity extends Activity {
         // Get Layout
         requestPermissions();
         connectToRoom(room_id, false, false, false, 0);
-
-        Intent toIntent = new Intent(this, PrescriptionActivity.class);
-        toIntent.putExtra("Reservation_ID", room_id);
-        startActivity(toIntent);
-        finish();
     }
 
     @Override
@@ -399,6 +396,7 @@ public class DoctorDiagnosisActivity extends Activity {
             Uri uri = Uri.parse(roomUrl);
             Intent intent = new Intent(this, CallActivity.class);
             intent.setData(uri);
+            intent.putExtra("IS_DOCTOR", true);
             intent.putExtra(CallActivity.EXTRA_ROOMID, roomId);
             intent.putExtra(CallActivity.EXTRA_LOOPBACK, loopback);
             intent.putExtra(CallActivity.EXTRA_VIDEO_CALL, videoCallEnabled);
@@ -464,7 +462,7 @@ public class DoctorDiagnosisActivity extends Activity {
                     intent.putExtra(CallActivity.EXTRA_SAVE_REMOTE_VIDEO_TO_FILE_HEIGHT, videoOutHeight);
                 }
             }
-
+            intent.putExtra("Reservation_ID", roomId);
             startActivityForResult(intent, CONNECTION_REQUEST);
         }
     }

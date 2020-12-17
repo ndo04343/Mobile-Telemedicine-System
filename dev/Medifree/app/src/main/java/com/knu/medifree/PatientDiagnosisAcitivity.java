@@ -395,6 +395,7 @@ public class PatientDiagnosisAcitivity extends Activity {
             Uri uri = Uri.parse(roomUrl);
             Intent intent = new Intent(this, CallActivity.class);
             intent.setData(uri);
+            intent.putExtra("IS_DOCTOR", false);
             intent.putExtra(CallActivity.EXTRA_ROOMID, roomId);
             intent.putExtra(CallActivity.EXTRA_LOOPBACK, loopback);
             intent.putExtra(CallActivity.EXTRA_VIDEO_CALL, videoCallEnabled);
@@ -461,6 +462,7 @@ public class PatientDiagnosisAcitivity extends Activity {
                 }
             }
 
+            intent.putExtra("Reservation_ID", roomId);
             startActivityForResult(intent, CONNECTION_REQUEST);
         }
     }

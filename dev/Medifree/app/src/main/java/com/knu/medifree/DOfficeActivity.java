@@ -46,7 +46,8 @@ public class DOfficeActivity extends AppCompatActivity {
 
             for (int i =0;i<list_reservations.size();i++){
 
-                if (  (list_reservations.get(i).getPatient_name().equals(patient_name))   &&  (list_reservations.get(i).getDate().equals(patient_time))  ){
+                if (  (list_reservations.get(i).getPatient_name().equals(patient_name))   &&
+                        (list_reservations.get(i).getDate().equals(patient_time))  ){
                     reservation_id = list_reservations.get(i).getId();
                     Log.e("asdf",reservation_id);
                     break;

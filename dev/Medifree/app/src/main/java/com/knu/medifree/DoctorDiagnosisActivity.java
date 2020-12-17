@@ -62,7 +62,11 @@ public class DoctorDiagnosisActivity extends Activity {
         // Get Layout
         requestPermissions();
         connectToRoom(room_id, false, false, false, 0);
-        setContentView(R.layout.activity_doctor_diagnosis);
+
+        Intent toIntent = new Intent(this, PrescriptionActivity.class);
+        toIntent.putExtra("Reservation_ID", room_id);
+        startActivity(toIntent);
+        finish();
     }
 
     @Override

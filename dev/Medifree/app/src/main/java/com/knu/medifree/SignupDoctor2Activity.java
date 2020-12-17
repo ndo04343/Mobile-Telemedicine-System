@@ -143,7 +143,6 @@ public class SignupDoctor2Activity<database> extends AppCompatActivity {
             // There is not corresponding hospital in DB.
             DBManager.createHospital(new Hospital(hospital_Name, Hospital.getBitmaskByMajorTag(major)));
         } else {
-            DBManager.deleteHospital(hospital_id);
             ArrayList<Hospital> hospitals = DBManager.getHospitals();
             for (int i = 0 ;i < hospitals.size(); i ++) {
                 if (hospital_id.equals(hospitals.get(i).getHospitalId())) {
@@ -151,6 +150,7 @@ public class SignupDoctor2Activity<database> extends AppCompatActivity {
 
                     if ((major_bit_mask & Hospital.getBitmaskByMajorTag(major)) != 0) return;
                     else {
+                        DBManager.deleteHospital(hospital_id);
                         major_bit_mask += Hospital.getBitmaskByMajorTag(major);
                         DBManager.createHospital(new Hospital(hospital_Name, major_bit_mask));
                     }

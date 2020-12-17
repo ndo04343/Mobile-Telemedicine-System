@@ -1,6 +1,7 @@
 package com.knu.medifree.model;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,9 @@ public class ReservationAdapter extends BaseAdapter {
         String days,time;
         StringTokenizer st = new StringTokenizer(sample.get(position).getDate(), "/");
         days = st.nextToken()+"/"+st.nextToken()+"/"+st.nextToken();
+        days=days.substring(5);
+        // 2020/12/17
+//        Log.i(days.substring(5));
         time = st.nextToken()+":"+st.nextToken();
 
         doctor_id.setText(sample.get(position).getDoctor_name());

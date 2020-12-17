@@ -131,6 +131,9 @@ public class PHomeActivity extends AppCompatActivity {
                         intent.putExtra("Reservation_ID", list_reservations.get(i).getId());
                         startActivity(intent);
                     }
+                    else {
+                        startToast("예약시간에 활성화 됩니다.");
+                    }
                 }
 
             }

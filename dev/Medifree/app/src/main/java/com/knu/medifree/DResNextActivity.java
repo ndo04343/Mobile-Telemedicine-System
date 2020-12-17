@@ -21,7 +21,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.knu.medifree.model.Reservation;
 import com.knu.medifree.util.DBManager;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.StringTokenizer;
 
 public class DResNextActivity extends AppCompatActivity {
 
@@ -72,7 +77,11 @@ public class DResNextActivity extends AppCompatActivity {
         patient_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerDialog dialog = new DatePickerDialog(DResNextActivity.this, callbackMethod, 2020, 12, 17);
+                Date currentTime = Calendar.getInstance().getTime();
+                String currentdate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(currentTime);
+                StringTokenizer st = new StringTokenizer(currentdate,"-");
+                DatePickerDialog dialog = new DatePickerDialog(DResNextActivity.this, callbackMethod, Integer.parseInt(st.nextToken()),
+                        Integer.parseInt(st.nextToken())-1 , Integer.parseInt(st.nextToken()));
                 dialog.show();
             }
         });
@@ -87,7 +96,9 @@ public class DResNextActivity extends AppCompatActivity {
     public void InitializeListener() {
         callbackMethod = new DatePickerDialog.OnDateSetListener() {
             @Override
+
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                    monthOfYear+=1;
                 patient_date.setText(year + "/" + monthOfYear + "/" + dayOfMonth);
             }
         };

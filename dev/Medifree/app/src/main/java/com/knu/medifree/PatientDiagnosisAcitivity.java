@@ -65,6 +65,7 @@ public class PatientDiagnosisAcitivity extends Activity {
         // Get Layout
         requestPermissions();
         connectToRoom(room_id, false, false, false, 0);
+        finish();
     }
 
     @Override

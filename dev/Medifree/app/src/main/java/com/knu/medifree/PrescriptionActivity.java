@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.knu.medifree.model.Reservation;
 import com.knu.medifree.util.DBManager;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class PrescriptionActivity extends AppCompatActivity {
     private EditText et_content;
     private Button btn_send;
     String reservation_id;
+    String patient_id;
     String content;
 
     @Override
@@ -34,11 +36,14 @@ public class PrescriptionActivity extends AppCompatActivity {
         et_content = (EditText) findViewById(R.id.d_office_et_content);
 
         reservation_id = getIntent().getStringExtra("Reservation_ID");
+
         ArrayList<Reservation> reservations = DBManager.getReservations();
-
-
-
-
+        for (int i = 0 ;i < reservations.size(); i ++) {
+            if (reservations.get(i).getId().equals(reservation_id)) {
+                patient_id = reservations.get(i).getPatient_id();
+                break;
+            }
+        }
 
         dialog = new Dialog(PrescriptionActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -49,7 +54,8 @@ public class PrescriptionActivity extends AppCompatActivity {
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DBManager.showDialogWithGetPatientTel();
+                content = et_content.getText().toString();
+                DBManager.showDialogWithGetPatientTel(patient_id, content, PrescriptionActivity.this, dialog, reservation_id);
             }
         });
 

@@ -464,6 +464,7 @@ public class DoctorDiagnosisActivity extends Activity {
             }
             intent.putExtra("Reservation_ID", roomId);
             startActivityForResult(intent, CONNECTION_REQUEST);
+            finish();
         }
     }
 

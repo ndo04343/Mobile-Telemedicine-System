@@ -435,7 +435,7 @@ public class DBManager extends Thread {
         });
     }
 
-    public static void showDialogWithGetPatientTel(String patient_id, String content, Activity activity, Dialog dialog) {
+    public static void showDialogWithGetPatientTel(String patient_id, String content, Activity activity, Dialog dialog, String reservation_id) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("Profile").document(patient_id);
 
@@ -477,16 +477,11 @@ public class DBManager extends Thread {
                     public void onClick(View v) {
                         dialog.dismiss();
 
-                        Uri smsUri = Uri.parse("tel:" + DBManager.result_tel);
-                        Intent intent = new Intent(Intent.ACTION_VIEW, smsUri); // 보내는 화면이 팝업됨
-
-                        intent.putExtra("address", DBManager.result_tel); // 받는 번호
-                        intent.putExtra("sms_body", content); // 보낼 문자내용
-                        intent.setType("vnd.android-dir/mms-sms");
-                        activity.startActivity(intent);
-
                         Intent toIntent = new Intent(activity.getApplicationContext(), DResNextActivity.class);
-                        activity.startActivity(intent);
+                        toIntent.putExtra("Reservation_ID", reservation_id);
+                        toIntent.putExtra("mms_uri", DBManager.result_tel);
+                        toIntent.putExtra("mms_body", content);
+                        activity.startActivity(toIntent);
                         activity.finish();
                     }
                 });
@@ -494,8 +489,6 @@ public class DBManager extends Thread {
 
             }
         });
-
-
 
     }
 

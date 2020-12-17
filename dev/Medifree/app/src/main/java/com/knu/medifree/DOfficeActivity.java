@@ -75,6 +75,7 @@ public class DOfficeActivity extends AppCompatActivity {
                             Log.e("Reservation_ID : ", reservation_id);
                             intent.putExtra("Reservation_ID", list_reservations.get(i).getId());
                             startActivity(intent);
+                            finish();
                         }
                         else{
                             startToast("아직 시간이 아닙니다.");

@@ -245,6 +245,7 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
 
     // Medifree Doctor Checking
     this.isDoctor = intent.getBooleanExtra("IS_DOCTOR", false);
+    Log.i("HEESUNG", "Yeah, I'm doctor.");
     this.reservation_id = intent.getStringExtra("Reservation_ID");
 
     // Create video renderers.
@@ -539,6 +540,7 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
       toIntent.putExtra("Reservation_ID", this.reservation_id);
       startActivity(toIntent);
       finish();
+
     } else {
       ArrayList<Reservation> reservations = DBManager.getReservations();
       for (int i = 0 ;i < reservations.size(); i ++) {
@@ -878,6 +880,30 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
       public void run() {
         logAndToast("Remote end hung up; dropping PeerConnection");
         disconnect();
+
+        if (CallActivity.this.isDoctor) {
+          // Doctor일때 상대가 종료
+          Intent toIntent = new Intent(CallActivity.this, PrescriptionActivity.class);
+          toIntent.putExtra("Reservation_ID", CallActivity.this.reservation_id);
+          startActivity(toIntent);
+          finish();
+        } else {
+          // Patient일때 상대가 종료
+          ArrayList<Reservation> reservations = DBManager.getReservations();
+          Log.i("HEESUNG", "What the hell?");
+          for (int i = 0 ;i < reservations.size(); i ++) {
+            if (reservations.get(i).getId().equals(CallActivity.this.reservation_id)) {
+              Reservation reservation = reservations.get(i);
+              reservation.setDone(true);
+              DBManager.updateReservation(reservation);
+              break;
+            }
+          }
+          DBManager.startActivityWithReservationReading(
+                  CallActivity.this
+                  , new Intent(getApplicationContext(), PHomeActivity.class)
+          );
+        }
       }
     });
   }

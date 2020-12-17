@@ -4,7 +4,9 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -16,6 +18,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.knu.medifree.model.Reservation;
+import com.knu.medifree.util.DBManager;
+
+import java.util.ArrayList;
+
 public class DResNextActivity extends AppCompatActivity {
 
     private TextView patient_date;
@@ -24,14 +31,30 @@ public class DResNextActivity extends AppCompatActivity {
     private ArrayAdapter<String> arrayAdapter;
     private Context mContext;
     private CustomDialogThree Dialog;
-    public Button res_yes, res_no;
-    public Button res_untact, res_contact;
+    private Reservation tempRes;
 
+    public Button res_yes, res_no;
+
+    // Extra
+    private String reservation_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_d_next_app);
+
+        // Get Intent and Extra
+        reservation_id = getIntent().getStringExtra("Reservation_ID");
+        ArrayList<Reservation> reservations = DBManager.getReservations();
+
+        for (int i = 0 ;i < reservations.size() ;i ++) {
+            if (reservations.get(i).getId().equals(reservation_id)) {
+                tempRes = reservations.get(i);
+                break;
+            }
+        }
+
+
         patient_date = (TextView) findViewById(R.id.p_res_date);
         res_yes=(Button)findViewById(R.id.p_res_yes);
         res_no=(Button)findViewById(R.id.p_res_no);
@@ -46,30 +69,11 @@ public class DResNextActivity extends AppCompatActivity {
         patient_time.setSelection(0);
 
 
-
         patient_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerDialog dialog = new DatePickerDialog(DResNextActivity.this, callbackMethod, 2020, 11, 19);
+                DatePickerDialog dialog = new DatePickerDialog(DResNextActivity.this, callbackMethod, 2020, 12, 17);
                 dialog.show();
-            }
-        });
-
-
-        res_contact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                res_contact.setBackgroundColor(Color.parseColor("#2DA5E1"));
-                res_untact.setBackgroundColor(Color.parseColor("#FCFCFC"));
-
-            }
-        });
-        res_untact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                res_untact.setBackgroundColor(Color.parseColor("#2DA5E1"));
-                res_contact.setBackgroundColor(Color.parseColor("#FCFCFC"));
-
             }
         });
 
@@ -96,18 +100,32 @@ public class DResNextActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
 
-        }else if(view.getId()==R.id.p_res_yes) {
-            Dialog = new CustomDialogThree(this);
-            WindowManager.LayoutParams params = this.Dialog.getWindow().getAttributes();
+        } else if(view.getId()==R.id.p_res_yes) {
+            String tail = patient_time.getSelectedItem().toString();
+            String date = String.valueOf(patient_date.getText()) + "/" + tail.substring(0, 2) + "/" + tail.substring(3);
 
-            this.Dialog.getWindow().setAttributes(params);
-            Dialog.setCancelable(false);
-            Dialog.getWindow().setGravity(Gravity.BOTTOM);
-            Dialog.show();
+
+            Reservation reservation = tempRes;
+            tempRes.setDate(date);
+            tempRes.setCompleted(true);
+            tempRes.setDone(false);
+            DBManager.createReservation(tempRes);
+
+
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.putExtra("sms_body", getIntent().getStringExtra("content"));
+            intent.setData( Uri.parse( "smsto:"+getIntent().getStringExtra("mms_uri") ) );
+            startActivity(intent);
+            finish();
         }
     }
 
 
 }
+
+
+////////////////////////
+
+
 
 

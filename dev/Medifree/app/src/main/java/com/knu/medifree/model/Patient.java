@@ -58,7 +58,7 @@ public class Patient {
         Log.e("current Date : ", currentDate);
 
         for(int i=0;i<list_reservations.size();i++){
-            if
+            
         }
         return patient;
     }

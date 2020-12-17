@@ -124,7 +124,7 @@ public class DResNextActivity extends AppCompatActivity {
 
 
             Intent intent = new Intent(Intent.ACTION_SENDTO);
-            intent.putExtra("sms_body", getIntent().getStringExtra("content"));
+            intent.putExtra("sms_body", getIntent().getStringExtra("mms_body"));
             intent.setData( Uri.parse( "smsto:"+getIntent().getStringExtra("mms_uri") ) );
             startActivity(intent);
             finish();

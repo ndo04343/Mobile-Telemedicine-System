@@ -53,7 +53,7 @@ public class Patient {
         ArrayList patient = new ArrayList();
         ArrayList<Reservation> list_reservations = DBManager.getReservations();
 
-        SimpleDateFormat todaySdf = new SimpleDateFormat("yyyy/MM/dd/HH", Locale.KOREA);
+        SimpleDateFormat todaySdf = new SimpleDateFormat("yyyy/MM/dd", Locale.KOREA);
         //한국기준 날짜
         Calendar calendar = Calendar.getInstance();
         Date date = new Date(calendar.getTimeInMillis());
@@ -61,7 +61,6 @@ public class Patient {
         String todayDate = todaySdf.format(date);
 
         todayDate  = todayDate+"/"+time.charAt(0)+time.charAt(1);
-
         for(int i=0;i<list_reservations.size();i++){
 
             if (list_reservations.get(i).isCompleted()) {

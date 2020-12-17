@@ -32,8 +32,6 @@ public class DResNextActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_d_next_app);
-        res_contact = (Button) findViewById(R.id.p_res_contact);
-        res_untact = (Button) findViewById(R.id.p_res_untact);
         patient_date = (TextView) findViewById(R.id.p_res_date);
         res_yes=(Button)findViewById(R.id.p_res_yes);
         res_no=(Button)findViewById(R.id.p_res_no);
